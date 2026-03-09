@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		02B3FED6BF055B06ECB9AF4F /* SectionCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC4227D9FDB7E74AE5C17B76 /* SectionCard.swift */; };
+		097E34830D133363D5F6C75F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98DCD1D26C18DE53690504C /* SettingsView.swift */; };
+		0B2C07D83D36FE2E4B1AD587 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98246466BEF6EF3EB3AAEF9F /* StatisticsView.swift */; };
 		0F99FE24BFC9E764AE52EC93 /* SessionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5087D29DC2CA5FC77E89F037 /* SessionDetailView.swift */; };
 		130B3EFA564D42E0E33A9E36 /* MemoTagIdsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22DE1CABB5B30462CC303F4 /* MemoTagIdsHelper.swift */; };
 		13CE6560A7DCD35EFC9B3AEE /* KintoreApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DA06C220EB1271D5C05E08 /* KintoreApp.swift */; };
@@ -20,6 +22,7 @@
 		43ABDDD10C9DD6A9A8954DE8 /* ModelContainerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6BF0E4025FE6AEFECF44D0 /* ModelContainerFactory.swift */; };
 		46049639638D82D9B61F28E1 /* DefaultMemoTagsSeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362F2BF42DF86734AB9F179 /* DefaultMemoTagsSeed.swift */; };
 		4A1CBE9D71E229780C91FA5F /* UserPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACF785DC5CE47918FA8F899 /* UserPreference.swift */; };
+		4E305966709D08A6492B59C9 /* RoutineListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE8546D4CF4E25681913F1E /* RoutineListView.swift */; };
 		546DC4D91C2A9EA264E89833 /* PrimaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F0E3EEFEE8E279642BD7C8 /* PrimaryButton.swift */; };
 		5BA53EB08D7BE1867B4AC81D /* WorkoutRecordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0907ADD9B3F85F2CFF0EEE62 /* WorkoutRecordViewModel.swift */; };
 		5BAA1462AEFAF3FE447D8F0B /* TemplateRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A59238B58D4753BFD8421 /* TemplateRepository.swift */; };
@@ -34,7 +37,9 @@
 		8E6C651340082B93144F76B8 /* WorkoutExerciseDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66594E55BD6EDEBB7F46F812 /* WorkoutExerciseDraft.swift */; };
 		91890C386B3BB9BEF08239A8 /* PersonalRecordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E722E02BE39787F5C84266 /* PersonalRecordService.swift */; };
 		92026E1C064A3F60A8CEF4F8 /* HistoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620CEDCDECFF00BB7F9A0D7F /* HistoryListView.swift */; };
+		92F867570955D2EA5892C6A8 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EEA0D6466672EDE69767DD /* CalendarView.swift */; };
 		93ADA68DC9D4FD7D4781FA37 /* WorkoutRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F167D5DA45031E59E70A4778 /* WorkoutRepository.swift */; };
+		963FFC885DE3E514248179F4 /* RoutineEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378CD7C4F48433C188C0E88A /* RoutineEditView.swift */; };
 		96C4F15A12A2FF8D6B976C44 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 505BF6BD74EDDA375C4F0D07 /* Assets.xcassets */; };
 		99A11D11A261EB08D26DBB74 /* WorkoutStatsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4D15C19460D375007DA693 /* WorkoutStatsService.swift */; };
 		9E9A7280332937FE68230431 /* ExercisePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4399CD8E4BE3DA32FF3A842 /* ExercisePickerView.swift */; };
@@ -42,6 +47,7 @@
 		A500E09D89FD74BDB183646E /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1C41A7D87C7834580B0B89 /* HomeView.swift */; };
 		A651BAE67E5A6C48E314EF59 /* SetRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2703CAC0F9B47273D2434C7C /* SetRowView.swift */; };
 		A6B4F0F01C1D658270A9270C /* WorkoutStartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A869D3551A873D2B35DE86 /* WorkoutStartView.swift */; };
+		AA3C82628D324C96CA5BC0DC /* MemoTagRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54620CC519B6E0F0FC8EC1C1 /* MemoTagRepository.swift */; };
 		B8F79533C952D9148916CF96 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C745675BA75C89C159D4E0 /* EmptyStateView.swift */; };
 		C18428594B5F6E7C35EA589E /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687ED963A1F3A49A36F6C2B3 /* MainTabView.swift */; };
 		CABAABDC32715392F64BFCDC /* WorkoutSessionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB671844132888819F3530DD /* WorkoutSessionDraft.swift */; };
@@ -51,20 +57,23 @@
 		E4AAC5BEC6FFCD3305018605 /* WorkoutSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF9590D26E362DF001AE855 /* WorkoutSet.swift */; };
 		ED6470534E6F1759BE7CB134 /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A1118B101167EB65D3DE7F /* Exercise.swift */; };
 		EFDC987174519855D5817736 /* PersonalRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E3FC5F6FF9FC6058F403C5 /* PersonalRecord.swift */; };
+		F2E7BDE91C435821745EB141 /* RestTimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CA366EF7DE3DDA335D670D /* RestTimerManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0212C578F0725F34070FDE9A /* SettingsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRepository.swift; sourceTree = "<group>"; };
 		0907ADD9B3F85F2CFF0EEE62 /* WorkoutRecordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutRecordViewModel.swift; sourceTree = "<group>"; };
 		121A59238B58D4753BFD8421 /* TemplateRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateRepository.swift; sourceTree = "<group>"; };
-		22AD048A0E2117DF58061458 /* Kintore.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Kintore.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		22AD048A0E2117DF58061458 /* Kintore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kintore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		24A1118B101167EB65D3DE7F /* Exercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exercise.swift; sourceTree = "<group>"; };
 		2703CAC0F9B47273D2434C7C /* SetRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetRowView.swift; sourceTree = "<group>"; };
 		2EBC7F0E12BA1B013218CFED /* WorkoutSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSession.swift; sourceTree = "<group>"; };
+		378CD7C4F48433C188C0E88A /* RoutineEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineEditView.swift; sourceTree = "<group>"; };
 		45E722E02BE39787F5C84266 /* PersonalRecordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecordService.swift; sourceTree = "<group>"; };
 		4B76A972C65064E023EC7E2E /* AppBootstrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBootstrapper.swift; sourceTree = "<group>"; };
 		505BF6BD74EDDA375C4F0D07 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5087D29DC2CA5FC77E89F037 /* SessionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDetailView.swift; sourceTree = "<group>"; };
+		54620CC519B6E0F0FC8EC1C1 /* MemoTagRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoTagRepository.swift; sourceTree = "<group>"; };
 		5874F728C1C294FB5A42888A /* WorkoutExercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutExercise.swift; sourceTree = "<group>"; };
 		59CB5043B95E7B293A247C94 /* WorkoutStartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutStartViewModel.swift; sourceTree = "<group>"; };
 		620CEDCDECFF00BB7F9A0D7F /* HistoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListView.swift; sourceTree = "<group>"; };
@@ -76,6 +85,7 @@
 		86A869D3551A873D2B35DE86 /* WorkoutStartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutStartView.swift; sourceTree = "<group>"; };
 		86BC0533C1CE7EAFA650BD6D /* WorkoutSetDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSetDraft.swift; sourceTree = "<group>"; };
 		943BF7BA15CAD301E72781F6 /* MemoTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoTag.swift; sourceTree = "<group>"; };
+		98246466BEF6EF3EB3AAEF9F /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		9BEC7757C082FFFDAA449BAC /* ExerciseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseRepository.swift; sourceTree = "<group>"; };
 		A22DE1CABB5B30462CC303F4 /* MemoTagIdsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoTagIdsHelper.swift; sourceTree = "<group>"; };
 		AA4D15C19460D375007DA693 /* WorkoutStatsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutStatsService.swift; sourceTree = "<group>"; };
@@ -85,6 +95,7 @@
 		B362F2BF42DF86734AB9F179 /* DefaultMemoTagsSeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultMemoTagsSeed.swift; sourceTree = "<group>"; };
 		B4399CD8E4BE3DA32FF3A842 /* ExercisePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExercisePickerView.swift; sourceTree = "<group>"; };
 		B53C53AE48A20FD4D65F1AE2 /* WorkoutRecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutRecordView.swift; sourceTree = "<group>"; };
+		B7EEA0D6466672EDE69767DD /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		B9A45085F13D60530C88E9D5 /* MetricChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricChip.swift; sourceTree = "<group>"; };
 		BB671844132888819F3530DD /* WorkoutSessionDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSessionDraft.swift; sourceTree = "<group>"; };
 		BEB59FDABA200461B72D804E /* DefaultExercisesSeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultExercisesSeed.swift; sourceTree = "<group>"; };
@@ -96,12 +107,23 @@
 		D0DA06C220EB1271D5C05E08 /* KintoreApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KintoreApp.swift; sourceTree = "<group>"; };
 		D46507B37EDE43E6727B7CA7 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		DA6BF0E4025FE6AEFECF44D0 /* ModelContainerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContainerFactory.swift; sourceTree = "<group>"; };
+		E3CA366EF7DE3DDA335D670D /* RestTimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestTimerManager.swift; sourceTree = "<group>"; };
 		E86512A48C83749D4625005B /* AppFormatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFormatters.swift; sourceTree = "<group>"; };
+		EDE8546D4CF4E25681913F1E /* RoutineListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineListView.swift; sourceTree = "<group>"; };
 		F167D5DA45031E59E70A4778 /* WorkoutRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutRepository.swift; sourceTree = "<group>"; };
 		F8BD82E17C6561C674EA4DBF /* HistoryListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListViewModel.swift; sourceTree = "<group>"; };
+		F98DCD1D26C18DE53690504C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		047B004FD3CC8A541F393CFA /* Statistics */ = {
+			isa = PBXGroup;
+			children = (
+				98246466BEF6EF3EB3AAEF9F /* StatisticsView.swift */,
+			);
+			path = Statistics;
+			sourceTree = "<group>";
+		};
 		10462E6049E2B4581ADDF08C /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -116,9 +138,21 @@
 				477CF6CFEB92095014592E99 /* Exercise */,
 				B0E55C85132516243925654A /* History */,
 				F637E2684167A7FE339F1039 /* Home */,
+				326654C5C6B54FAE6C411FB2 /* Routine */,
+				8DBBF9D7D184900CABCD4FA8 /* Settings */,
+				047B004FD3CC8A541F393CFA /* Statistics */,
 				F775C41FC2EB42F40C2ED2C4 /* Workout */,
 			);
 			path = Modules;
+			sourceTree = "<group>";
+		};
+		326654C5C6B54FAE6C411FB2 /* Routine */ = {
+			isa = PBXGroup;
+			children = (
+				378CD7C4F48433C188C0E88A /* RoutineEditView.swift */,
+				EDE8546D4CF4E25681913F1E /* RoutineListView.swift */,
+			);
+			path = Routine;
 			sourceTree = "<group>";
 		};
 		46FCBC3C1B8405B56F6E67DC /* Seed */ = {
@@ -168,6 +202,7 @@
 			children = (
 				45E722E02BE39787F5C84266 /* PersonalRecordService.swift */,
 				C7AD0CA3E9BD36A23D1ACBCC /* PreviousRecordService.swift */,
+				E3CA366EF7DE3DDA335D670D /* RestTimerManager.swift */,
 				AA4D15C19460D375007DA693 /* WorkoutStatsService.swift */,
 			);
 			path = Services;
@@ -195,6 +230,14 @@
 			path = Kintore;
 			sourceTree = "<group>";
 		};
+		8DBBF9D7D184900CABCD4FA8 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				F98DCD1D26C18DE53690504C /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		A9C77C9EF9180EA34E3CE2AF /* Core */ = {
 			isa = PBXGroup;
 			children = (
@@ -211,6 +254,7 @@
 		B0E55C85132516243925654A /* History */ = {
 			isa = PBXGroup;
 			children = (
+				B7EEA0D6466672EDE69767DD /* CalendarView.swift */,
 				620CEDCDECFF00BB7F9A0D7F /* HistoryListView.swift */,
 				F8BD82E17C6561C674EA4DBF /* HistoryListViewModel.swift */,
 				5087D29DC2CA5FC77E89F037 /* SessionDetailView.swift */,
@@ -234,6 +278,7 @@
 			isa = PBXGroup;
 			children = (
 				9BEC7757C082FFFDAA449BAC /* ExerciseRepository.swift */,
+				54620CC519B6E0F0FC8EC1C1 /* MemoTagRepository.swift */,
 				0212C578F0725F34070FDE9A /* SettingsRepository.swift */,
 				121A59238B58D4753BFD8421 /* TemplateRepository.swift */,
 				F167D5DA45031E59E70A4778 /* WorkoutRepository.swift */,
@@ -301,9 +346,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1630;
-				TargetAttributes = {
-				};
+				LastUpgradeCheck = 2630;
 			};
 			buildConfigurationList = 4BF9348CC2D5B533B0B6FFAC /* Build configuration list for PBXProject "Kintore" */;
 			developmentRegion = en;
@@ -343,6 +386,7 @@
 				D4F4FBE4F5ECD0233EE3609B /* AppBootstrapper.swift in Sources */,
 				881F1BFA5B1B1CE107A41D91 /* AppFormatters.swift in Sources */,
 				1DC28122C960F4F298E59D10 /* AppRootView.swift in Sources */,
+				92F867570955D2EA5892C6A8 /* CalendarView.swift in Sources */,
 				38ED7F8C4FCFD0D030247BF9 /* DefaultExercisesSeed.swift in Sources */,
 				46049639638D82D9B61F28E1 /* DefaultMemoTagsSeed.swift in Sources */,
 				B8F79533C952D9148916CF96 /* EmptyStateView.swift in Sources */,
@@ -357,16 +401,22 @@
 				C18428594B5F6E7C35EA589E /* MainTabView.swift in Sources */,
 				5D9FBE194A24136BF910CF9F /* MemoTag.swift in Sources */,
 				130B3EFA564D42E0E33A9E36 /* MemoTagIdsHelper.swift in Sources */,
+				AA3C82628D324C96CA5BC0DC /* MemoTagRepository.swift in Sources */,
 				CD9FFA46BDDC36C8B994C7BA /* MetricChip.swift in Sources */,
 				43ABDDD10C9DD6A9A8954DE8 /* ModelContainerFactory.swift in Sources */,
 				EFDC987174519855D5817736 /* PersonalRecord.swift in Sources */,
 				91890C386B3BB9BEF08239A8 /* PersonalRecordService.swift in Sources */,
 				19970BC733AE8CC53685B049 /* PreviousRecordService.swift in Sources */,
 				546DC4D91C2A9EA264E89833 /* PrimaryButton.swift in Sources */,
+				F2E7BDE91C435821745EB141 /* RestTimerManager.swift in Sources */,
+				963FFC885DE3E514248179F4 /* RoutineEditView.swift in Sources */,
+				4E305966709D08A6492B59C9 /* RoutineListView.swift in Sources */,
 				02B3FED6BF055B06ECB9AF4F /* SectionCard.swift in Sources */,
 				0F99FE24BFC9E764AE52EC93 /* SessionDetailView.swift in Sources */,
 				A651BAE67E5A6C48E314EF59 /* SetRowView.swift in Sources */,
 				759EA1D594A0E00D4EAD9CC3 /* SettingsRepository.swift in Sources */,
+				097E34830D133363D5F6C75F /* SettingsView.swift in Sources */,
+				0B2C07D83D36FE2E4B1AD587 /* StatisticsView.swift in Sources */,
 				5BAA1462AEFAF3FE447D8F0B /* TemplateRepository.swift in Sources */,
 				4A1CBE9D71E229780C91FA5F /* UserPreference.swift in Sources */,
 				309BE58365A3DEDA4DD09025 /* WorkoutExercise.swift in Sources */,
@@ -417,6 +467,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -451,6 +502,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -465,6 +517,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_STRICT_CONCURRENCY = minimal;
@@ -477,6 +530,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -511,6 +565,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -532,6 +587,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_STRICT_CONCURRENCY = minimal;

@@ -120,6 +120,38 @@ final class WorkoutRecordViewModel {
         return "前回 \(w)kg × \(r) × \(dto.setCount)セット 最終 \(dateStr)"
     }
 
+    /// 指定セットに前回の値（セット番目）をコピー。セットが前回より多ければ1セット目の値を使う。
+    func applyPreviousToSet(exerciseIndex: Int, setIndex: Int) {
+        guard exerciseIndex < draft.exercises.count,
+              setIndex < draft.exercises[exerciseIndex].sets.count else { return }
+        let exDraft = draft.exercises[exerciseIndex]
+        guard let dto = previousRecords[exDraft.exerciseId], !dto.sets.isEmpty else { return }
+        let idx = min(setIndex, dto.sets.count - 1)
+        let t = dto.sets[idx]
+        draft.exercises[exerciseIndex].sets[setIndex].weight = t.0
+        draft.exercises[exerciseIndex].sets[setIndex].reps = t.1
+    }
+
+    func addRepToSet(exerciseIndex: Int, setIndex: Int) {
+        guard exerciseIndex < draft.exercises.count,
+              setIndex < draft.exercises[exerciseIndex].sets.count else { return }
+        let exDraft = draft.exercises[exerciseIndex]
+        guard let dto = previousRecords[exDraft.exerciseId] else { return }
+        let prevReps = setIndex < dto.sets.count ? dto.sets[setIndex].1 : dto.reps
+        let current = draft.exercises[exerciseIndex].sets[setIndex].reps ?? prevReps ?? 0
+        draft.exercises[exerciseIndex].sets[setIndex].reps = current + 1
+    }
+
+    func addWeightToSet(exerciseIndex: Int, setIndex: Int, delta: Double) {
+        guard exerciseIndex < draft.exercises.count,
+              setIndex < draft.exercises[exerciseIndex].sets.count else { return }
+        let exDraft = draft.exercises[exerciseIndex]
+        guard let dto = previousRecords[exDraft.exerciseId] else { return }
+        let prevWeight = setIndex < dto.sets.count ? dto.sets[setIndex].0 : dto.weight
+        let current = draft.exercises[exerciseIndex].sets[setIndex].weight ?? prevWeight ?? 0
+        draft.exercises[exerciseIndex].sets[setIndex].weight = max(0, current + delta)
+    }
+
     func saveSession() {
         isSaving = true
         saveError = nil

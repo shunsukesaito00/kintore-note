@@ -9,6 +9,7 @@ struct SessionDetailView: View {
 
     @State private var session: WorkoutSession?
     @State private var loadError: String?
+    @State private var memoTagLabels: [String: String] = [:]
 
     var body: some View {
         Group {
@@ -29,6 +30,8 @@ struct SessionDetailView: View {
     private func loadSession() {
         do {
             session = try WorkoutRepository(modelContext: modelContext).fetchSession(by: sessionId)
+            let tags = try MemoTagRepository(modelContext: modelContext).fetchAll()
+            memoTagLabels = Dictionary(uniqueKeysWithValues: tags.map { ($0.id, $0.label) })
         } catch {
             loadError = error.localizedDescription
         }
@@ -52,15 +55,17 @@ struct SessionDetailView: View {
                     }
                 }
                 ForEach(exercises, id: \.id) { we in
-                    exerciseBlock(workoutExercise: we, stats: stats)
+                    exerciseBlock(workoutExercise: we, stats: stats, tagLabels: memoTagLabels)
                 }
             }
             .padding()
         }
     }
 
-    private func exerciseBlock(workoutExercise: WorkoutExercise, stats: WorkoutStatsService) -> some View {
+    private func exerciseBlock(workoutExercise: WorkoutExercise, stats: WorkoutStatsService, tagLabels: [String: String]) -> some View {
         let sets = workoutExercise.sets.sorted { $0.orderIndex < $1.orderIndex }
+        let tagIds = MemoTagIdsHelper.parse(workoutExercise.memoTagIdsString)
+        let labels = tagIds.compactMap { tagLabels[$0] }
         return SectionCard {
             VStack(alignment: .leading, spacing: 8) {
                 Text(workoutExercise.exercise?.name ?? "種目")
@@ -77,6 +82,18 @@ struct SessionDetailView: View {
                         Text("× \(set.reps ?? 0)回")
                     }
                     .font(.subheadline)
+                }
+                if !labels.isEmpty {
+                    HStack(spacing: 4) {
+                        ForEach(labels, id: \.self) { label in
+                            Text(label)
+                                .font(.caption2)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 2)
+                                .background(Color.accentColor.opacity(0.2))
+                                .clipShape(Capsule())
+                        }
+                    }
                 }
                 if let memo = workoutExercise.freeMemo, !memo.isEmpty {
                     Text(memo)

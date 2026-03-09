@@ -9,11 +9,14 @@ struct HistoryListView: View {
 
     var body: some View {
         let vm = viewModel ?? HistoryListViewModel(workoutRepository: WorkoutRepository(modelContext: modelContext))
-        Group {
-            if vm.sessions.isEmpty && !vm.isLoading {
-                EmptyStateView(message: "まだ履歴がありません")
-            } else {
-                List {
+        List {
+            Section {
+                CalendarView()
+            }
+            Section("セッション") {
+                if vm.sessions.isEmpty && !vm.isLoading {
+                    EmptyStateView(message: "まだ履歴がありません")
+                } else {
                     ForEach(vm.sessions, id: \.id) { session in
                         NavigationLink(value: session.id) {
                             HistoryRowView(session: session)

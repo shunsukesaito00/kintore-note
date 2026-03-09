@@ -11,6 +11,9 @@ protocol TemplateRepositoryProtocol {
     func deleteTemplate(_ template: WorkoutTemplate) throws
     func markTemplateUsed(_ template: WorkoutTemplate, at date: Date) throws
     func buildSessionFromTemplate(_ template: WorkoutTemplate, modelContext: ModelContext) throws -> WorkoutSession
+    func addItem(to template: WorkoutTemplate, exercise: Exercise, orderIndex: Int) throws
+    func removeItem(_ item: WorkoutTemplateItem) throws
+    func reorderItems(_ template: WorkoutTemplate, orderedItems: [WorkoutTemplateItem]) throws
 }
 
 final class TemplateRepository: TemplateRepositoryProtocol {
@@ -63,5 +66,23 @@ final class TemplateRepository: TemplateRepositoryProtocol {
         }
         try modelContext.save()
         return session
+    }
+
+    func addItem(to template: WorkoutTemplate, exercise: Exercise, orderIndex: Int) throws {
+        let item = WorkoutTemplateItem(orderIndex: orderIndex, template: template, exercise: exercise)
+        modelContext.insert(item)
+        try modelContext.save()
+    }
+
+    func removeItem(_ item: WorkoutTemplateItem) throws {
+        modelContext.delete(item)
+        try modelContext.save()
+    }
+
+    func reorderItems(_ template: WorkoutTemplate, orderedItems: [WorkoutTemplateItem]) throws {
+        for (index, item) in orderedItems.enumerated() {
+            item.orderIndex = index
+        }
+        try modelContext.save()
     }
 }

@@ -7,6 +7,7 @@ import SwiftData
 final class WorkoutRecordViewModel {
     var draft: WorkoutSessionDraft
     var previousRecords: [UUID: PreviousRecordDTO] = [:]
+    var allMemoTags: [MemoTag] = []
     var saveError: String?
     var isSaving = false
 
@@ -14,7 +15,10 @@ final class WorkoutRecordViewModel {
     private let exerciseRepository: ExerciseRepositoryProtocol
     private let previousRecordService: PreviousRecordService
     private let personalRecordService: PersonalRecordService
+    private let memoTagRepository: MemoTagRepository?
+    private let settingsRepository: SettingsRepositoryProtocol?
     private let modelContext: ModelContext
+    weak var restTimerManager: RestTimerManager?
 
     init(
         draft: WorkoutSessionDraft,
@@ -22,6 +26,9 @@ final class WorkoutRecordViewModel {
         exerciseRepository: ExerciseRepositoryProtocol,
         previousRecordService: PreviousRecordService,
         personalRecordService: PersonalRecordService,
+        memoTagRepository: MemoTagRepository? = nil,
+        settingsRepository: SettingsRepositoryProtocol? = nil,
+        restTimerManager: RestTimerManager? = nil,
         modelContext: ModelContext
     ) {
         self.draft = draft
@@ -29,6 +36,9 @@ final class WorkoutRecordViewModel {
         self.exerciseRepository = exerciseRepository
         self.previousRecordService = previousRecordService
         self.personalRecordService = personalRecordService
+        self.memoTagRepository = memoTagRepository
+        self.settingsRepository = settingsRepository
+        self.restTimerManager = restTimerManager
         self.modelContext = modelContext
     }
 
@@ -38,6 +48,27 @@ final class WorkoutRecordViewModel {
                 previousRecords[ex.exerciseId] = dto
             }
         }
+    }
+
+    func loadMemoTags() {
+        guard let repo = memoTagRepository else { return }
+        allMemoTags = (try? repo.fetchAll()) ?? []
+    }
+
+    func toggleMemoTag(exerciseIndex: Int, tagId: String) {
+        guard exerciseIndex < draft.exercises.count else { return }
+        var ids = draft.exercises[exerciseIndex].memoTagIds
+        if ids.contains(tagId) {
+            ids.removeAll { $0 == tagId }
+        } else {
+            ids.append(tagId)
+        }
+        draft.exercises[exerciseIndex].memoTagIds = ids
+    }
+
+    func isMemoTagSelected(exerciseIndex: Int, tagId: String) -> Bool {
+        guard exerciseIndex < draft.exercises.count else { return false }
+        return draft.exercises[exerciseIndex].memoTagIds.contains(tagId)
     }
 
     func addExercise(_ exercise: Exercise) {
@@ -78,9 +109,26 @@ final class WorkoutRecordViewModel {
         draft.exercises[exerciseIndex].sets[setIndex].isCompleted = completed
         if completed {
             draft.exercises[exerciseIndex].sets[setIndex].completedAt = Date()
+            startRestAfterSetCompleted(exerciseIndex: exerciseIndex)
         } else {
             draft.exercises[exerciseIndex].sets[setIndex].completedAt = nil
         }
+    }
+
+    private func startRestAfterSetCompleted(exerciseIndex: Int) {
+        guard let rest = restTimerManager else { return }
+        let seconds: Int
+        if exerciseIndex < draft.exercises.count,
+           let ex = try? exerciseRepository.fetchExercise(by: draft.exercises[exerciseIndex].exerciseId),
+           let s = ex.defaultRestSeconds, s > 0 {
+            seconds = s
+        } else if let pref = try? settingsRepository?.fetchUserPreference(), pref.defaultRestSeconds > 0 {
+            seconds = pref.defaultRestSeconds
+        } else {
+            seconds = 90
+        }
+        RestTimerManager.requestNotificationPermissionIfNeeded()
+        rest.startRest(seconds: seconds)
     }
 
     func setFreeMemo(exerciseIndex: Int, _ text: String) {

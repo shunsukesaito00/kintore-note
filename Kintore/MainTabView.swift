@@ -26,6 +26,18 @@ struct MainTabView: View {
             .tabItem {
                 Label("履歴", systemImage: "list.bullet.clipboard")
             }
+            NavigationStack {
+                StatisticsView()
+            }
+            .tabItem {
+                Label("統計", systemImage: "chart.bar")
+            }
+            NavigationStack {
+                SettingsView()
+            }
+            .tabItem {
+                Label("設定", systemImage: "gearshape")
+            }
         }
     }
 }

@@ -8,6 +8,7 @@ struct WorkoutExerciseDraft: Identifiable {
     var exerciseName: String
     var orderIndex: Int
     var sets: [WorkoutSetDraft]
+    var memoTagIds: [String]
     var freeMemo: String
 
     init(
@@ -16,6 +17,7 @@ struct WorkoutExerciseDraft: Identifiable {
         exerciseName: String,
         orderIndex: Int = 0,
         sets: [WorkoutSetDraft] = [],
+        memoTagIds: [String] = [],
         freeMemo: String = ""
     ) {
         self.id = id
@@ -23,6 +25,7 @@ struct WorkoutExerciseDraft: Identifiable {
         self.exerciseName = exerciseName
         self.orderIndex = orderIndex
         self.sets = sets
+        self.memoTagIds = memoTagIds
         self.freeMemo = freeMemo
     }
 }

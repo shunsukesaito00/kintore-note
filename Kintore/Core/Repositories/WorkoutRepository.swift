@@ -6,6 +6,7 @@ import SwiftData
 protocol WorkoutRepositoryProtocol {
     func createSession(template: WorkoutTemplate?) throws -> WorkoutSession
     func fetchRecentSessions(limit: Int) throws -> [WorkoutSession]
+    func fetchSessions(from start: Date, to end: Date) throws -> [WorkoutSession]
     func fetchSession(by id: UUID) throws -> WorkoutSession?
     func saveWorkoutSession(_ session: WorkoutSession) throws
     func fetchPreviousWorkoutExercise(for exerciseId: UUID) throws -> WorkoutExercise?
@@ -32,6 +33,15 @@ final class WorkoutRepository: WorkoutRepositoryProtocol {
     func fetchRecentSessions(limit: Int) throws -> [WorkoutSession] {
         var descriptor = FetchDescriptor<WorkoutSession>(sortBy: [SortDescriptor(\.startedAt, order: .reverse)])
         descriptor.fetchLimit = limit
+        return try modelContext.fetch(descriptor)
+    }
+
+    func fetchSessions(from start: Date, to end: Date) throws -> [WorkoutSession] {
+        let predicate = #Predicate<WorkoutSession> { session in
+            session.startedAt >= start && session.startedAt < end
+        }
+        var descriptor = FetchDescriptor<WorkoutSession>(predicate: predicate, sortBy: [SortDescriptor(\.startedAt, order: .reverse)])
+        descriptor.fetchLimit = 0
         return try modelContext.fetch(descriptor)
     }
 
@@ -91,6 +101,7 @@ final class WorkoutRepository: WorkoutRepositoryProtocol {
             guard let exercise = exerciseLookup[exerciseDraft.exerciseId] else { continue }
             let we = WorkoutExercise(
                 orderIndex: exerciseDraft.orderIndex,
+                memoTagIdsString: MemoTagIdsHelper.serialize(exerciseDraft.memoTagIds),
                 freeMemo: exerciseDraft.freeMemo.isEmpty ? nil : exerciseDraft.freeMemo,
                 session: session,
                 exercise: exercise

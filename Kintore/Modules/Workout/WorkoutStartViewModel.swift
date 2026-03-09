@@ -6,13 +6,16 @@ import SwiftData
 @Observable
 final class WorkoutStartViewModel {
     var templates: [WorkoutTemplate] = []
+    var lastUsedTemplate: WorkoutTemplate?
     var isLoading = false
     var errorMessage: String?
 
     private let templateRepository: TemplateRepositoryProtocol
+    private let workoutRepository: WorkoutRepositoryProtocol
 
-    init(templateRepository: TemplateRepositoryProtocol) {
+    init(templateRepository: TemplateRepositoryProtocol, workoutRepository: WorkoutRepositoryProtocol) {
         self.templateRepository = templateRepository
+        self.workoutRepository = workoutRepository
     }
 
     func loadTemplates() {
@@ -20,6 +23,8 @@ final class WorkoutStartViewModel {
         errorMessage = nil
         do {
             templates = try templateRepository.fetchAllTemplates()
+            let recent = try workoutRepository.fetchRecentSessions(limit: 1)
+            lastUsedTemplate = recent.first?.template
         } catch {
             errorMessage = error.localizedDescription
         }

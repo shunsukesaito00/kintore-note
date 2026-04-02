@@ -1,5 +1,5 @@
 // File: Core/Seed/AppBootstrapper.swift
-// 初回起動時に UserPreference 作成・種目 Seed・メモタグ Seed を実行。二重投入防止は各 Seed 内で実施。
+// 初回起動時に UserPreference を作成。種目プリセットは `KintoreApp` 側で毎回 upsert。
 
 import Foundation
 import SwiftData
@@ -15,10 +15,6 @@ enum AppBootstrapper {
         // 1. UserPreference を 1 件作成（既存がなければ）
         createUserPreferenceIfNeeded(modelContext: modelContext)
 
-        // 2. 種目・メモタグの Seed（各 Seed 内で既存チェック）
-        DefaultExercisesSeed.seedIfNeeded(modelContext: modelContext)
-        DefaultMemoTagsSeed.seedIfNeeded(modelContext: modelContext)
-
         UserDefaults.standard.set(true, forKey: didBootstrapKey)
         try? modelContext.save()
     }
@@ -31,9 +27,11 @@ enum AppBootstrapper {
         let pref = UserPreference(
             defaultRestSeconds: 90,
             weightUnit: "kg",
-            theme: "system"
+            theme: "system",
+            weeklyWorkoutGoalSessions: 0
         )
         modelContext.insert(pref)
         try? modelContext.save()
+        UserDefaults.standard.set(pref.weightUnit, forKey: AppTheme.weightUnitStorageKey)
     }
 }

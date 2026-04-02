@@ -10,6 +10,8 @@ final class UserPreference {
     var defaultRestSeconds: Int
     var weightUnit: String
     var theme: String
+    /// 週あたりのトレーニング目標（完了セッション数）。0 は未設定。
+    var weeklyWorkoutGoalSessions: Int
     var createdAt: Date
     var updatedAt: Date
 
@@ -18,6 +20,7 @@ final class UserPreference {
         defaultRestSeconds: Int = 90,
         weightUnit: String = "kg",
         theme: String = "system",
+        weeklyWorkoutGoalSessions: Int = 0,
         createdAt: Date = Date(),
         updatedAt: Date = Date()
     ) {
@@ -25,6 +28,7 @@ final class UserPreference {
         self.defaultRestSeconds = defaultRestSeconds
         self.weightUnit = weightUnit
         self.theme = theme
+        self.weeklyWorkoutGoalSessions = weeklyWorkoutGoalSessions
         self.createdAt = createdAt
         self.updatedAt = updatedAt
     }

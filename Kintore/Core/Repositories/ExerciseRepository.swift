@@ -34,9 +34,9 @@ final class ExerciseRepository: ExerciseRepositoryProtocol {
 
     func searchExercises(keyword: String) throws -> [Exercise] {
         let k = keyword.trimmingCharacters(in: .whitespacesAndNewlines)
-        if k.isEmpty { return try fetchAllExercises() }
         let all = try fetchAllExercises()
-        return all.filter { $0.name.localizedCaseInsensitiveContains(k) }
+        if k.isEmpty { return all }
+        return all.filter { ExerciseSearch.matches($0, keyword: k) }
     }
 
     func fetchExercise(by id: UUID) throws -> Exercise? {
@@ -60,6 +60,6 @@ final class ExerciseRepository: ExerciseRepositoryProtocol {
     }
 
     func seedDefaultExercisesIfNeeded() throws {
-        DefaultExercisesSeed.seedIfNeeded(modelContext: modelContext)
+        DefaultExercisesSeed.upsertMissingPresets(modelContext: modelContext)
     }
 }

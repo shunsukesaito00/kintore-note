@@ -4,12 +4,25 @@
 import Foundation
 import SwiftData
 
+/// 前回セット1行分（種目タイプに応じて使うフィールドが異なる）
+struct PreviousSetSnapshot {
+    var weight: Double?
+    var reps: Int?
+    var durationSeconds: Int?
+    var distanceMeters: Double?
+    var inclinePercent: Double?
+    var speedKmh: Double?
+}
+
 struct PreviousRecordDTO {
+    var exerciseKind: ExerciseKind
+    /// 有酸素の入力レイアウト（`Exercise.cardioInputStyle`）
+    var cardioInputStyle: String?
     var weight: Double?
     var reps: Int?
     var setCount: Int
     var date: Date?
-    var sets: [(weight: Double?, reps: Int?)] // 各セットの重量・回数（前回と同じコピー用）
+    var sets: [PreviousSetSnapshot]
 }
 
 final class PreviousRecordService {
@@ -26,14 +39,26 @@ final class PreviousRecordService {
         let setCount = sets.count
         let firstSet = sets.first
         let date = we.session?.endedAt ?? we.session?.startedAt
+        let kind = ExerciseKind(stored: we.exercise?.exerciseKind)
 
-        let setTuples: [(Double?, Int?)] = sets.map { ($0.weight, $0.reps) }
+        let snapshots: [PreviousSetSnapshot] = sets.map { s in
+            PreviousSetSnapshot(
+                weight: s.weight,
+                reps: s.reps,
+                durationSeconds: s.durationSeconds,
+                distanceMeters: s.distanceMeters,
+                inclinePercent: s.inclinePercent,
+                speedKmh: s.speedKmh
+            )
+        }
         return PreviousRecordDTO(
+            exerciseKind: kind,
+            cardioInputStyle: we.exercise?.cardioInputStyle,
             weight: firstSet?.weight,
             reps: firstSet?.reps,
             setCount: setCount,
             date: date,
-            sets: setTuples.map { ($0.0, $0.1) }
+            sets: snapshots
         )
     }
 }

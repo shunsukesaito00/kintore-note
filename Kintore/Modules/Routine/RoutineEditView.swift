@@ -20,41 +20,56 @@ struct RoutineEditView: View {
     var body: some View {
         NavigationStack {
             List {
-                Section("名前") {
-                    TextField("ルーティン名", text: $name)
+                Section {
+                    TextField(String(localized: "routine_name_placeholder"), text: $name)
+                        .font(AppTheme.bodyFont)
+                } header: {
+                    Text(String(localized: "routine_name_header"))
                 }
-                Section("種目") {
+
+                Section {
                     if let _ = template {
                         ForEach(items.sorted(by: { $0.orderIndex < $1.orderIndex }), id: \.id) { item in
                             Text(item.exercise?.name ?? "—")
+                                .font(AppTheme.subheadlineFont)
                         }
                         .onDelete(perform: deleteItems)
                         .onMove(perform: moveItems)
                     } else {
                         ForEach(pendingExercises, id: \.id) { ex in
                             Text(ex.name)
+                                .font(AppTheme.subheadlineFont)
                         }
                         .onDelete(perform: deletePending)
                         .onMove(perform: movePending)
                     }
-                    Button("種目を追加") {
+                    Button(String(localized: "routine_add_exercise")) {
                         showExercisePicker = true
                     }
+                    .foregroundStyle(AppTheme.accent)
+                } header: {
+                    Text(String(localized: "routine_exercises_header"))
                 }
             }
-            .navigationTitle(template == nil ? "新規ルーティン" : "ルーティン編集")
+            .listStyle(.insetGrouped)
+            .scrollContentBackground(.hidden)
+            .tint(AppTheme.accent)
+            .appTabRootChrome()
+            .navigationTitle(template == nil ? String(localized: "routine_new_title") : String(localized: "routine_edit_title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("キャンセル") {
+                    Button(String(localized: "common_cancel")) {
                         dismiss()
                         onDismiss()
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("保存") {
+                    Button(String(localized: "common_save")) {
                         save()
                     }
+                    .fontWeight(.semibold)
+                    .foregroundStyle(AppTheme.accent)
                     .disabled(
                         name.trimmingCharacters(in: .whitespaces).isEmpty
                         || (template == nil && pendingExercises.isEmpty)
@@ -66,7 +81,7 @@ struct RoutineEditView: View {
                     name = t.name
                     items = Array(t.items)
                 } else {
-                    name = "新規ルーティン"
+                    name = String(localized: "routine_default_name")
                     pendingExercises = []
                 }
             }
@@ -76,6 +91,7 @@ struct RoutineEditView: View {
                     showExercisePicker = false
                 }
                 .environment(\.modelContext, modelContext)
+                .standardSheetChrome()
             }
         }
     }

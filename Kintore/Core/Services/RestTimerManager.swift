@@ -113,8 +113,8 @@ final class RestTimerManager {
         content.title = "休憩終了"
         content.body = "次のセットを始めましょう"
         content.sound = .default
-        let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
-        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+        let interval = max(1, date.timeIntervalSinceNow)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: interval, repeats: false)
         let request = UNNotificationRequest(identifier: restNotificationId, content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request) { _ in }
     }
@@ -127,7 +127,7 @@ final class RestTimerManager {
     static func requestNotificationPermissionIfNeeded() {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
             if settings.authorizationStatus == .notDetermined {
-                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
+                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { _, _ in }
             }
         }
     }

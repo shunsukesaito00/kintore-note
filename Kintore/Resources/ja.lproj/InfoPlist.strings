@@ -1,0 +1,2 @@
+/* HealthKit 権限ダイアログ（日本語） */
+"NSHealthUpdateUsageDescription" = "設定で有効にしたとき、完了したワークアウトをヘルスケアに保存します。";

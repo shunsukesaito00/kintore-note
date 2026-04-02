@@ -12,37 +12,80 @@ struct RoutineListView: View {
 
     var body: some View {
         List {
-            Section {
-                ForEach(templates, id: \.id) { template in
-                    Button {
-                        showEdit = template
-                    } label: {
-                        HStack {
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(template.name)
-                                    .font(.headline)
-                                Text("\(template.items.count)種目")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                            }
-                            Spacer()
-                            Image(systemName: "chevron.right")
-                                .font(.caption)
-                                .foregroundStyle(.tertiary)
-                        }
+            if let error = loadError {
+                Section {
+                    HStack(spacing: AppTheme.spacingSM) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .foregroundStyle(AppTheme.destructive)
+                        Text(error)
+                            .font(AppTheme.captionTypographyFont)
+                            .foregroundStyle(AppTheme.destructive)
+                        Spacer()
+                        Button(String(localized: "common_retry")) { loadTemplates() }
+                            .font(AppTheme.captionTypographyFont)
+                            .foregroundStyle(AppTheme.accent)
                     }
                 }
-                .onDelete(perform: deleteTemplates)
-            } header: {
-                Text("ルーティン")
+            }
+
+            if templates.isEmpty && loadError == nil {
+                Section {
+                    VStack(spacing: AppTheme.spacingMD) {
+                        Image(systemName: "list.clipboard")
+                            .font(.largeTitle)
+                            .foregroundStyle(AppTheme.tertiaryText)
+                        Text(String(localized: "routine_empty_title"))
+                            .font(AppTheme.bodyTypographyFont)
+                            .foregroundStyle(AppTheme.secondaryText)
+                        Text(String(localized: "routine_empty_hint"))
+                            .font(AppTheme.captionTypographyFont)
+                            .foregroundStyle(AppTheme.tertiaryText)
+                            .multilineTextAlignment(.center)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, AppTheme.spacingXL)
+                }
+            } else {
+                Section {
+                    ForEach(templates, id: \.id) { template in
+                        Button {
+                            showEdit = template
+                        } label: {
+                            HStack(spacing: AppTheme.spacingMD) {
+                                VStack(alignment: .leading, spacing: AppTheme.spacingXS) {
+                                    Text(template.name)
+                                        .font(AppTheme.cardTitleFont)
+                                        .foregroundStyle(AppTheme.primaryText)
+                                    Text(String(format: String(localized: "routine_exercise_count_format"), template.items.count))
+                                        .font(AppTheme.captionTypographyFont)
+                                        .foregroundStyle(AppTheme.secondaryText)
+                                }
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .font(.caption)
+                                    .foregroundStyle(AppTheme.secondaryText)
+                            }
+                            .padding(.vertical, AppTheme.spacingXS)
+                        }
+                    }
+                    .onDelete(perform: deleteTemplates)
+                } header: {
+                    SectionHeaderView(title: String(localized: "routine_section_header"))
+                }
             }
         }
-        .navigationTitle("ルーティン管理")
+        .listStyle(.insetGrouped)
+        .scrollContentBackground(.hidden)
+        .tint(AppTheme.accent)
+        .appTabRootChrome()
+        .navigationTitle(String(localized: "nav_routine_management"))
+        .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                Button("新規") {
+                Button(String(localized: "common_new")) {
                     showNewRoutine = true
                 }
+                .fontWeight(.medium)
             }
         }
         .onAppear { loadTemplates() }
@@ -52,6 +95,7 @@ struct RoutineListView: View {
                 loadTemplates()
             })
             .environment(\.modelContext, modelContext)
+            .standardSheetChrome()
         }
         .sheet(isPresented: $showNewRoutine) {
             RoutineEditView(template: nil, onDismiss: {
@@ -59,6 +103,7 @@ struct RoutineListView: View {
                 loadTemplates()
             })
             .environment(\.modelContext, modelContext)
+            .standardSheetChrome()
         }
     }
 

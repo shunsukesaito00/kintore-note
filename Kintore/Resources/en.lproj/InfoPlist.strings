@@ -1,0 +1,2 @@
+/* HealthKit permission dialog (English) */
+"NSHealthUpdateUsageDescription" = "Saves completed workouts to Apple Health when you enable the option in Settings.";

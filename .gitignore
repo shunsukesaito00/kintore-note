@@ -32,3 +32,7 @@ Package.resolved
 
 # CocoaPods
 Pods/
+
+# Local / IDE
+.cursor/
+test_write.txt

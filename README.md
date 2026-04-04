@@ -4,9 +4,10 @@ SwiftUI / SwiftData の iOS アプリ。Watch 拡張・Widget 同梱。
 
 **リポジトリ**: [github.com/shunsukesaito00/kintore](https://github.com/shunsukesaito00/kintore)
 
-## お問い合わせ・不具合報告
+## サポート
 
-GitHub の [**Issues**](https://github.com/shunsukesaito00/kintore/issues) からご連絡ください（テンプレートあり）。詳細は [`SUPPORT.md`](SUPPORT.md) を参照。
+- [GitHub Issues](https://github.com/shunsukesaito00/kintore/issues)（テンプレート: `.github/ISSUE_TEMPLATE/`）
+- 詳細: [`SUPPORT.md`](SUPPORT.md)
 
 ## 要件
 
@@ -25,4 +26,4 @@ open Kintore.xcodeproj
 
 ## ライセンス
 
-未設定（必要に応じて `LICENSE` を追加してください）。
+未設定（`LICENSE` は任意）。

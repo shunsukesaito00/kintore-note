@@ -7,7 +7,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        再現手順が分かると修正しやすくなります。個人情報（体重など）は伏せてください。
+        再現手順があると調査しやすい。Issue 本文に個人情報を含めない。
   - type: textarea
     id: summary
     attributes:

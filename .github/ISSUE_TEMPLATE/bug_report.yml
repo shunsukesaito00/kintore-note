@@ -1,0 +1,57 @@
+name: バグ報告
+description: 不具合・クラッシュを報告する
+title: "[バグ] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        再現手順が分かると修正しやすくなります。個人情報（体重など）は伏せてください。
+  - type: textarea
+    id: summary
+    attributes:
+      label: 概要
+      description: 何がおかしいか一言で
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 再現手順
+      placeholder: |
+        1. …
+        2. …
+        3. …
+    validations:
+      required: false
+  - type: input
+    id: version
+    attributes:
+      label: アプリのバージョン（設定 → について など）
+    validations:
+      required: false
+  - type: input
+    id: ios
+    attributes:
+      label: iOS のバージョン（例 18.2）
+    validations:
+      required: false
+  - type: input
+    id: device
+    attributes:
+      label: 端末（例 iPhone 16）
+    validations:
+      required: false
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期待した動作
+    validations:
+      required: false
+  - type: textarea
+    id: actual
+    attributes:
+      label: 実際の動作
+    validations:
+      required: false

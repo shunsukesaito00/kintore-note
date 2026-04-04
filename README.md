@@ -2,6 +2,12 @@
 
 SwiftUI / SwiftData の iOS アプリ。Watch 拡張・Widget 同梱。
 
+**リポジトリ**: [github.com/shunsukesaito00/kintore](https://github.com/shunsukesaito00/kintore)
+
+## お問い合わせ・不具合報告
+
+GitHub の [**Issues**](https://github.com/shunsukesaito00/kintore/issues) からご連絡ください（テンプレートあり）。詳細は [`SUPPORT.md`](SUPPORT.md) を参照。
+
 ## 要件
 
 - Xcode 16 以降（`project.yml` は Xcode 16.3 想定）

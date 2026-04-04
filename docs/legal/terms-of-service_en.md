@@ -6,8 +6,8 @@
 
 These terms govern use of the mobile application “Kintore” (the “App”). By using the App, the user agrees to these terms.
 
-**Operator:** [Legal name]  
-**Contact:** [Support email]
+**Operator:** shunsuke.saiito  
+**Contact:** infomationshunsuke@gmail.com
 
 ## 2. Service
 
@@ -45,10 +45,6 @@ Handling of personal information is described in the Privacy Policy.
 
 These terms may be updated. Continued use after changes constitutes acceptance where permitted by law.
 
-## 11. Governing law and venue
-
-[Governing law and courts to be specified according to the operator’s jurisdiction.]
-
 ---
 
-*Template only—adjust governing law and venue before publication.*
+*Disputes and applicable law follow the requirements of applicable law.*

@@ -7,7 +7,7 @@
 | `terms-of-service_ja.md` | 利用規約（日本語） |
 | `terms-of-service_en.md` | Terms of Service (English) |
 
-各ファイル先頭の `[運営者名]` `[連絡先]` および利用規約の準拠法・管轄を、公開前に記入する。
+運営者・連絡先は各文書に記載済み。変更時は各ファイルを更新する。
 
 ## App Store Connect の「プライバシーポリシー URL」
 

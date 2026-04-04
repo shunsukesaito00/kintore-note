@@ -6,8 +6,8 @@
 
 This policy describes how the mobile application "Kintore" (the "App") handles information.
 
-**Operator:** [Legal name or developer name]  
-**Contact:** [Support email address]
+**Operator:** shunsuke.saiito  
+**Contact:** infomationshunsuke@gmail.com
 
 ## 2. Categories of Information
 
@@ -81,4 +81,4 @@ Questions about this policy may be sent to the contact email above.
 
 ---
 
-*This document is a template aligned with the App's typical architecture. Adjust to actual practices and obtain legal review if necessary.*
+*This policy may be updated when the App changes.*

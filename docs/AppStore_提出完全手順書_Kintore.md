@@ -44,7 +44,7 @@
 
 | App Store Connect 上の見出し・欄名（目安） | 何を入れるか | Kintore での例 |
 |------------------------------------------|-------------|----------------|
-| **プライバシーポリシー** / **Privacy Policy URL**（アプリ情報側） | プライバシーポリシー全文が載った **HTTPS のページ URL**。GitHub Pages や自サイトなど **独自に公開したもの** | `https://（公開したポリシーページのドメイン）/…` ※未準備なら先にページを用意する |
+| **プライバシーポリシー** / **Privacy Policy URL**（アプリ情報側） | プライバシーポリシー全文が載った **HTTPS のページ URL** | リポジトリ同梱の Markdown をそのまま使う例: `https://github.com/shunsukesaito00/kintore/blob/main/docs/legal/privacy-policy_ja.md`（英語は `privacy-policy_en.md`）。詳細は [`docs/legal/README.md`](../legal/README.md) |
 | **サポート URL** / **Support URL**（ストア用メタデータ側） | 問い合わせ・FAQ・Issue 一覧など **ユーザーが到達できるサポート先** | `https://github.com/shunsukesaito00/kintore/issues` |
 | **マーケティング URL**（任意） / **Marketing URL** | 公式サイト・ランディングページなど **任意** | 無ければ空欄可。ある場合は `https://…` |
 

@@ -8,7 +8,7 @@ SwiftUI / SwiftData の iOS アプリ。Watch 拡張・Widget 同梱。
 
 ## サポート
 
-- **App Store / ユーザー向け**: [サポートページ](https://shunsukesaito00.github.io/kintore/support/)（[公開手順](docs/support/README.md)）
+- **App Store / ユーザー向け**: [サポートページ](https://shunsukesaito00.github.io/kintore-note/support/)（[公開手順](docs/support/README.md)）
 - [GitHub Issues](https://github.com/shunsukesaito00/kintore-note/issues)（テンプレート: `.github/ISSUE_TEMPLATE/`）
 - 詳細: [`SUPPORT.md`](SUPPORT.md)
 

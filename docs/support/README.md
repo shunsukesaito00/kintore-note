@@ -2,13 +2,11 @@
 
 `index.html` は App Store Connect の **サポート URL**（ガイドライン 1.5）向けです。
 
-## 公開 URL（リポジトリ名が `kintore` の場合）
+## 公開 URL（リポジトリ名 `kintore-note`）
 
 ```
-https://shunsukesaito00.github.io/kintore/support/
+https://shunsukesaito00.github.io/kintore-note/support/
 ```
-
-リポジトリを `kintore-note` にリネームしている場合は、ホスト名のパスが変わります（例: `https://shunsukesaito00.github.io/kintore-note/support/`）。
 
 ## GitHub で Pages を有効化（初回のみ）
 

@@ -34,7 +34,7 @@ App Store Connect 上の作業です。リポジトリのコード変更は不�
 ## Guideline 1.5 — サポート URL
 
 - [ ] リポジトリで **GitHub Pages** を有効化（**Settings → Pages** → ソース: **`/docs`**）。手順: [support/README.md](./support/README.md)
-- [ ] ブラウザで `https://shunsukesaito00.github.io/kintore/support/` が表示されることを確認
+- [ ] ブラウザで `https://shunsukesaito00.github.io/kintore-note/support/` が表示されることを確認
 - [ ] **App Store Connect** → アプリ情報 / バージョンの **Support URL** を上記に変更（Issue 一覧の URL のみは不可のため）
 - [ ] 審査メモに「サポート URL をユーザー向けページに更新」と一言添える（任意）
 

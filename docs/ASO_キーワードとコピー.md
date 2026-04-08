@@ -27,7 +27,7 @@ App Store Connect の **プロモーション用テキスト / サブタイト�
 | 用途（Connect の欄名の目安） | 貼り付ける URL（1 行コピー用） |
 |------------------------------|--------------------------------|
 | **プライバシーポリシー** / Privacy Policy URL | `https://github.com/shunsukesaito00/kintore-note/blob/main/docs/legal/privacy-policy_ja.md` |
-| **サポート URL** / Support URL | `https://shunsukesaito00.github.io/kintore/support/`（[公開手順](support/README.md)） |
+| **サポート URL** / Support URL | `https://shunsukesaito00.github.io/kintore-note/support/`（[公開手順](support/README.md)） |
 | **マーケティング URL**（任意）/ Marketing URL | `https://github.com/shunsukesaito00/kintore-note`（公式ページが無い場合の例。**README がランディング代わり**。不要なら空欄可） |
 
 ### 英語ローカライズ・審査用の別 URL

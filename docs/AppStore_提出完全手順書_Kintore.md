@@ -14,14 +14,14 @@
 | レビューガイドライン | https://developer.apple.com/jp/app-store/review/guidelines/ |
 | App Store Connect ヘルプ | https://developer.apple.com/help/app-store-connect/ |
 | AdMob iOS プライバシー（参考） | https://developers.google.com/admob/ios/privacy |
-| **サポート（ユーザー向けページ）** | `https://shunsukesaito00.github.io/kintore/support/`（[公開手順](support/README.md)・GitHub Pages 要設定） |
+| **サポート（ユーザー向けページ）** | `https://shunsukesaito00.github.io/kintore-note/support/`（[公開手順](support/README.md)・GitHub Pages 要設定） |
 | バグ報告・Issue（サポートページからリンク） | https://github.com/shunsukesaito00/kintore-note/issues |
 
 **App Store Connect 上で別途用意する HTTPS URL**
 
 - **プライバシーポリシー**（必須）— 公開済みの独自 URL
 - **マーケティング URL**（任意）
-- **サポート URL** — **ガイドライン 1.5**: Issue 一覧だけの URL は不十分な場合がある。FAQ・問い合わせ方法が載ったページを推奨: `https://shunsukesaito00.github.io/kintore/support/`
+- **サポート URL** — **ガイドライン 1.5**: Issue 一覧だけの URL は不十分な場合がある。FAQ・問い合わせ方法が載ったページを推奨: `https://shunsukesaito00.github.io/kintore-note/support/`
 
 ---
 
@@ -46,7 +46,7 @@
 | App Store Connect 上の見出し・欄名（目安） | 何を入れるか | Kintore Note での例 |
 |------------------------------------------|-------------|----------------|
 | **プライバシーポリシー** / **Privacy Policy URL**（アプリ情報側） | プライバシーポリシー全文が載った **HTTPS のページ URL** | リポジトリ同梱の Markdown をそのまま使う例: `https://github.com/shunsukesaito00/kintore-note/blob/main/docs/legal/privacy-policy_ja.md`（英語は `privacy-policy_en.md`）。詳細は [`docs/legal/README.md`](../legal/README.md) |
-| **サポート URL** / **Support URL**（ストア用メタデータ側） | 問い合わせ・FAQ・Issue 一覧など **ユーザーが到達できるサポート先** | `https://shunsukesaito00.github.io/kintore/support/`（[公開手順](support/README.md)） |
+| **サポート URL** / **Support URL**（ストア用メタデータ側） | 問い合わせ・FAQ・Issue 一覧など **ユーザーが到達できるサポート先** | `https://shunsukesaito00.github.io/kintore-note/support/`（[公開手順](support/README.md)） |
 | **マーケティング URL**（任意） / **Marketing URL** | 公式サイト・ランディングページなど **任意** | 無ければ空欄可。ある場合は `https://…` |
 
 ### URL を入れない欄（混同しやすい所）
@@ -216,7 +216,7 @@ Kintore Note は、筋トレ・ワークアウトの記録を続けやすくす�
 
 【分析】主要イベントは端末内 os.Logger。外部アナリティクス SDK の送信はリリース構成による。
 
-【サポート URL】https://shunsukesaito00.github.io/kintore/support/ （FAQ・問い合わせ方法・GitHub Issues へのリンク）
+【サポート URL】https://shunsukesaito00.github.io/kintore-note/support/ （FAQ・問い合わせ方法・GitHub Issues へのリンク）
 ```
 
 ---

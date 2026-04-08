@@ -22,7 +22,7 @@
 
 App Store Connect 向け（FAQ・問い合わせ方法を記載したページ）:
 
-`https://shunsukesaito00.github.io/kintore/support/`
+`https://shunsukesaito00.github.io/kintore-note/support/`
 
 GitHub Pages で `docs` を公開する手順は [`docs/support/README.md`](../support/README.md) を参照。
 

@@ -4,7 +4,7 @@
 
 ## 1. Scope
 
-These terms govern use of the mobile application “Kintore” (the “App”). By using the App, the user agrees to these terms.
+These terms govern use of the mobile application “Kintore Note” (the “App”). By using the App, the user agrees to these terms.
 
 **Operator:** shunsuke.saiito  
 **Contact:** infomationshunsuke@gmail.com

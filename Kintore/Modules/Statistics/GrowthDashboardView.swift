@@ -15,9 +15,10 @@ enum GrowthTab: String, CaseIterable {
     }
 }
 
-private struct IdentifiableString: Identifiable {
+private struct GrowthSharePayload: Identifiable {
     let id = UUID()
-    let value: String
+    let viewModel: StatisticsViewModel
+    let weightUnit: String
 }
 
 struct GrowthDashboardView: View {
@@ -26,8 +27,7 @@ struct GrowthDashboardView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var viewModel: StatisticsViewModel?
     @State private var selectedTab: GrowthTab = .overview
-    @State private var shareText: IdentifiableString?
-    private let premium = PremiumService.shared
+    @State private var growthSharePayload: GrowthSharePayload?
 
     var body: some View {
         Group {
@@ -40,12 +40,14 @@ struct GrowthDashboardView: View {
             }
         }
         .navigationTitle(String(localized: "nav_statistics_title"))
-        .navigationBarTitleDisplayMode(.large)
+        .navigationBarTitleDisplayMode(.inline)
         .appTabRootChrome()
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    shareText = IdentifiableString(value: buildShareText())
+                    if let vm = viewModel {
+                        growthSharePayload = GrowthSharePayload(viewModel: vm, weightUnit: weightUnit)
+                    }
                 } label: {
                     Image(systemName: "square.and.arrow.up")
                         .font(.body.weight(.medium))
@@ -55,29 +57,25 @@ struct GrowthDashboardView: View {
                 .accessibilityHint(String(localized: "growth_share_summary_a11y_hint"))
             }
         }
-        .sheet(item: $shareText) { item in
-            ShareSheet(activityItems: [item.value], onDismiss: { shareText = nil })
+        .sheet(item: $growthSharePayload) { payload in
+            GrowthSharePreviewSheet(
+                viewModel: payload.viewModel,
+                weightUnit: payload.weightUnit,
+                onDismiss: { growthSharePayload = nil }
+            )
         }
         .onAppear {
             AnalyticsEventService.log(.statisticsScreenViewed)
             if viewModel != nil {
-                viewModel?.load(modelContext: modelContext, isPremium: premium.isPremium)
+                viewModel?.load(modelContext: modelContext)
             }
         }
-        .onChange(of: premium.isPremium) { _, _ in
-            viewModel?.load(modelContext: modelContext, isPremium: premium.isPremium)
-        }
-    }
-
-    private func buildShareText() -> String {
-        guard let vm = viewModel else { return "" }
-        return ShareCardComposer.growthSummaryText(viewModel: vm, weightUnit: weightUnit)
     }
 
     private func createViewModelIfNeeded() {
         guard viewModel == nil else { return }
         viewModel = StatisticsViewModel()
-        viewModel?.load(modelContext: modelContext, isPremium: premium.isPremium)
+        viewModel?.load(modelContext: modelContext)
     }
 
     @ViewBuilder

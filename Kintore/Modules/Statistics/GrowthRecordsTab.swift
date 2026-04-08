@@ -21,13 +21,9 @@ struct GrowthRecordsTab: View {
     @Environment(\.modelContext) private var modelContext
     @State private var selectedBodyPart: String = "胸"
     @State private var bodyPartVM = BodyPartGrowthViewModel()
-    @State private var showPremiumSheet = false
     @State private var showVolumeChart = false
-    private let premium = PremiumService.shared
 
-    private var frequencyWeekCount: Int {
-        premium.isPremium ? 12 : 5
-    }
+    private let frequencyWeekCount: Int = 12
 
     var body: some View {
         ScrollView {
@@ -35,7 +31,6 @@ struct GrowthRecordsTab: View {
                 globalSummarySection
                 bodyPartDrilldownSection
                 recordsSection
-                premiumFooter
             }
             .padding(.horizontal, AppTheme.spacingLG)
             .padding(.vertical, AppTheme.spacingMD)
@@ -43,13 +38,6 @@ struct GrowthRecordsTab: View {
         .background(AppTheme.appBackground)
         .onAppear { loadBodyPartData() }
         .onChange(of: selectedBodyPart) { _, _ in loadBodyPartData() }
-        .onChange(of: premium.isPremium) { _, _ in loadBodyPartData() }
-        .sheet(isPresented: $showPremiumSheet) {
-            NavigationStack {
-                PremiumCTAView(analyticsSource: "growth_records_tab")
-            }
-            .standardSheetChrome()
-        }
     }
 
     private func loadBodyPartData() {
@@ -482,26 +470,4 @@ struct GrowthRecordsTab: View {
         }
     }
 
-    // MARK: - Premium Footer
-
-    private var premiumFooter: some View {
-        Group {
-            if viewModel.graphsLimitedToOneMonth {
-                Button {
-                    showPremiumSheet = true
-                } label: {
-                    HStack(spacing: 4) {
-                        Image(systemName: "chart.line.uptrend.xyaxis")
-                            .font(.caption)
-                        Text(String(localized: "growth_records_see_all_premium"))
-                            .font(AppTheme.captionTypographyFont)
-                    }
-                    .foregroundStyle(AppTheme.accent)
-                    .padding(.vertical, AppTheme.spacingSM)
-                    .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.plain)
-            }
-        }
-    }
 }

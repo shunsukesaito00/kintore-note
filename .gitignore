@@ -36,3 +36,6 @@ Pods/
 # Local / IDE
 .cursor/
 test_write.txt
+
+# XcodeGen ローカル署名（Team ID を含む。リポジトリに含めない）
+project.local.yml

@@ -53,17 +53,10 @@ struct GrowthExerciseTab: View {
     @State private var selectedExerciseId: UUID?
     @State private var selectedPeriod: ExerciseTrendPeriod = .sixMonths
     @State private var chartSelectedDate: Date?
-    @State private var showPremiumSheet = false
 
     @State private var strengthMetric: StrengthMetric = .maxWeight
     @State private var timeMetric: TimeMetric = .totalTime
     @State private var cardioMetric: CardioMetric = .distance
-
-    private let premium = PremiumService.shared
-
-    private var freePeriods: [ExerciseTrendPeriod] {
-        [.oneMonth, .threeMonths]
-    }
 
     var body: some View {
         ScrollView {
@@ -82,18 +75,6 @@ struct GrowthExerciseTab: View {
         .onAppear { syncAndLoad() }
         .onChange(of: selectedExerciseId) { _, _ in loadTrend() }
         .onChange(of: selectedPeriod) { _, _ in loadTrend() }
-        .onChange(of: premium.isPremium) { _, isPremium in
-            if !isPremium && !freePeriods.contains(selectedPeriod) {
-                selectedPeriod = .oneMonth
-            }
-            loadTrend()
-        }
-        .sheet(isPresented: $showPremiumSheet) {
-            NavigationStack {
-                PremiumCTAView(analyticsSource: "growth_exercise_tab")
-            }
-            .standardSheetChrome()
-        }
     }
 
     // MARK: - Exercise Header
@@ -173,24 +154,15 @@ struct GrowthExerciseTab: View {
     private var periodPicker: some View {
         HStack(spacing: 0) {
             ForEach(ExerciseTrendPeriod.allCases, id: \.self) { period in
-                let isLocked = !premium.isPremium && !freePeriods.contains(period)
                 let isSelected = selectedPeriod == period
                 Button {
-                    if isLocked {
-                        showPremiumSheet = true
-                    } else {
-                        selectedPeriod = period
-                    }
+                    selectedPeriod = period
                 } label: {
                     HStack(spacing: 3) {
-                        if isLocked {
-                            Image(systemName: "lock.fill")
-                                .font(.caption2)
-                        }
                         Text(period.displayName)
                             .font(AppTheme.captionTypographyFont)
                     }
-                    .foregroundStyle(isSelected ? .white : (isLocked ? AppTheme.tertiaryText : AppTheme.secondaryText))
+                    .foregroundStyle(isSelected ? .white : AppTheme.secondaryText)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 7)
                     .frame(maxWidth: .infinity)

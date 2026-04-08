@@ -4,11 +4,6 @@ import SwiftUI
 import SwiftData
 import UIKit
 
-private struct IdentifiableShareText: Identifiable {
-    let id = UUID()
-    let text: String
-}
-
 private struct ShareDraft: Identifiable {
     let id = UUID()
     let kind: String
@@ -33,11 +28,9 @@ struct SessionDetailView: View {
     @State private var activeSessionId: UUID
     @State private var viewModel = SessionDetailViewModel()
     @State private var repeatDraft: WorkoutSessionDraft?
-    @State private var sharePayload: IdentifiableShareText?
     @State private var shareDraft: ShareDraft?
     @State private var exportFileURL: URL?
     @State private var shareImagePayload: IdentifiableShareImage?
-    private let premium = PremiumService.shared
 
     init(sessionId: UUID) {
         _activeSessionId = State(initialValue: sessionId)
@@ -70,62 +63,50 @@ struct SessionDetailView: View {
                         }
                         .accessibilityLabel(String(localized: "session_repeat_record"))
 
-                        Group {
-                            if PremiumService.shared.hasAccess(to: .shareCards) {
-                                Menu {
-                                    if premium.isPremium {
-                                        Button {
-                                            exportSessionCSV(session: s)
-                                        } label: {
-                                            Label(String(localized: "export_csv_session"), systemImage: "doc.plaintext")
-                                        }
-                                        Divider()
-                                    }
-                                    Button(String(localized: "session_share_session_card")) {
-                                        shareDraft = ShareDraft(kind: "session", text: ShareCardComposer.sessionCardText(session: s, weightUnit: weightUnit))
-                                    }
-                                    Button(String(localized: "session_share_pr_card")) {
-                                        shareDraft = ShareDraft(kind: "pr", text: ShareCardComposer.prCardText(session: s, weightUnit: weightUnit))
-                                    }
-                                    Button(String(localized: "session_share_monthly_report")) {
-                                        shareDraft = ShareDraft(
-                                            kind: "monthly",
-                                            text: ShareCardComposer.monthlyCardText(
-                                                modelContext: modelContext,
-                                                monthDate: s.startedAt,
-                                                weightUnit: weightUnit
-                                            )
-                                        )
-                                    }
-                                    Divider()
-                                    Button {
-                                        presentShareCardImage(text: ShareCardComposer.sessionCardText(session: s, weightUnit: weightUnit), analyticsKind: "session_image")
-                                    } label: {
-                                        Label(String(localized: "session_share_session_card_image"), systemImage: "photo")
-                                    }
-                                    Button {
-                                        presentShareCardImage(text: ShareCardComposer.prCardText(session: s, weightUnit: weightUnit), analyticsKind: "pr_image")
-                                    } label: {
-                                        Label(String(localized: "session_share_pr_card_image"), systemImage: "photo")
-                                    }
-                                    Button {
-                                        presentShareCardImage(
-                                            text: ShareCardComposer.monthlyCardText(modelContext: modelContext, monthDate: s.startedAt, weightUnit: weightUnit),
-                                            analyticsKind: "monthly_image"
-                                        )
-                                    } label: {
-                                        Label(String(localized: "session_share_monthly_report_image"), systemImage: "photo")
-                                    }
-                                } label: {
-                                    Image(systemName: "square.and.arrow.up")
-                                }
-                            } else {
-                                NavigationLink {
-                                    PremiumCTAView(analyticsSource: "session_share_cards")
-                                } label: {
-                                    Image(systemName: "lock.square.stack")
-                                }
+                        Menu {
+                            Button {
+                                exportSessionCSV(session: s)
+                            } label: {
+                                Label(String(localized: "export_csv_session"), systemImage: "doc.plaintext")
                             }
+                            Divider()
+                            Button(String(localized: "session_share_session_card")) {
+                                shareDraft = ShareDraft(kind: "session", text: ShareCardComposer.sessionCardText(session: s, weightUnit: weightUnit))
+                            }
+                            Button(String(localized: "session_share_pr_card")) {
+                                shareDraft = ShareDraft(kind: "pr", text: ShareCardComposer.prCardText(session: s, weightUnit: weightUnit))
+                            }
+                            Button(String(localized: "session_share_monthly_report")) {
+                                shareDraft = ShareDraft(
+                                    kind: "monthly",
+                                    text: ShareCardComposer.monthlyCardText(
+                                        modelContext: modelContext,
+                                        monthDate: s.startedAt,
+                                        weightUnit: weightUnit
+                                    )
+                                )
+                            }
+                            Divider()
+                            Button {
+                                presentShareCardImage(text: ShareCardComposer.sessionCardText(session: s, weightUnit: weightUnit), analyticsKind: "session_image")
+                            } label: {
+                                Label(String(localized: "session_share_session_card_image"), systemImage: "photo")
+                            }
+                            Button {
+                                presentShareCardImage(text: ShareCardComposer.prCardText(session: s, weightUnit: weightUnit), analyticsKind: "pr_image")
+                            } label: {
+                                Label(String(localized: "session_share_pr_card_image"), systemImage: "photo")
+                            }
+                            Button {
+                                presentShareCardImage(
+                                    text: ShareCardComposer.monthlyCardText(modelContext: modelContext, monthDate: s.startedAt, weightUnit: weightUnit),
+                                    analyticsKind: "monthly_image"
+                                )
+                            } label: {
+                                Label(String(localized: "session_share_monthly_report_image"), systemImage: "photo")
+                            }
+                        } label: {
+                            Image(systemName: "square.and.arrow.up")
                         }
                         .accessibilityLabel(String(localized: "session_share_a11y_menu"))
                     }
@@ -147,48 +128,18 @@ struct SessionDetailView: View {
         .onChange(of: activeSessionId) { _, _ in
             loadSession()
         }
-        .sheet(item: $sharePayload) { payload in
-            ShareSheet(activityItems: [payload.text], onDismiss: { sharePayload = nil })
-        }
         .sheet(item: $shareDraft) { draft in
-            NavigationStack {
-                VStack(alignment: .leading, spacing: 12) {
-                    Text(String(localized: "session_share_preview_title"))
-                        .font(AppTheme.bodySemiboldFont)
-                    ScrollView {
-                        Text(draft.text)
-                            .font(AppTheme.bodyTypographyFont)
-                            .foregroundStyle(AppTheme.primaryText)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(AppTheme.spacingMD)
-                            .background(AppTheme.memoInputCellFill)
-                            .clipShape(RoundedRectangle(cornerRadius: AppTheme.cardCornerRadius))
-                    }
-                    Button {
-                        AnalyticsEventService.log(.shareCardShared(kind: draft.kind, source: "session_detail", screen: "history_detail", paywallState: "premium"))
-                        sharePayload = IdentifiableShareText(text: draft.text)
-                        shareDraft = nil
-                    } label: {
-                        Text(String(localized: "session_share_confirm"))
-                            .font(AppTheme.buttonLabelFont)
-                            .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity)
-                            .frame(minHeight: AppTheme.touchTargetPrimary)
-                            .background(AppTheme.accent)
-                            .clipShape(RoundedRectangle(cornerRadius: AppTheme.buttonCornerRadius))
-                    }
-                    .buttonStyle(.plain)
-                }
-                .padding(AppTheme.spacingLG)
-                .navigationTitle(String(localized: "session_share_nav_title"))
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button(String(localized: "common_close")) { shareDraft = nil }
-                    }
-                }
+            if let s = viewModel.session {
+                SessionSharePreviewSheet(
+                    shareKind: draft.kind,
+                    shareText: draft.text,
+                    session: s,
+                    summary: viewModel.summary,
+                    weightUnit: weightUnit,
+                    modelContext: modelContext,
+                    onDismiss: { shareDraft = nil }
+                )
             }
-            .standardSheetChrome()
         }
         .sheet(item: Binding(
             get: { exportFileURL.map { IdentifiableURL(url: $0) } },

@@ -3,6 +3,9 @@
 
 import SwiftUI
 import SwiftData
+#if os(iOS)
+import GoogleMobileAds
+#endif
 
 private let usedInMemoryStoreUserDefaultsKey = "kintore.bootstrap.inMemoryStoreDueToLoadFailure"
 
@@ -28,6 +31,7 @@ struct KintoreApp: App {
             TreadmillCardioExercisesSeed.upsertIfNeeded(modelContext: context)
             DefaultExercisesSeed.upsertMissingPresets(modelContext: context)
             AppBootstrapper.runIfNeeded(modelContext: context)
+            try? AppStoreScreenshotDemoData.runLegacyCleanupIfNeeded(modelContext: context)
             #if os(iOS)
             performIOSStartupSideEffects(modelContext: context)
             #endif
@@ -42,6 +46,7 @@ struct KintoreApp: App {
                 TreadmillCardioExercisesSeed.upsertIfNeeded(modelContext: context)
                 DefaultExercisesSeed.upsertMissingPresets(modelContext: context)
                 AppBootstrapper.runIfNeeded(modelContext: context)
+                try? AppStoreScreenshotDemoData.runLegacyCleanupIfNeeded(modelContext: context)
                 #if os(iOS)
                 performIOSStartupSideEffects(modelContext: context)
                 #endif
@@ -61,6 +66,7 @@ struct KintoreApp: App {
         Task {
             await PremiumService.shared.refresh()
         }
+        MobileAds.shared.start(completionHandler: nil)
     }
     #endif
 

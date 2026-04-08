@@ -7,7 +7,7 @@ import SwiftData
 import WidgetKit
 #endif
 
-private let appGroupId = "group.com.kintore.app"
+private let appGroupId = "group.com.shunsukesaito.kintore"
 private let weekCountKey = "widget.weekCount"
 private let latestPRKey = "widget.latestPR"
 private let streakWeeksKey = "widget.streakWeeks"

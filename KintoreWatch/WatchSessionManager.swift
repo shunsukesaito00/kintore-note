@@ -19,7 +19,30 @@ final class WatchSessionManager: NSObject {
         super.init()
     }
 
+#if DEBUG
+    /// スクリーンショット用（シミュレーター）。`Release` では未定義のため参照しないこと。
+    private static var isDebugScreenshotPremiumMode: Bool {
+        ProcessInfo.processInfo.arguments.contains("-ScreenshotPremium")
+            || ProcessInfo.processInfo.environment["SCREENSHOT_PREMIUM"] == "1"
+    }
+#endif
+
     func activate() {
+        #if DEBUG
+        // シミュレーターでスクリーンショット用: Scheme の「引数を渡す」に `-ScreenshotPremium` を追加（課金なしでプレミアム UI）。Release では無効。
+        if Self.isDebugScreenshotPremiumMode {
+            let demoPR = String(localized: "watch_screenshot_demo_pr", bundle: .main)
+            Task { @MainActor in
+                WatchSessionManager.shared.applyReceivedValues(
+                    rest: 0,
+                    exercise: nil,
+                    premium: true,
+                    pr: demoPR
+                )
+            }
+            return
+        }
+        #endif
         guard WCSession.isSupported() else { return }
         let s = WCSession.default
         s.delegate = self

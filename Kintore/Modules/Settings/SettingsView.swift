@@ -35,9 +35,6 @@ struct SettingsView: View {
     @State private var weeklySummaryOn = RetentionNotificationService.isWeeklySummaryEnabled
     @State private var notificationAuthStatus: UNAuthorizationStatus = .notDetermined
     @State private var suppressNotificationToggleHandlers = false
-    @State private var showAppStoreDemoDataOffConfirm = false
-    @State private var appStoreDemoDataError: String?
-    @State private var showAppStoreDemoDataErrorAlert = false
 
     var body: some View {
         Form {
@@ -79,16 +76,9 @@ struct SettingsView: View {
             } header: {
                 Text(String(localized: "settings_section_premium"))
             } footer: {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(String(localized: "settings_free_features"))
-                    Text(PremiumService.freeFeatureList.map { "・\($0)" }.joined(separator: "\n"))
-                        .foregroundStyle(AppTheme.secondaryText)
-                    Text(String(localized: "settings_premium_features"))
-                        .padding(.top, 4)
-                    Text(PremiumService.premiumFeatureList.map { "・\($0)" }.joined(separator: "\n"))
-                        .foregroundStyle(AppTheme.secondaryText)
-                }
-                .font(AppTheme.captionTypographyFont)
+                Text(String(localized: "settings_premium_footer_ads_only"))
+                    .font(AppTheme.captionTypographyFont)
+                    .foregroundStyle(AppTheme.secondaryText)
             }
 
             Section {
@@ -226,11 +216,9 @@ struct SettingsView: View {
             }
 
             Section {
-                if premium.isPremium {
-                    Label(String(localized: "settings_icloud_backup"), systemImage: "icloud.fill")
-                        .foregroundStyle(AppTheme.accent)
-                        .accessibilityLabel(String(localized: "settings_icloud_backup"))
-                }
+                Label(String(localized: "settings_icloud_backup"), systemImage: "icloud.fill")
+                    .foregroundStyle(AppTheme.accent)
+                    .accessibilityLabel(String(localized: "settings_icloud_backup"))
                 HStack {
                     Text(String(localized: "settings_data_records"))
                     Spacer()
@@ -238,52 +226,19 @@ struct SettingsView: View {
                         .foregroundStyle(.secondary)
                 }
                 Button {
-                    if premium.isPremium {
-                        exportToCSV()
-                    }
+                    exportToCSV()
                 } label: {
                     Label(String(localized: "settings_csv_export_all"), systemImage: "square.and.arrow.up")
                 }
-                .disabled(!premium.isPremium)
                 Button {
-                    if premium.isPremium {
-                        showWorkoutRangeExportSheet = true
-                    }
+                    showWorkoutRangeExportSheet = true
                 } label: {
                     Label(String(localized: "settings_csv_export_range"), systemImage: "calendar.badge.clock")
                 }
-                .disabled(!premium.isPremium)
             } header: {
                 Text(String(localized: "settings_section_data"))
             } footer: {
                 dataSectionFooter
-            }
-
-            Section {
-                Toggle(isOn: Binding(
-                    get: { AppStoreScreenshotDemoData.isEnabled },
-                    set: { newValue in
-                        if newValue {
-                            do {
-                                try AppStoreScreenshotDemoData.turnOn(modelContext: modelContext)
-                                refreshDataCount()
-                                loadPreference()
-                            } catch {
-                                appStoreDemoDataError = error.localizedDescription
-                                showAppStoreDemoDataErrorAlert = true
-                            }
-                        } else {
-                            showAppStoreDemoDataOffConfirm = true
-                        }
-                    }
-                )) {
-                    Text(String(localized: "settings_app_store_demo_toggle"))
-                }
-            } header: {
-                Text(String(localized: "settings_app_store_demo_section"))
-            } footer: {
-                Text(String(localized: "settings_app_store_demo_footer"))
-                    .font(AppTheme.captionTypographyFont)
             }
 
             Section {
@@ -337,26 +292,6 @@ struct SettingsView: View {
             }
             .environment(\.modelContext, modelContext)
             .standardSheetChrome()
-        }
-        .alert(String(localized: "settings_app_store_demo_confirm_off_title"), isPresented: $showAppStoreDemoDataOffConfirm) {
-            Button(String(localized: "common_cancel"), role: .cancel) {}
-            Button(String(localized: "settings_app_store_demo_confirm_off_delete"), role: .destructive) {
-                do {
-                    try AppStoreScreenshotDemoData.turnOff(modelContext: modelContext)
-                    refreshDataCount()
-                    loadPreference()
-                } catch {
-                    appStoreDemoDataError = error.localizedDescription
-                    showAppStoreDemoDataErrorAlert = true
-                }
-            }
-        } message: {
-            Text(String(localized: "settings_app_store_demo_confirm_off_message"))
-        }
-        .alert(String(localized: "settings_app_store_demo_error_title"), isPresented: $showAppStoreDemoDataErrorAlert) {
-            Button(String(localized: "common_ok"), role: .cancel) {}
-        } message: {
-            Text(appStoreDemoDataError ?? "")
         }
     }
 
@@ -493,23 +428,19 @@ struct SettingsView: View {
     private var dataSectionFooter: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(String(localized: "settings_data_footer_offline_core"))
-            if !premium.isPremium {
-                Text(String(localized: "settings_csv_premium_required"))
-            } else {
-                if PremiumService.isCloudSyncRestartPending {
-                    Text(String(localized: "settings_icloud_restart_notice"))
-                        .foregroundStyle(AppTheme.accent)
-                }
-                Text(String(localized: "settings_data_footer_export_info"))
-                Text(String(localized: "settings_data_footer_icloud_sync"))
-                    .foregroundStyle(AppTheme.secondaryText)
-                Text(String(localized: "settings_data_footer_icloud_first_sync"))
-                    .foregroundStyle(AppTheme.secondaryText)
-                Text(String(localized: "settings_data_footer_icloud_network"))
-                    .foregroundStyle(AppTheme.secondaryText)
-                Text(String(localized: "settings_data_footer_conflict"))
-                    .foregroundStyle(AppTheme.secondaryText)
+            if PremiumService.isCloudSyncRestartPending {
+                Text(String(localized: "settings_icloud_restart_notice"))
+                    .foregroundStyle(AppTheme.accent)
             }
+            Text(String(localized: "settings_data_footer_export_info"))
+            Text(String(localized: "settings_data_footer_icloud_sync"))
+                .foregroundStyle(AppTheme.secondaryText)
+            Text(String(localized: "settings_data_footer_icloud_first_sync"))
+                .foregroundStyle(AppTheme.secondaryText)
+            Text(String(localized: "settings_data_footer_icloud_network"))
+                .foregroundStyle(AppTheme.secondaryText)
+            Text(String(localized: "settings_data_footer_conflict"))
+                .foregroundStyle(AppTheme.secondaryText)
         }
         .font(AppTheme.captionTypographyFont)
     }

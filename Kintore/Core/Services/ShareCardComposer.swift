@@ -31,7 +31,8 @@ enum ShareCardComposer {
         return [header, dateLine, exerciseLine, setLine, volumeLine, tagLine].joined(separator: "\n")
     }
 
-    static func prCardText(session: WorkoutSession, weightUnit: String) -> String {
+    /// PR カード共有文のベストセット行（`prCardText` と同一ロジック）。
+    static func prCardBodyLine(session: WorkoutSession, weightUnit: String) -> String {
         let exercises = session.workoutExercises.sorted { $0.orderIndex < $1.orderIndex }
         var bestLine = String(localized: "share_card_no_pr")
         var bestScore: Double = 0
@@ -51,9 +52,14 @@ enum ShareCardComposer {
                 }
             }
         }
+        return bestLine
+    }
+
+    static func prCardText(session: WorkoutSession, weightUnit: String) -> String {
         let header = String(localized: "share_card_pr_title")
+        let bodyLine = prCardBodyLine(session: session, weightUnit: weightUnit)
         let tagLine = String(localized: "share_card_tag_pr")
-        return [header, bestLine, tagLine].joined(separator: "\n")
+        return [header, bodyLine, tagLine].joined(separator: "\n")
     }
 
     static func growthSummaryText(viewModel: StatisticsViewModel, weightUnit: String) -> String {

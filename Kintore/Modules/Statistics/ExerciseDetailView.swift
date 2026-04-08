@@ -33,11 +33,7 @@ struct ExerciseDetailView: View {
     @State private var allExercises: [Exercise] = []
     @State private var currentExerciseId: UUID?
     @State private var currentExerciseName: String = ""
-    @State private var showPremiumSheet = false
     @State private var exportFileURL: URL?
-    private let premium = PremiumService.shared
-
-    private var freePeriods: [ExerciseTrendPeriod] { [.oneMonth, .threeMonths] }
 
     private var periodStart: Date? { selectedPeriod.startDate() }
 
@@ -87,21 +83,12 @@ struct ExerciseDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                if premium.isPremium {
-                    Button {
-                        exportExerciseCSV()
-                    } label: {
-                        Image(systemName: "square.and.arrow.up")
-                    }
-                    .accessibilityLabel(String(localized: "export_csv_exercise_period"))
-                } else {
-                    Button {
-                        showPremiumSheet = true
-                    } label: {
-                        Image(systemName: "lock.square.stack")
-                    }
-                    .accessibilityLabel(String(localized: "export_csv_exercise_period"))
+                Button {
+                    exportExerciseCSV()
+                } label: {
+                    Image(systemName: "square.and.arrow.up")
                 }
+                .accessibilityLabel(String(localized: "export_csv_exercise_period"))
             }
         }
         .background(AppTheme.appBackground)
@@ -113,17 +100,7 @@ struct ExerciseDetailView: View {
             loadAllExercises()
             load()
         }
-        .onChange(of: premium.isPremium) { _, isPremium in
-            if !isPremium && !freePeriods.contains(selectedPeriod) {
-                selectedPeriod = .oneMonth
-            }
-            load()
-        }
         .onChange(of: selectedPeriod) { _, _ in load() }
-        .sheet(isPresented: $showPremiumSheet) {
-            NavigationStack { PremiumCTAView(analyticsSource: "exercise_detail") }
-                .standardSheetChrome()
-        }
         .sheet(item: Binding(
             get: { exportFileURL.map { IdentifiableURL(url: $0) } },
             set: { exportFileURL = $0?.url }
@@ -228,24 +205,15 @@ struct ExerciseDetailView: View {
                 SectionHeaderView(title: String(localized: "exercise_detail_period"))
                 HStack(spacing: 0) {
                     ForEach(ExerciseTrendPeriod.allCases, id: \.self) { period in
-                        let isLocked = !premium.isPremium && !freePeriods.contains(period)
                         let isSelected = selectedPeriod == period
                         Button {
-                            if isLocked {
-                                showPremiumSheet = true
-                            } else {
-                                selectedPeriod = period
-                            }
+                            selectedPeriod = period
                         } label: {
                             HStack(spacing: 3) {
-                                if isLocked {
-                                    Image(systemName: "lock.fill")
-                                        .font(.caption2)
-                                }
                                 Text(period.displayName)
                                     .font(AppTheme.captionTypographyFont)
                             }
-                            .foregroundStyle(isSelected ? .white : (isLocked ? AppTheme.tertiaryText : AppTheme.secondaryText))
+                            .foregroundStyle(isSelected ? .white : AppTheme.secondaryText)
                             .padding(.horizontal, 10)
                             .padding(.vertical, 7)
                             .frame(maxWidth: .infinity)
@@ -863,10 +831,10 @@ struct PremiumCTAView: View {
                 SectionCard {
                     VStack(alignment: .leading, spacing: AppTheme.spacingMD) {
                         SectionHeaderView(title: String(localized: "premium_header"))
-                        featureRow(icon: "chart.line.uptrend.xyaxis", text: String(localized: "premium_feature_graphs"))
-                        featureRow(icon: "icloud.fill", text: String(localized: "premium_feature_icloud"))
-                        featureRow(icon: "applewatch", text: String(localized: "premium_feature_watch"))
-                        featureRow(icon: "square.and.arrow.up", text: String(localized: "premium_feature_csv"))
+                        Text(String(localized: "premium_body_ads_only"))
+                            .font(AppTheme.bodyTypographyFont)
+                            .foregroundStyle(AppTheme.primaryText)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
                 }
                 SectionCard {
@@ -904,18 +872,6 @@ struct PremiumCTAView: View {
         .onAppear {
             AnalyticsEventService.log(.premiumPromoOpened(source: analyticsSource))
             Task { await premium.loadProduct() }
-        }
-    }
-
-    private func featureRow(icon: String, text: String) -> some View {
-        HStack(spacing: AppTheme.spacingSM) {
-            Image(systemName: icon)
-                .font(.body)
-                .foregroundStyle(AppTheme.accent)
-                .frame(width: 28)
-            Text(text)
-                .font(AppTheme.bodyTypographyFont)
-                .foregroundStyle(AppTheme.primaryText)
         }
     }
 }

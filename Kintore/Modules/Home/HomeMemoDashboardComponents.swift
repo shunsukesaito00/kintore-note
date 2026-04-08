@@ -660,7 +660,7 @@ private struct DayLogShareCardView: View {
                     .font(.system(size: 13, weight: .heavy, design: .rounded))
                     .kerning(1.5)
                 Spacer()
-                Text("Kintore")
+                Text(String(localized: "app_display_name"))
                     .font(.system(size: 12, weight: .bold, design: .rounded))
                     .opacity(0.7)
             }
@@ -811,7 +811,7 @@ private struct DayLogShareCardView: View {
     private var footer: some View {
         HStack {
             Spacer()
-            Text("#Kintore")
+            Text(String(localized: "app_hashtag"))
                 .font(.system(size: 11, weight: .semibold, design: .rounded))
                 .foregroundStyle(Color(uiColor: .tertiaryLabel))
         }

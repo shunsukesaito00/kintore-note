@@ -14,7 +14,21 @@
 
     },
     "#Kintore" : {
-
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "#KintoreNote"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "#KintoreNote"
+          }
+        }
+      }
     },
     "%@" : {
 
@@ -367,13 +381,30 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kintore"
+            "value" : "Kintore Note"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kintore"
+            "value" : "Kintore Note"
+          }
+        }
+      }
+    },
+    "app_hashtag" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "#KintoreNote"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "#KintoreNote"
           }
         }
       }
@@ -3795,6 +3826,91 @@
         }
       }
     },
+    "growth_share_button" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share as text"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "テキストで共有"
+          }
+        }
+      }
+    },
+    "growth_share_preview_hero_subtitle" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Same metrics as your Growth overview"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "成長タブの概要と同じ指標です"
+          }
+        }
+      }
+    },
+    "growth_share_preview_hint" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check the summary, then open the share sheet to send."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "内容を確認してから、共有先を選べます。"
+          }
+        }
+      }
+    },
+    "growth_share_preview_metrics_header" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Key numbers"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "主な指標"
+          }
+        }
+      }
+    },
+    "growth_share_preview_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share summary"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "成長サマリーを共有"
+          }
+        }
+      }
+    },
     "growth_share_summary" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -4884,7 +5000,21 @@
       }
     },
     "Kintore" : {
-
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kintore Note"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kintore Note"
+          }
+        }
+      }
     },
     "memo_journal_empty" : {
       "extractionState" : "stale",
@@ -5300,13 +5430,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "RepLog"
+            "value" : "Kintore Note"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "トレログ"
+            "value" : "Kintore Note"
           }
         }
       }
@@ -5419,13 +5549,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kintore"
+            "value" : "Kintore Note"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "キントレ"
+            "value" : "Kintore Note"
           }
         }
       }
@@ -6127,6 +6257,23 @@
         }
       }
     },
+    "premium_body_ads_only" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium removes ads in the app. All training and analysis features are available for free."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プレミアムではアプリ内の広告が表示されなくなります。トレーニング記録や分析など、その他の機能は無料でご利用いただけます。"
+          }
+        }
+      }
+    },
     "premium_feature_csv" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -6201,13 +6348,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Premium features"
+            "value" : "Premium"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "プレミアムでできること"
+            "value" : "プレミアム"
           }
         }
       }
@@ -8167,125 +8314,6 @@
         }
       }
     },
-    "settings_app_store_demo_confirm_off_delete" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Remove"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "削除"
-          }
-        }
-      }
-    },
-    "settings_app_store_demo_confirm_off_message" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sample workouts and demo personal records will be removed. Your previous PRs for those exercises will be restored if they were backed up."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "サンプルのワークアウトとデモ用PRを削除します。バックアップがあれば該当種目のPRを元に戻します。"
-          }
-        }
-      }
-    },
-    "settings_app_store_demo_confirm_off_title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Remove demo data?"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "デモデータを削除しますか？"
-          }
-        }
-      }
-    },
-    "settings_app_store_demo_error_title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Could not update demo data"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "デモデータを更新できませんでした"
-          }
-        }
-      }
-    },
-    "settings_app_store_demo_footer" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inserts sample sessions and PRs for marketing screenshots. Turn off to remove demo data and restore your previous weekly goal and personal records for affected exercises."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ストア用のサンプルセッションとPRを追加します。オフにするとデモデータを削除し、週の目標と対象種目のPRを以前の状態に戻します。"
-          }
-        }
-      }
-    },
-    "settings_app_store_demo_section" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App Store screenshots"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App Store 用スクショ"
-          }
-        }
-      }
-    },
-    "settings_app_store_demo_toggle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Demo workout data"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "デモ用トレーニングデータ"
-          }
-        }
-      }
-    },
     "settings_appearance" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -9425,6 +9453,23 @@
         }
       }
     },
+    "settings_premium_footer_ads_only" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium removes ads in the app. Recording, analytics, iCloud sync, export, and all other features are free."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プレミアムではアプリ内の広告が表示されなくなります。記録・分析・iCloud・エクスポートなど、その他の機能は無料でご利用いただけます。"
+          }
+        }
+      }
+    },
     "settings_purchase_premium" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -10009,13 +10054,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Install the Kintore app on your Apple Watch from the Watch app on iPhone."
+            "value" : "Install Kintore Note on your Apple Watch from the Watch app on iPhone."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "iPhone の Watch アプリから Kintore を Apple Watch にインストールしてください。"
+            "value" : "iPhone の Watch アプリから Kintore Note を Apple Watch にインストールしてください。"
           }
         }
       }
@@ -10383,13 +10428,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "#RepLog #MonthlyReview"
+            "value" : "#KintoreNote #MonthlyReview"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "#RepLog #MonthlyReview"
+            "value" : "#KintoreNote #MonthlyReview"
           }
         }
       }
@@ -10400,13 +10445,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "#RepLog #PR"
+            "value" : "#KintoreNote #PR"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "#RepLog #PR"
+            "value" : "#KintoreNote #PR"
           }
         }
       }
@@ -10417,13 +10462,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "#RepLog"
+            "value" : "#KintoreNote"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "#RepLog"
+            "value" : "#KintoreNote"
           }
         }
       }

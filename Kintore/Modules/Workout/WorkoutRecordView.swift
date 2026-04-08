@@ -232,8 +232,10 @@ struct WorkoutRecordView: View {
                 Button(String(localized: "common_cancel"), role: .cancel) {}
                 Button(String(localized: "workout_save")) {
                     HapticHelper.medium()
-                    vm.saveSession()
                     showEndConfirm = false
+                    WorkoutFinishInterstitialPresenter.shared.runAfterInterstitialIfNeeded {
+                        vm.saveSession()
+                    }
                 }
             } message: {
                 Text(String(localized: "alert_save_message"))

@@ -61,7 +61,7 @@ final class StatisticsViewModel {
     private(set) var chartWeekCount = 12
     private(set) var chartMonthCount = 6
 
-    func load(modelContext: ModelContext, isPremium: Bool) {
+    func load(modelContext: ModelContext) {
         do {
             let stats = WorkoutStatsService(modelContext: modelContext)
             let prService = PersonalRecordService(modelContext: modelContext)
@@ -74,9 +74,9 @@ final class StatisticsViewModel {
             let monthStart = calendar.date(from: calendar.dateComponents([.year, .month], from: now)) ?? now
             let monthEnd = calendar.date(byAdding: .month, value: 1, to: monthStart) ?? now
 
-            graphsLimitedToOneMonth = !isPremium
-            chartWeekCount = isPremium ? 12 : 5
-            chartMonthCount = isPremium ? 6 : 1
+            graphsLimitedToOneMonth = false
+            chartWeekCount = 12
+            chartMonthCount = 6
 
             let settingsRepo = SettingsRepository(modelContext: modelContext)
             weeklyWorkoutGoalSessions = (try? settingsRepo.fetchUserPreference())?.weeklyWorkoutGoalSessions ?? 0
@@ -93,24 +93,11 @@ final class StatisticsViewModel {
                 return (pr, ex.name)
             }
 
-            if isPremium {
-                bodyPartCounts = try stats.bodyPartSessionCounts()
-            } else {
-                let windowStart = calendar.date(byAdding: .month, value: -1, to: now) ?? now
-                bodyPartCounts = try stats.bodyPartSessionCounts(in: (start: windowStart, end: now))
-            }
-            if isPremium {
-                let agg = try stats.bodyPartAggregates(in: nil)
-                bodyPartVolumes = agg.volumes
-                bodyPartSetCounts = agg.setCounts
-                bodyPartRepCounts = agg.repCounts
-            } else {
-                let windowStart = calendar.date(byAdding: .month, value: -1, to: now) ?? now
-                let agg = try stats.bodyPartAggregates(in: (start: windowStart, end: now))
-                bodyPartVolumes = agg.volumes
-                bodyPartSetCounts = agg.setCounts
-                bodyPartRepCounts = agg.repCounts
-            }
+            bodyPartCounts = try stats.bodyPartSessionCounts()
+            let agg = try stats.bodyPartAggregates(in: nil)
+            bodyPartVolumes = agg.volumes
+            bodyPartSetCounts = agg.setCounts
+            bodyPartRepCounts = agg.repCounts
             thisWeekVolumeByPart = try stats.thisWeekVolumeByBodyPart()
             monthlyVolumeByPart = try stats.monthlyVolumeByBodyPart(monthCount: chartMonthCount)
             undertrainedBodyParts = try stats.undertrainedCanonicalBodyParts()

@@ -30,7 +30,6 @@ struct GrowthOverviewTab: View {
     @Environment(\.modelContext) private var modelContext
     @State private var showWeeklyGoalSheet = false
     @State private var selectedChart: OverviewChartKind = .volume
-    private let premium = PremiumService.shared
 
     var body: some View {
         ScrollView {
@@ -48,13 +47,6 @@ struct GrowthOverviewTab: View {
                     monthlyVolumeCard
                 }
                 recentStatsCard
-                if viewModel.graphsLimitedToOneMonth {
-                    Text(String(localized: "growth_stats_free_period_footnote"))
-                        .font(AppTheme.captionTypographyFont)
-                        .foregroundStyle(AppTheme.secondaryText)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.top, AppTheme.spacingXS)
-                }
             }
             .padding(.horizontal, AppTheme.spacingLG)
             .padding(.vertical, AppTheme.spacingMD)
@@ -62,7 +54,7 @@ struct GrowthOverviewTab: View {
         .background(AppTheme.appBackground)
         .sheet(isPresented: $showWeeklyGoalSheet) {
             WeeklyGoalEditorSheet(initialGoal: viewModel.weeklyWorkoutGoalSessions) {
-                viewModel.load(modelContext: modelContext, isPremium: premium.isPremium)
+                viewModel.load(modelContext: modelContext)
             }
             .environment(\.modelContext, modelContext)
             .standardSheetChrome()

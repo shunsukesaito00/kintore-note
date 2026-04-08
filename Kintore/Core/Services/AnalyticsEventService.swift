@@ -28,7 +28,7 @@ enum AnalyticsEvent {
 /// Firebase Analytics を追加する場合は `Analytics.logEvent` をここに追記し、下記の `event` 名を揃える。
 enum AnalyticsEventService {
     private static let logger = Logger(
-        subsystem: Bundle.main.bundleIdentifier ?? "Kintore",
+        subsystem: Bundle.main.bundleIdentifier ?? "KintoreNote",
         category: "Analytics"
     )
 

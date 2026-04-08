@@ -19,7 +19,7 @@ enum ModelContainerFactory {
         BodyMeasurement.self,
     ])
 
-    private static let cloudContainerId = "iCloud.com.kintore.app"
+    private static let cloudContainerId = "iCloud.com.shunsukesaito.kintore"
 
     /// プレミアムで CloudKit を試したがローカルにフォールバックした場合に true（UI で注意表示に使う）
     static var didFallbackFromCloudKitToLocal: Bool {
@@ -27,23 +27,21 @@ enum ModelContainerFactory {
     }
 
     /// アプリ本番用（永続化）。
-    /// - 無料: `cloudKitDatabase: .none`（ローカルのみ。`.automatic` は環境によって CloudKit 読み込み失敗の原因になりうる）
-    /// - プレミアム: まずプライベート CloudKit、失敗時は同じストアを `.none` で開き直し（同期はオフだがデータ参照を優先）
+    /// まずプライベート CloudKit、失敗時はローカルのみ（`.none`）で開き直し。
     static func makeProduction() throws -> ModelContainer {
         UserDefaults.standard.set(false, forKey: "kintore.modelContainer.fallbackFromCloudToLocal")
 
-        var configurations: [ModelConfiguration] = []
-        if PremiumService.cachedIsPremium {
-            configurations.append(configuration(cloudKitDatabase: .private(cloudContainerId)))
-        }
-        configurations.append(configuration(cloudKitDatabase: .none))
+        let configurations: [ModelConfiguration] = [
+            configuration(cloudKitDatabase: .private(cloudContainerId)),
+            configuration(cloudKitDatabase: .none),
+        ]
 
         var lastError: Error?
         var index = 0
         for config in configurations {
             do {
                 let container = try ModelContainer(for: schema, configurations: [config])
-                if PremiumService.cachedIsPremium, index > 0 {
+                if index > 0 {
                     UserDefaults.standard.set(true, forKey: "kintore.modelContainer.fallbackFromCloudToLocal")
                 }
                 return container
@@ -56,7 +54,7 @@ enum ModelContainerFactory {
             index += 1
         }
         throw lastError ?? NSError(
-            domain: "Kintore",
+            domain: "KintoreNote",
             code: 1,
             userInfo: [NSLocalizedDescriptionKey: "ModelContainer を開けませんでした"]
         )

@@ -1,6 +1,6 @@
-# Kintore — App Store 提出手順（参考）
+# Kintore Note — App Store 提出手順（参考）
 
-**Bundle ID:** `com.kintore.app`  
+**Bundle ID:** `com.shunsukesaito.kintore`  
 審査基準・画面は変更される。[App Store レビューガイドライン](https://developer.apple.com/jp/app-store/review/guidelines/)、[App Store Connect ヘルプ](https://developer.apple.com/help/app-store-connect/) を参照。
 
 ---
@@ -14,13 +14,14 @@
 | レビューガイドライン | https://developer.apple.com/jp/app-store/review/guidelines/ |
 | App Store Connect ヘルプ | https://developer.apple.com/help/app-store-connect/ |
 | AdMob iOS プライバシー（参考） | https://developers.google.com/admob/ios/privacy |
-| サポート（Issue 一覧） | https://github.com/shunsukesaito00/kintore/issues |
+| **サポート（ユーザー向けページ）** | `https://shunsukesaito00.github.io/kintore/support/`（[公開手順](support/README.md)・GitHub Pages 要設定） |
+| バグ報告・Issue（サポートページからリンク） | https://github.com/shunsukesaito00/kintore-note/issues |
 
 **App Store Connect 上で別途用意する HTTPS URL**
 
 - **プライバシーポリシー**（必須）— 公開済みの独自 URL
 - **マーケティング URL**（任意）
-- **サポート URL** — 例: `https://github.com/shunsukesaito00/kintore/issues`
+- **サポート URL** — **ガイドライン 1.5**: Issue 一覧だけの URL は不十分な場合がある。FAQ・問い合わせ方法が載ったページを推奨: `https://shunsukesaito00.github.io/kintore/support/`
 
 ---
 
@@ -34,7 +35,7 @@
 
 ### 画面のたどり方（目安）
 
-1. **マイ App** → アプリ **Kintore** を選択  
+1. **マイ App** → アプリ **Kintore Note** を選択  
 2. 左サイドバー **「一般」**（General）→ **「アプリ情報」**（App Information）  
 3. 左サイドバー **「App Store」** → **対象の iOS バージョン**（例: 1.0.0）→ 中央の **「App Store」** タブ（ストア掲載文言の編集画面）
 
@@ -42,17 +43,17 @@
 
 ### URL を入れる欄と中身
 
-| App Store Connect 上の見出し・欄名（目安） | 何を入れるか | Kintore での例 |
+| App Store Connect 上の見出し・欄名（目安） | 何を入れるか | Kintore Note での例 |
 |------------------------------------------|-------------|----------------|
-| **プライバシーポリシー** / **Privacy Policy URL**（アプリ情報側） | プライバシーポリシー全文が載った **HTTPS のページ URL** | リポジトリ同梱の Markdown をそのまま使う例: `https://github.com/shunsukesaito00/kintore/blob/main/docs/legal/privacy-policy_ja.md`（英語は `privacy-policy_en.md`）。詳細は [`docs/legal/README.md`](../legal/README.md) |
-| **サポート URL** / **Support URL**（ストア用メタデータ側） | 問い合わせ・FAQ・Issue 一覧など **ユーザーが到達できるサポート先** | `https://github.com/shunsukesaito00/kintore/issues` |
+| **プライバシーポリシー** / **Privacy Policy URL**（アプリ情報側） | プライバシーポリシー全文が載った **HTTPS のページ URL** | リポジトリ同梱の Markdown をそのまま使う例: `https://github.com/shunsukesaito00/kintore-note/blob/main/docs/legal/privacy-policy_ja.md`（英語は `privacy-policy_en.md`）。詳細は [`docs/legal/README.md`](../legal/README.md) |
+| **サポート URL** / **Support URL**（ストア用メタデータ側） | 問い合わせ・FAQ・Issue 一覧など **ユーザーが到達できるサポート先** | `https://shunsukesaito00.github.io/kintore/support/`（[公開手順](support/README.md)） |
 | **マーケティング URL**（任意） / **Marketing URL** | 公式サイト・ランディングページなど **任意** | 無ければ空欄可。ある場合は `https://…` |
 
 ### URL を入れない欄（混同しやすい所）
 
 | 欄 | 入れるもの |
 |----|-----------|
-| **名前** / **Name** | アプリ名テキスト（例: `Kintore`）。URL ではない |
+| **名前** / **Name** | アプリ名テキスト（例: `Kintore Note`）。URL ではない |
 | **サブタイトル** | 短文。URL ではない |
 | **説明** / **Description** | 紹介文章。URL ではない（文中にリンクを書くことは可能だが、必須のポリシー URL は上記「プライバシーポリシー」欄が正） |
 | **キーワード** | カンマ区切りの単語。URL ではない |
@@ -72,12 +73,12 @@
 
 | 項目 | 内容 |
 |------|------|
-| 表示名 | Kintore |
-| Bundle ID | com.kintore.app |
+| 表示名 | Kintore Note |
+| Bundle ID | com.shunsukesaito.kintore |
 | 対応 OS | iOS 17.0 以降 |
 | デバイス | iPhone |
-| 同梱 | Kintore Watch、Kintore Widget |
-| IAP（非消耗型） | `com.kintore.app.premium` |
+| 同梱 | KintoreWatch（Watch アプリ）、KintoreWidget |
+| IAP（非消耗型） | `com.shunsukesaito.kintore.premium` |
 | 広告 | Google Mobile Ads（Info.plist の GAD ID） |
 | HealthKit | ワークアウト書き込み（設定で ON のとき） |
 | iCloud | CloudKit、App Groups |
@@ -99,14 +100,14 @@
 
 ## 3. Identifiers / Capability
 
-1. [Identifiers](https://developer.apple.com/account/resources/identifiers/list) で `com.kintore.app` を確認。
+1. [Identifiers](https://developer.apple.com/account/resources/identifiers/list) で `com.shunsukesaito.kintore` を確認。
 2. Xcode の Signing & Capabilities と一致: HealthKit、iCloud（CloudKit）、App Groups 等。
 
 ---
 
 ## 4. Xcode リリースビルド
 
-1. Target「Kintore」→ Signing & Capabilities（Team、Bundle ID `com.kintore.app`）。
+1. Target「Kintore」→ Signing & Capabilities（Team、Bundle ID `com.shunsukesaito.kintore`）。
 2. General: Version（例 1.0.0）、Build（提出ごとに増加）。
 3. 実機または「Any iOS Device」で **Product → Archive**。
 4. Organizer → **Distribute App** → App Store Connect → Upload。
@@ -123,18 +124,18 @@ Watch / Widget は同一アーカイブに含まれる。
 | フィールド | 例 |
 |------------|-----|
 | プラットフォーム | iOS |
-| 名前 | Kintore |
+| 名前 | Kintore Note |
 | 主要言語 | 日本語 |
-| Bundle ID | com.kintore.app |
-| SKU | kintore-ios-1（内部用一意） |
-
+| Bundle ID | com.shunsukesaito.kintore |
+| SKU | （内部用一意） |
+kintore-ios-1
 ---
 
 ## 6. アプリ内課金
 
 - 種類: 非消耗型
-- 商品 ID: **`com.kintore.app.premium`**（コードと同一）
-- 表示名・説明・価格・スクリーンショット（審査用）を登録し、バージョンと同じ審査に含める。
+- 商品 ID: **`com.shunsukesaito.kintore.premium`**（コードと同一）
+- 表示名・説明・価格・**App Review 用スクリーンショット**を登録し、**審査に提出**し、**バージョンに関連付け**る（未提出のままだと審査が止まる。詳細は [AppReview 再提出チェックリスト](../AppReview_再提出チェックリスト.md)）。
 
 ---
 
@@ -162,7 +163,7 @@ Watch / Widget は同一アーカイブに含まれる。
 ### 説明文ドラフト
 
 ```text
-Kintore（キントレ）は、筋トレ・ワークアウトの記録を続けやすくするためのiPhoneアプリです。セットごとの重量・回数などを入力し、セッションとして保存できます。
+Kintore Note は、筋トレ・ワークアウトの記録を続けやすくするためのiPhoneアプリです。セットごとの重量・回数などを入力し、セッションとして保存できます。
 
 【主な機能】
 ・ワークアウト記録（セット入力・セッション保存）
@@ -203,7 +204,7 @@ Kintore（キントレ）は、筋トレ・ワークアウトの記録を続け�
 ```text
 【ログイン】アカウント登録不要。
 
-【アプリ内課金】非消耗型「プレミアム」（商品ID: com.kintore.app.premium）。サンドボックスで購入・復元可能。設定から購入画面へ遷移。
+【アプリ内課金】非消耗型「プレミアム」（商品ID: com.shunsukesaito.kintore.premium）。サンドボックスで購入・復元可能。設定から購入画面へ遷移。
 
 【ヘルスケア】設定のトグルで「ワークアウトをヘルスケアに保存」を任意有効化。OFF でも基本操作可。
 
@@ -214,6 +215,8 @@ Kintore（キントレ）は、筋トレ・ワークアウトの記録を続け�
 【ディープリンク】kintore:// をウィジェット等から起動する場合あり。
 
 【分析】主要イベントは端末内 os.Logger。外部アナリティクス SDK の送信はリリース構成による。
+
+【サポート URL】https://shunsukesaito00.github.io/kintore/support/ （FAQ・問い合わせ方法・GitHub Issues へのリンク）
 ```
 
 ---
@@ -254,5 +257,6 @@ Kintore（キントレ）は、筋トレ・ワークアウトの記録を続け�
 |------|------|
 | 2026-04-04 | 初版 |
 | 2026-04-04 | 表現整理・URL 一覧追加 |
+| 2026-04-04 | 審査却下対応: サポート URL（GitHub Pages）、[AppReview 再提出チェックリスト](../AppReview_再提出チェックリスト.md) |
 
 本書は参考資料であり、法的助言ではない。規約・ガイドラインは Apple が更新する。

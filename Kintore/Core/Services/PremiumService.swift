@@ -4,7 +4,7 @@
 import Foundation
 import StoreKit
 
-private let premiumProductId = "com.kintore.app.premium"
+private let premiumProductId = "com.shunsukesaito.kintore.premium"
 private let isPremiumUserDefaultsKey = "kintore.isPremium"
 /// プレミアム昇格後、SwiftData の iCloud ストアを使うには再起動が必要。`true` のとき案内アラートを出す。
 private let needsRestartForCloudSyncKey = "kintore.needsRestartForCloudSync"
@@ -129,38 +129,9 @@ final class PremiumService {
         UserDefaults.standard.bool(forKey: isPremiumUserDefaultsKey)
     }
 
-    /// 無料プランで常時使える機能
-    static let freeFeatureList: [String] = [
-        "基本の記録入力",
-        "履歴の閲覧",
-        "当日セッションの保存"
-    ]
-
-    /// プレミアムで解放する機能（トップセールス計画に合わせた価値訴求）
-    static let premiumFeatureList: [String] = [
-        "高度分析（長期グラフ）",
-        "期間比較レポート",
-        "PR/セッション/月次の共有カード"
-    ]
-
-    // MARK: - 実装との対応（レビュー用・設定の一覧と突き合わせ）
-    //
-    // hasAccess(to:) を直接使うゲート:
-    //   .shareCards → SessionDetailView（共有カード）
-    //
-    // isPremium を別経路で参照（enum の advancedAnalytics / periodComparison / japanGymDatabase は未使用）:
-    //   StatisticsViewModel.load(isPremium:) … グラフの週数・月数・部位集計の期間
-    //   ExerciseDetailView / GrowthExerciseTab … トレンド期間ロック
-    //   GrowthRecordsTab … 表示週数
-    //   SettingsView … CSV / BodyMetrics CSV
-    //   ModelContainerFactory … iCloud コンテナ切替（キャッシュ）
+    /// プレミアムの実利は **広告非表示のみ**。その他の機能は無料で利用可能（`hasAccess` は常に `true`）。
 
     func hasAccess(to feature: Feature) -> Bool {
-        switch feature {
-        case .basicLogging, .historyView:
-            return true
-        case .advancedAnalytics, .periodComparison, .shareCards, .japanGymDatabase:
-            return isPremium
-        }
+        true
     }
 }

@@ -4,7 +4,7 @@
 
 ## 1. Introduction
 
-This policy describes how the mobile application "Kintore" (the "App") handles information.
+This policy describes how the mobile application "Kintore Note" (the "App") handles information.
 
 **Operator:** shunsuke.saiito  
 **Contact:** infomationshunsuke@gmail.com

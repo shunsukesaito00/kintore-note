@@ -165,27 +165,27 @@ enum ExportService {
 
     /// CSV を一時ファイルに書き込み、共有用 URL を返す。ファイル名にバックアップ日時を含める。
     static func writeExportToTempFile(csv: String) -> URL? {
-        writeCSVToTempFile(csv: csv, fileNamePrefix: "RepLog_export")
+        writeCSVToTempFile(csv: csv, fileNamePrefix: "KintoreNote_export")
     }
 
     /// 期間指定エクスポート用ファイル名プレフィックス。
     static func writeRangedSessionsExportToTempFile(csv: String) -> URL? {
-        writeCSVToTempFile(csv: csv, fileNamePrefix: "RepLog_export_range")
+        writeCSVToTempFile(csv: csv, fileNamePrefix: "KintoreNote_export_range")
     }
 
     /// 身体記録 CSV 用の一時ファイル。
     static func writeBodyMeasurementsExportToTempFile(csv: String) -> URL? {
-        writeCSVToTempFile(csv: csv, fileNamePrefix: "RepLog_body")
+        writeCSVToTempFile(csv: csv, fileNamePrefix: "KintoreNote_body")
     }
 
     /// 単一セッション CSV 用。
     static func writeSessionExportToTempFile(csv: String) -> URL? {
-        writeCSVToTempFile(csv: csv, fileNamePrefix: "RepLog_session")
+        writeCSVToTempFile(csv: csv, fileNamePrefix: "KintoreNote_session")
     }
 
     /// 種目 CSV 用。
     static func writeExerciseExportToTempFile(csv: String) -> URL? {
-        writeCSVToTempFile(csv: csv, fileNamePrefix: "RepLog_exercise")
+        writeCSVToTempFile(csv: csv, fileNamePrefix: "KintoreNote_exercise")
     }
 
     private static func writeCSVToTempFile(csv: String, fileNamePrefix: String) -> URL? {

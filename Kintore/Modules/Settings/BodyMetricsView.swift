@@ -23,7 +23,6 @@ struct BodyMetricsView: View {
     @State private var loadError: String?
     @State private var showAddSheet = false
     @State private var exportFileURL: URL?
-    private let premium = PremiumService.shared
 
     var body: some View {
         Group {
@@ -94,11 +93,6 @@ struct BodyMetricsView: View {
                         .onDelete(perform: deleteAt)
                     } header: {
                         Text(String(localized: "body_metrics_history"))
-                    } footer: {
-                        if !premium.isPremium {
-                            Text(String(localized: "body_metrics_csv_premium_required"))
-                                .font(AppTheme.captionTypographyFont)
-                        }
                     }
                 }
                 .listStyle(.insetGrouped)
@@ -111,7 +105,7 @@ struct BodyMetricsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing) {
-                if premium.isPremium, !items.isEmpty {
+                if !items.isEmpty {
                     Button {
                         exportBodyCSV()
                     } label: {
@@ -147,12 +141,10 @@ struct BodyMetricsView: View {
         }
         .onAppear {
             reload()
-            Task { await premium.loadProduct() }
         }
     }
 
     private func exportBodyCSV() {
-        guard premium.isPremium else { return }
         guard let csv = try? ExportService.buildBodyMeasurementsCSV(modelContext: modelContext),
               let url = ExportService.writeBodyMeasurementsExportToTempFile(csv: csv) else { return }
         AnalyticsEventService.log(.csvExported(kind: "body_measurements"))

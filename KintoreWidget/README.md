@@ -10,7 +10,7 @@
 
 2. **App Group を有効化**
    - メインアプリ（Kintore）の Signing & Capabilities で **App Groups** を追加
-   - 識別子: `group.com.kintore.app`
+   - 識別子: `group.com.shunsukesaito.kintore`
    - KintoreWidget ターゲットにも同じ App Groups を追加
 
 3. **既存ファイルに差し替え**

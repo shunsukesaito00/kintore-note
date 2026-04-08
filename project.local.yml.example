@@ -1,0 +1,8 @@
+# リポジトリには `project.local.yml` が同梱されています。
+# そこ（またはこのファイルをコピーして）の DEVELOPMENT_TEAM に、自分の Team ID を入れてください。
+# Team ID: Xcode → Settings → Accounts → チームを選択 → Team ID
+# または https://developer.apple.com/account → Membership
+# 変更後: xcodegen generate
+settings:
+  base:
+    DEVELOPMENT_TEAM: YOUR_TEAM_ID_HERE

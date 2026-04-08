@@ -16,6 +16,7 @@ private struct CompletedSessionItem: Identifiable {
 struct HomeView: View {
     @AppStorage(AppTheme.weightUnitStorageKey) private var weightUnit: String = "kg"
     @Environment(\.modelContext) private var modelContext
+    @Bindable private var premium = PremiumService.shared
     @Binding var openWorkoutAfterOnboarding: Bool
     @State private var viewModel: HomeViewModel?
     @State private var sessionFlowRequest: SessionFlowRequest?
@@ -237,6 +238,12 @@ struct HomeView: View {
                     }
                 }
                 .padding(.horizontal, horizontalPadding)
+
+                if !premium.isPremium {
+                    HomeNativeAdCard()
+                        .padding(.horizontal, horizontalPadding)
+                        .padding(.top, AppTheme.spacingSM)
+                }
             }
             .padding(.top, AppTheme.spacingMD)
             .padding(.bottom, AppTheme.spacingXL)

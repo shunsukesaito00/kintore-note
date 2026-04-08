@@ -72,8 +72,15 @@ struct WorkoutSessionFlowView: View {
                     Button(String(localized: "common_cancel"), role: .cancel) {}
                     Button(String(localized: "workout_save")) {
                         HapticHelper.medium()
-                        vm.saveSession()
                         showEndConfirm = false
+                        let lastExerciseIndex = max(0, vm.draft.exercises.count - 1)
+                        let isFullSessionFinish = vm.draft.exercises.count <= 1
+                            || currentExerciseIndex >= lastExerciseIndex
+                        WorkoutFinishInterstitialPresenter.shared.runAfterInterstitialIfNeeded(
+                            shouldPresentInterstitial: isFullSessionFinish
+                        ) {
+                            vm.saveSession()
+                        }
                     }
                 } message: { Text(String(localized: "alert_save_message")) }
                 .overlay(alignment: .top) { prBanner(vm: vm) }

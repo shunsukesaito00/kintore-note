@@ -1,4 +1,4 @@
-# 法務・ポリシー文書（Kintore）
+# 法務・ポリシー文書（Kintore Note）
 
 | ファイル | 内容 |
 |----------|------|
@@ -13,11 +13,17 @@
 
 リポジトリが公開されている場合、GitHub 上の表示 URL の例:
 
-- 日本語: `https://github.com/shunsukesaito00/kintore/blob/main/docs/legal/privacy-policy_ja.md`
-- 英語: `https://github.com/shunsukesaito00/kintore/blob/main/docs/legal/privacy-policy_en.md`
+- 日本語: `https://github.com/shunsukesaito00/kintore-note/blob/main/docs/legal/privacy-policy_ja.md`
+- 英語: `https://github.com/shunsukesaito00/kintore-note/blob/main/docs/legal/privacy-policy_en.md`
 
 独自ドメインや GitHub Pages で HTML を公開する場合は、その HTTPS URL に差し替える。
 
 ## サポート URL
 
-Issue 一覧: `https://github.com/shunsukesaito00/kintore/issues`
+App Store Connect 向け（FAQ・問い合わせ方法を記載したページ）:
+
+`https://shunsukesaito00.github.io/kintore/support/`
+
+GitHub Pages で `docs` を公開する手順は [`docs/support/README.md`](../support/README.md) を参照。
+
+バグ報告・一覧（上記ページからもリンク）: `https://github.com/shunsukesaito00/kintore-note/issues`

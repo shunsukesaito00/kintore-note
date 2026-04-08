@@ -39,13 +39,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kintore"
+            "value" : "Kintore Note"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "キントレ"
+            "value" : "Kintore Note"
           }
         }
       }
@@ -114,6 +114,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "休憩"
+          }
+        }
+      }
+    },
+    "watch_screenshot_demo_pr" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PR Bench 100 kg × 5"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PR ベンチプレス 100kg × 5"
           }
         }
       }

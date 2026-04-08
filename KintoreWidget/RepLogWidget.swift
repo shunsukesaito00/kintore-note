@@ -1,6 +1,6 @@
 // File: KintoreWidget/RepLogWidget.swift
 // Phase 14: ホーム画面ウィジェット「今週○回」「直近PR」
-// Xcode で Widget Extension ターゲットを追加し、App Group "group.com.kintore.app" を有効にしてください。
+// Xcode で Widget Extension ターゲットを追加し、App Group "group.com.shunsukesaito.kintore" を有効にしてください。
 
 import WidgetKit
 import SwiftUI
@@ -8,7 +8,7 @@ import SwiftUI
 /// Phase 8/9: `AppTheme.accent`（ライト）＝ `WatchBrandColors.accent` と同じ RGB。変更時は3箇所を同期。
 private let widgetAccentForeground = Color(red: 0.29, green: 0.56, blue: 0.85)
 
-private let appGroupId = "group.com.kintore.app"
+private let appGroupId = "group.com.shunsukesaito.kintore"
 private let streakWeeksKey = "widget.streakWeeks"
 
 struct RepLogWidgetEntry: TimelineEntry {

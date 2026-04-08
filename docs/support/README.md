@@ -20,6 +20,8 @@ https://shunsukesaito00.github.io/kintore-note/support/
 
 `docs/.nojekyll` により Jekyll を無効化し、静的 HTML をそのまま配信します。
 
+**push が拒否される場合:** [GitHub PUSH workflow 権限](../GitHub_PUSH_workflow権限.md) を参照（PAT に `workflow` スコープが必要です）。
+
 ### ブランチから直接公開する場合（Actions を使わない）
 
 **Settings** → **Pages** → Source: **Deploy from a branch** → Branch: `main` 等、Folder: **`/docs`**。  

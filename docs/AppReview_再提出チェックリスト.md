@@ -1,6 +1,16 @@
-# App Review 再提出チェックリスト（2.1(b) IAP / 新ビルド）
+# App Review 再提出チェックリスト（2.1(b) IAP / 新ビルド / 1.5 サポート URL）
 
-App Store Connect 上の作業です。リポジトリのコード変更は不要です（商品 ID は既に `com.shunsukesaito.kintore.premium`）。
+## 推奨作業順（再提出前）
+
+1. **GitHub:** **Settings → Pages** で **Build and deployment** の **Source** を **GitHub Actions** にし保存（初回のみ）→ **Actions** で **Deploy GitHub Pages** が成功するまで待つ（必要なら **Run workflow**）→ ブラウザで `https://shunsukesaito00.github.io/kintore-note/support/` が表示されることを確認  
+2. **App Store Connect:** **Support URL** を上記のサポートページ URL に変更  
+3. **App Store Connect:** IAP を審査提出し **アプリバージョンに関連付け** → **Xcode** で新ビルドをアップロード → **審査に再提出**
+
+ワークフロー定義: [`.github/workflows/deploy-pages.yml`](../.github/workflows/deploy-pages.yml)。全体の提出手順: [AppStore_提出完全手順書_Kintore.md](./AppStore_提出完全手順書_Kintore.md)。
+
+---
+
+App Store Connect 上の作業が中心です。リポジトリのアプリコード変更は不要です（商品 ID は既に `com.shunsukesaito.kintore.premium`）。
 
 ## Guideline 2.1(b) — アプリ内課金の審査提出
 
@@ -21,10 +31,14 @@ App Store Connect 上の作業です。リポジトリのコード変更は不�
 - [ ] 審査対象バージョンに **新ビルドを選択**
 - [ ] IAP が紐づいた状態で **審査に再提出**
 
-## 審査メモに書くとよい一文（コピー用）
+## 審査メモ（コピー用）— アプリ内課金
 
 ```text
 【アプリ内課金】非消耗型 com.shunsukesaito.kintore.premium を App Store Connect で審査提出済みです。App Review 用スクリーンショットを添付し、本バージョンに関連付けました。
+```
+
+```text
+Non-Consumable IAP com.shunsukesaito.kintore.premium has been submitted for review with the required App Review screenshot and linked to this app version.
 ```
 
 関連: [AppStore_提出完全手順書_Kintore.md](./AppStore_提出完全手順書_Kintore.md) §6
@@ -33,9 +47,24 @@ App Store Connect 上の作業です。リポジトリのコード変更は不�
 
 ## Guideline 1.5 — サポート URL
 
-- [ ] リポジトリで **GitHub Pages** を有効化（**Settings → Pages** → ソース: **`/docs`**）。手順: [support/README.md](./support/README.md)
+このリポジトリでは **GitHub Pages のソースを GitHub Actions** にします（`docs/` をワークフローでデプロイ）。詳細は [support/README.md](./support/README.md)。
+
+- [ ] **GitHub** → 対象リポジトリ → **Settings** → **Pages** → **Build and deployment** の **Source** で **GitHub Actions** を選び保存（初回のみ）
+- [ ] **Actions** タブで **Deploy GitHub Pages** が緑（成功）である。失敗時はログを確認し、**Run workflow** で再実行可
 - [ ] ブラウザで `https://shunsukesaito00.github.io/kintore-note/support/` が表示されることを確認
-- [ ] **App Store Connect** → アプリ情報 / バージョンの **Support URL** を上記に変更（Issue 一覧の URL のみは不可のため）
-- [ ] 審査メモに「サポート URL をユーザー向けページに更新」と一言添える（任意）
+- [ ] **App Store Connect** → アプリ情報 / バージョンの **Support URL** を上記に変更（Issue 一覧のみの URL はガイドライン 1.5 で不十分とされることがある）
+- [ ] 審査メモにサポート URL 更新を記載（任意・下記コピペ可）
+
+**GitHub Actions を使わない場合:** ブランチから **`/docs` フォルダを公開**する手順は [support/README.md](./support/README.md) の「ブランチから直接公開する場合」を参照。**Actions とブランチ公開は併用しない**こと。
 
 サポート用 HTML: [support/index.html](./support/index.html)
+
+## 審査メモ（コピー用）— サポート URL
+
+```text
+Support URL now points to a dedicated support page with FAQ and instructions for contacting us (including GitHub Issues): https://shunsukesaito00.github.io/kintore-note/support/
+```
+
+```text
+【サポート URL】FAQ・問い合わせ方法を記載したページに更新しました: https://shunsukesaito00.github.io/kintore-note/support/
+```

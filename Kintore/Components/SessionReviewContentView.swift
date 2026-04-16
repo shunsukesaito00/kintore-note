@@ -13,7 +13,7 @@ struct SessionReviewContentView: View {
 
     var body: some View {
         let exercises = session.workoutExercises.sorted { $0.orderIndex < $1.orderIndex }
-        VStack(alignment: .leading, spacing: AppTheme.spacingLG) {
+        VStack(alignment: .leading, spacing: AppTheme.spacingMD) {
             if showSessionHeader {
                 SectionCard(useElevatedSurface: true) {
                     VStack(alignment: .leading, spacing: AppTheme.spacingMD) {
@@ -52,6 +52,8 @@ struct SessionReviewExerciseBlockView: View {
         let sets = workoutExercise.sets.sorted { $0.orderIndex < $1.orderIndex }
         let exKind = ExerciseKind(stored: workoutExercise.exercise?.exerciseKind)
         let cardioStyle = workoutExercise.exercise?.cardioInputStyle
+        /// 負荷系でセット1件のときだけテーブル見出し・セット番号を省略（簡易記録の見え方用）。
+        let compactSingleLoadSet = sets.count == 1 && exKind.usesLoadVolume
         return SectionCard(useElevatedSurface: true) {
             VStack(alignment: .leading, spacing: AppTheme.spacingMD) {
                 HStack(alignment: .firstTextBaseline, spacing: AppTheme.spacingSM) {
@@ -87,14 +89,17 @@ struct SessionReviewExerciseBlockView: View {
                         .font(AppTheme.exerciseVolumeSubtitleFont)
                         .foregroundStyle(AppTheme.secondaryText)
                 }
-                SetTableHeaderRow(exerciseKind: exKind, weightUnit: weightUnit, cardioInputStyle: cardioStyle)
+                if !compactSingleLoadSet {
+                    SetTableHeaderRow(exerciseKind: exKind, weightUnit: weightUnit, cardioInputStyle: cardioStyle)
+                }
                 VStack(alignment: .leading, spacing: AppTheme.spacingSM) {
                     ForEach(sets, id: \.id) { set in
                         SessionReviewSetRowView(
                             set: set,
                             exerciseKind: exKind,
                             weightUnit: weightUnit,
-                            cardioInputStyle: cardioStyle
+                            cardioInputStyle: cardioStyle,
+                            hideSetIndex: compactSingleLoadSet
                         )
                     }
                 }
@@ -118,6 +123,8 @@ private struct SessionReviewSetRowView: View {
     let exerciseKind: ExerciseKind
     let weightUnit: String
     var cardioInputStyle: String? = nil
+    /// セットが1件だけのとき、冗長な「1」列を出さない（簡易記録など）。
+    var hideSetIndex: Bool = false
 
     private var isTreadmillCardio: Bool {
         exerciseKind == .cardio && cardioInputStyle == CardioInputStyle.treadmill.rawValue
@@ -126,18 +133,20 @@ private struct SessionReviewSetRowView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(alignment: .center, spacing: AppTheme.spacingMD) {
-                HStack(spacing: 4) {
-                    Text("\(set.orderIndex + 1)")
-                        .font(AppTheme.setIndexLabelFont)
-                        .foregroundStyle(AppTheme.secondaryText)
-                    if exerciseKind == .strength || exerciseKind == .weightedBodyweight,
-                       set.isAssisted == true {
-                        Text(String(localized: "session_review_assisted"))
-                            .font(AppTheme.captionTypographyFont)
-                            .foregroundStyle(AppTheme.accent)
+                if !hideSetIndex {
+                    HStack(spacing: 4) {
+                        Text("\(set.orderIndex + 1)")
+                            .font(AppTheme.setIndexLabelFont)
+                            .foregroundStyle(AppTheme.secondaryText)
+                        if exerciseKind == .strength || exerciseKind == .weightedBodyweight,
+                           set.isAssisted == true {
+                            Text(String(localized: "session_review_assisted"))
+                                .font(AppTheme.captionTypographyFont)
+                                .foregroundStyle(AppTheme.accent)
+                        }
                     }
+                    .frame(width: AppTheme.setTableSetColumnWidth, alignment: .leading)
                 }
-                .frame(width: AppTheme.setTableSetColumnWidth, alignment: .leading)
                 if isTreadmillCardio {
                     treadmillDetailColumns
                 } else {
@@ -149,7 +158,7 @@ private struct SessionReviewSetRowView: View {
                 Text("\(String(localized: "session_review_memo_prefix"))\(note)")
                     .font(AppTheme.captionTypographyFont)
                     .foregroundStyle(AppTheme.secondaryText)
-                    .padding(.leading, AppTheme.setTableSetColumnWidth)
+                    .padding(.leading, hideSetIndex ? 0 : AppTheme.setTableSetColumnWidth)
             }
         }
     }

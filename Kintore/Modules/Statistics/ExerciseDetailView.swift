@@ -113,7 +113,7 @@ struct ExerciseDetailView: View {
 
     private var detailContent: some View {
         ScrollView {
-            VStack(spacing: AppTheme.memoSectionGap) {
+            VStack(spacing: AppTheme.sectionBlockSpacing) {
                 if allExercises.count > 1 { exerciseSwitcherCard }
                 if viewModel.exerciseKind.participatesInPersonalRecord, let pr = viewModel.pr { prCard(pr) }
                 periodPickerCard
@@ -130,8 +130,9 @@ struct ExerciseDetailView: View {
                 }
                 historyCard
             }
-            .padding(.horizontal, AppTheme.spacingLG)
-            .padding(.vertical, AppTheme.spacingMD)
+            .padding(.horizontal, AppTheme.screenHorizontalPaddingCompact)
+            .padding(.top, AppTheme.screenEdgeTopPadding)
+            .padding(.bottom, AppTheme.screenEdgeBottomPadding)
         }
     }
 
@@ -157,7 +158,7 @@ struct ExerciseDetailView: View {
     // MARK: - Exercise Switcher
 
     private var exerciseSwitcherCard: some View {
-        SectionCard {
+        SectionCard(density: .dense) {
             Picker(String(localized: "exercise_detail_switch"), selection: Binding(
                 get: { currentExerciseId ?? exerciseId },
                 set: { newId in
@@ -179,7 +180,7 @@ struct ExerciseDetailView: View {
     // MARK: - PR Card
 
     private func prCard(_ pr: PersonalRecord) -> some View {
-        SectionCard {
+        SectionCard(density: .dense) {
             VStack(alignment: .leading, spacing: AppTheme.spacingSM) {
                 SectionHeaderView(title: String(localized: "exercise_detail_current_best"))
                 HStack {
@@ -200,7 +201,7 @@ struct ExerciseDetailView: View {
     // MARK: - Period Picker
 
     private var periodPickerCard: some View {
-        SectionCard {
+        SectionCard(density: .dense) {
             VStack(alignment: .leading, spacing: AppTheme.spacingSM) {
                 SectionHeaderView(title: String(localized: "exercise_detail_period"))
                 HStack(spacing: 0) {
@@ -233,7 +234,7 @@ struct ExerciseDetailView: View {
     // MARK: - Charts
 
     private var maxWeightChartCard: some View {
-        SectionCard {
+        SectionCard(density: .dense) {
             VStack(alignment: .leading, spacing: AppTheme.spacingSM) {
                 SectionHeaderView(title: String(localized: "exercise_detail_max_weight_trend"))
                 Chart {
@@ -271,13 +272,13 @@ struct ExerciseDetailView: View {
                 .chartYAxisLabel(weightUnit)
                 .chartXSelection(value: $chartSelectedDate)
                 .modernChartDateValueAxes()
-                .frame(height: 200)
+                .frame(height: AppTheme.statisticsChartHeightHero)
             }
         }
     }
 
     private var volumeChartCard: some View {
-        SectionCard {
+        SectionCard(density: .dense) {
             VStack(alignment: .leading, spacing: AppTheme.spacingSM) {
                 SectionHeaderView(title: String(localized: "exercise_detail_volume_trend"))
                 Chart {
@@ -298,13 +299,13 @@ struct ExerciseDetailView: View {
                 .chartYAxisLabel(weightUnit)
                 .chartXSelection(value: $chartSelectedDate)
                 .modernChartDateValueAxes()
-                .frame(height: 160)
+                .frame(height: AppTheme.statisticsChartHeightStandard)
             }
         }
     }
 
     private var repsChartCard: some View {
-        SectionCard {
+        SectionCard(density: .dense) {
             VStack(alignment: .leading, spacing: AppTheme.spacingSM) {
                 SectionHeaderView(title: String(localized: "exercise_detail_reps_trend"))
                 Chart {
@@ -334,7 +335,7 @@ struct ExerciseDetailView: View {
                 .chartYAxisLabel(String(localized: "unit_reps"))
                 .chartXSelection(value: $chartSelectedDate)
                 .modernChartDateValueAxes()
-                .frame(height: 140)
+                .frame(height: AppTheme.statisticsChartHeightCompact)
             }
         }
     }
@@ -342,7 +343,7 @@ struct ExerciseDetailView: View {
     // MARK: - Charts (時間・有酸素)
 
     private var timeSessionTotalDurationChart: some View {
-        SectionCard {
+        SectionCard(density: .dense) {
             VStack(alignment: .leading, spacing: AppTheme.spacingSM) {
                 SectionHeaderView(title: String(localized: "exercise_detail_chart_session_total_time"))
                 Chart {
@@ -363,13 +364,13 @@ struct ExerciseDetailView: View {
                 .chartYAxisLabel(String(localized: "unit_seconds"))
                 .chartXSelection(value: $chartSelectedDate)
                 .modernChartDateValueAxes()
-                .frame(height: 160)
+                .frame(height: AppTheme.statisticsChartHeightStandard)
             }
         }
     }
 
     private var timeBestSetDurationChart: some View {
-        SectionCard {
+        SectionCard(density: .dense) {
             VStack(alignment: .leading, spacing: AppTheme.spacingSM) {
                 SectionHeaderView(title: String(localized: "exercise_detail_chart_best_set_duration"))
                 Chart {
@@ -399,13 +400,13 @@ struct ExerciseDetailView: View {
                 .chartYAxisLabel(String(localized: "unit_seconds"))
                 .chartXSelection(value: $chartSelectedDate)
                 .modernChartDateValueAxes()
-                .frame(height: 160)
+                .frame(height: AppTheme.statisticsChartHeightStandard)
             }
         }
     }
 
     private var cardioSessionDistanceChart: some View {
-        SectionCard {
+        SectionCard(density: .dense) {
             VStack(alignment: .leading, spacing: AppTheme.spacingSM) {
                 SectionHeaderView(title: String(localized: "exercise_detail_chart_session_distance"))
                 Chart {
@@ -426,13 +427,13 @@ struct ExerciseDetailView: View {
                 .chartYAxisLabel(String(localized: "unit_km"))
                 .chartXSelection(value: $chartSelectedDate)
                 .modernChartDateValueAxes()
-                .frame(height: 160)
+                .frame(height: AppTheme.statisticsChartHeightStandard)
             }
         }
     }
 
     private var cardioSessionDurationChart: some View {
-        SectionCard {
+        SectionCard(density: .dense) {
             VStack(alignment: .leading, spacing: AppTheme.spacingSM) {
                 SectionHeaderView(title: String(localized: "exercise_detail_chart_session_cardio_duration"))
                 Chart {
@@ -462,7 +463,7 @@ struct ExerciseDetailView: View {
                 .chartYAxisLabel(String(localized: "unit_seconds"))
                 .chartXSelection(value: $chartSelectedDate)
                 .modernChartDateValueAxes()
-                .frame(height: 140)
+                .frame(height: AppTheme.statisticsChartHeightCompact)
             }
         }
     }
@@ -479,7 +480,7 @@ struct ExerciseDetailView: View {
         let e1rmData = chartData.filter { $0.estimated1RM != nil }
         return Group {
             if !e1rmData.isEmpty {
-                SectionCard {
+                SectionCard(density: .dense) {
                     VStack(alignment: .leading, spacing: AppTheme.spacingSM) {
                         SectionHeaderView(title: String(localized: "growth_e1rm_title"))
                         Chart {
@@ -519,7 +520,7 @@ struct ExerciseDetailView: View {
                         .chartYAxisLabel(weightUnit)
                         .chartXSelection(value: $chartSelectedDate)
                         .modernChartDateValueAxes()
-                        .frame(height: 160)
+                        .frame(height: AppTheme.statisticsChartHeightStandard)
                     }
                 }
             }
@@ -529,7 +530,7 @@ struct ExerciseDetailView: View {
     // MARK: - Comparison
 
     private var comparisonSection: some View {
-        SectionCard {
+        SectionCard(density: .dense) {
             VStack(alignment: .leading, spacing: AppTheme.spacingSM) {
                 SectionHeaderView(title: String(localized: "exercise_detail_comparison"))
                 switch viewModel.exerciseKind {
@@ -590,7 +591,7 @@ struct ExerciseDetailView: View {
     // MARK: - KPI
 
     private var kpiSection: some View {
-        SectionCard {
+        SectionCard(density: .dense) {
             VStack(alignment: .leading, spacing: AppTheme.spacingSM) {
                 SectionHeaderView(title: String(localized: "section_kpi"))
                 switch viewModel.exerciseKind {
@@ -619,7 +620,7 @@ struct ExerciseDetailView: View {
     // MARK: - History
 
     private var historyCard: some View {
-        SectionCard {
+        SectionCard(density: .dense) {
             VStack(alignment: .leading, spacing: AppTheme.spacingSM) {
                 SectionHeaderView(title: String(localized: "exercise_detail_history"))
                 if filteredHistory.isEmpty {
@@ -697,7 +698,7 @@ struct ExerciseDetailView: View {
     @ViewBuilder
     private var nextSessionInsightCard: some View {
         if let text = nextSessionInsightText() {
-            SectionCard {
+            SectionCard(density: .dense) {
                 VStack(alignment: .leading, spacing: AppTheme.spacingSM) {
                     HStack(spacing: AppTheme.spacingSM) {
                         Image(systemName: "lightbulb.fill")
@@ -757,7 +758,7 @@ struct ExerciseDetailView: View {
     // MARK: - PR milestone history (strength)
 
     private var prMilestoneHistorySection: some View {
-        SectionCard {
+        SectionCard(density: .dense) {
             VStack(alignment: .leading, spacing: AppTheme.spacingSM) {
                 SectionHeaderView(title: String(localized: "exercise_detail_pr_history_title"))
                 Text(String(localized: "exercise_detail_pr_history_footer"))
@@ -826,52 +827,60 @@ struct PremiumCTAView: View {
     private let premium = PremiumService.shared
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: AppTheme.memoSectionGap) {
-                SectionCard {
-                    VStack(alignment: .leading, spacing: AppTheme.spacingMD) {
-                        SectionHeaderView(title: String(localized: "premium_header"))
-                        Text(String(localized: "premium_body_ads_only"))
-                            .font(AppTheme.bodyTypographyFont)
-                            .foregroundStyle(AppTheme.primaryText)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                }
-                SectionCard {
-                    VStack(spacing: AppTheme.spacingMD) {
-                        if let product = premium.product {
-                            HStack {
-                                Text(String(localized: "premium_price"))
+        Group {
+            if PremiumService.isPremiumPurchaseOffered {
+                ScrollView {
+                    VStack(spacing: AppTheme.memoSectionGap) {
+                        SectionCard(density: .dense) {
+                            VStack(alignment: .leading, spacing: AppTheme.spacingMD) {
+                                SectionHeaderView(title: String(localized: "premium_header"))
+                                Text(String(localized: "premium_body_ads_only"))
                                     .font(AppTheme.bodyTypographyFont)
                                     .foregroundStyle(AppTheme.primaryText)
-                                Spacer()
-                                Text(product.displayPrice)
-                                    .font(AppTheme.numericEmphasisFont)
-                                    .foregroundStyle(AppTheme.accent)
+                                    .fixedSize(horizontal: false, vertical: true)
                             }
-                            PrimaryButton(
-                                title: String(localized: "premium_purchase"),
-                                action: { Task { await premium.purchase() } },
-                                isDisabled: premium.isPurchasing
-                            )
                         }
-                        Button(String(localized: "premium_restore")) {
-                            Task { await premium.restore() }
+                        SectionCard(density: .dense) {
+                            VStack(spacing: AppTheme.spacingMD) {
+                                if let product = premium.product {
+                                    HStack {
+                                        Text(String(localized: "premium_price"))
+                                            .font(AppTheme.bodyTypographyFont)
+                                            .foregroundStyle(AppTheme.primaryText)
+                                        Spacer()
+                                        Text(product.displayPrice)
+                                            .font(AppTheme.numericEmphasisFont)
+                                            .foregroundStyle(AppTheme.accent)
+                                    }
+                                    PrimaryButton(
+                                        title: String(localized: "premium_purchase"),
+                                        action: { Task { await premium.purchase() } },
+                                        isDisabled: premium.isPurchasing
+                                    )
+                                }
+                                Button(String(localized: "premium_restore")) {
+                                    Task { await premium.restore() }
+                                }
+                                .font(AppTheme.bodyTypographyFont)
+                                .foregroundStyle(AppTheme.accent)
+                            }
                         }
-                        .font(AppTheme.bodyTypographyFont)
-                        .foregroundStyle(AppTheme.accent)
                     }
+                    .padding(.horizontal, AppTheme.screenHorizontalPaddingCompact)
+                    .padding(.vertical, AppTheme.spacingMD)
                 }
+                .background(AppTheme.appBackground)
+                .navigationTitle(String(localized: "premium_title"))
+                .navigationBarTitleDisplayMode(.inline)
+                .onAppear {
+                    AnalyticsEventService.log(.premiumPromoOpened(source: analyticsSource))
+                    Task { await premium.loadProduct() }
+                }
+            } else {
+                Color.clear
+                    .navigationTitle(String(localized: "premium_title"))
+                    .navigationBarTitleDisplayMode(.inline)
             }
-            .padding(.horizontal, AppTheme.spacingLG)
-            .padding(.vertical, AppTheme.spacingMD)
-        }
-        .background(AppTheme.appBackground)
-        .navigationTitle(String(localized: "premium_title"))
-        .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
-            AnalyticsEventService.log(.premiumPromoOpened(source: analyticsSource))
-            Task { await premium.loadProduct() }
         }
     }
 }

@@ -1,10 +1,8 @@
-# Kintore Note（筋トレログ）
+# らくらく筋トレ記録（筋トレログ）
 
 SwiftUI / SwiftData の iOS アプリ。Watch 拡張・Widget 同梱。
 
-**リポジトリ**: [github.com/shunsukesaito00/kintore-note](https://github.com/shunsukesaito00/kintore-note)
-
-（まだリポジトリ名が `kintore` のままなら、GitHub の **Settings → General → Repository name** で `kintore-note` に変更すると、上記 URL・App Store のサポート／プライバシー用リンクと一致します。リネーム後は旧 URL もしばらくリダイレクトされます。）
+**リポジトリ**: [github.com/shunsukesaito00/kintore-note](https://github.com/shunsukesaito00/kintore-note)（スラッグ `kintore-note` は、ドキュメント内の GitHub Pages・プライバシー／利用規約の raw URL と一致させています。リポジトリ名を変更する場合は `docs/legal/README.md` 等の URL も合わせて更新してください。）
 
 ## サポート
 

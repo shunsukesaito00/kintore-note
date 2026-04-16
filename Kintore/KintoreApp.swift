@@ -24,6 +24,7 @@ struct KintoreApp: App {
     let container: ModelContainer
 
     init() {
+        ModelContainerFactory.performPendingPersistentStoreEraseIfNeeded()
         do {
             container = try ModelContainerFactory.makeProduction()
             UserDefaults.standard.set(false, forKey: usedInMemoryStoreUserDefaultsKey)
@@ -36,6 +37,7 @@ struct KintoreApp: App {
             performIOSStartupSideEffects(modelContext: context)
             #endif
         } catch {
+            // makeProduction 内でも記録済み。ここではフォールバックのみ。
             #if DEBUG
             print("[KintoreApp] persistent ModelContainer failed: \(error). Falling back to in-memory store.")
             #endif

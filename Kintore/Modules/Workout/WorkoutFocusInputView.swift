@@ -34,6 +34,13 @@ struct WorkoutFocusInputView: View {
 
     private var weightStep: Double { weightUnit == "lb" ? 5 : 2.5 }
 
+    private var scrollBottomPadding: CGFloat {
+        if focused != nil {
+            return 24
+        }
+        return 100
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             ScrollView {
@@ -45,14 +52,20 @@ struct WorkoutFocusInputView: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.top, 8)
-                .padding(.bottom, 100)
+                .padding(.bottom, scrollBottomPadding)
             }
             .scrollDismissesKeyboard(.interactively)
-            bottomBar
+            if focused == nil {
+                bottomBar
+            }
         }
         .background(AppTheme.appBackground)
         .onAppear { sync() }
         .onChange(of: weightUnit) { _, _ in sync() }
+        .onChange(of: exerciseIndex) { _, _ in
+            editingSetIndex = nil
+            syncAfterExerciseChange()
+        }
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
@@ -65,6 +78,16 @@ struct WorkoutFocusInputView: View {
         guard exerciseIndex < viewModel.draft.exercises.count else { return }
         let idx = activeIdx
         guard idx < viewModel.draft.exercises[exerciseIndex].sets.count else { return }
+        weightText = viewModel.weightString(exerciseIndex: exerciseIndex, setIndex: idx)
+        repsText = viewModel.repsString(exerciseIndex: exerciseIndex, setIndex: idx)
+    }
+
+    /// 種目切替時: `editingSetIndex` をクリアした直後でも正しいセット行を参照する（`@State` 更新タイミングに依存しない）
+    private func syncAfterExerciseChange() {
+        guard exerciseIndex < viewModel.draft.exercises.count else { return }
+        let sets = viewModel.draft.exercises[exerciseIndex].sets
+        let idx = sets.firstIndex { !$0.isCompleted } ?? max(sets.count - 1, 0)
+        guard idx < sets.count else { return }
         weightText = viewModel.weightString(exerciseIndex: exerciseIndex, setIndex: idx)
         repsText = viewModel.repsString(exerciseIndex: exerciseIndex, setIndex: idx)
     }

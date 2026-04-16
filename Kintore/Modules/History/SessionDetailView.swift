@@ -163,7 +163,7 @@ struct SessionDetailView: View {
 
     private func sessionContent(session: WorkoutSession) -> some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: AppTheme.spacingLG) {
+            VStack(alignment: .leading, spacing: AppTheme.sectionBlockSpacing) {
                 SectionCard(useElevatedSurface: true) {
                     VStack(alignment: .leading, spacing: AppTheme.spacingMD) {
                         Text(AppFormatters.formatDateWithWeekday(session.startedAt))
@@ -221,8 +221,9 @@ struct SessionDetailView: View {
                     showSessionHeader: false
                 )
             }
-            .padding(.horizontal, AppTheme.sessionContentHorizontalPadding)
-            .padding(.vertical, AppTheme.spacingMD)
+            .padding(.horizontal, AppTheme.screenHorizontalPaddingCompact)
+            .padding(.top, AppTheme.screenEdgeTopPadding)
+            .padding(.bottom, AppTheme.screenEdgeBottomPadding)
         }
         .background(AppTheme.appBackground)
     }

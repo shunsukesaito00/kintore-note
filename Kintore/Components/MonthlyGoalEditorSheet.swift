@@ -1,8 +1,8 @@
 import SwiftData
 import SwiftUI
 
-/// 週のトレーニング回数目標を設定するシート（ホーム・成長記録の概要から共通利用）
-struct WeeklyGoalEditorSheet: View {
+/// 月のトレーニング回数目標（ホーム・設定から共通利用）
+struct MonthlyGoalEditorSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
 
@@ -17,13 +17,13 @@ struct WeeklyGoalEditorSheet: View {
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: AppTheme.spacingMD) {
-                Text(String(localized: "weekly_goal_sheet_instruction"))
+                Text(String(localized: "monthly_goal_sheet_instruction"))
                     .font(AppTheme.captionTypographyFont)
                     .foregroundStyle(AppTheme.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
 
-                WeeklyGoalQuickPickView(selection: $draft) { newValue in
-                    try? SettingsRepository(modelContext: modelContext).updateWeeklyWorkoutGoalSessions(newValue)
+                MonthlyGoalQuickPickView(selection: $draft) { newValue in
+                    try? SettingsRepository(modelContext: modelContext).updateMonthlyWorkoutGoalSessions(newValue)
                     onSaved()
                     dismiss()
                 }
@@ -33,7 +33,7 @@ struct WeeklyGoalEditorSheet: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .padding(AppTheme.cardContentPadding)
             .background(AppTheme.appBackground)
-            .navigationTitle(String(localized: "weekly_goal_sheet_title"))
+            .navigationTitle(String(localized: "monthly_goal_sheet_title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

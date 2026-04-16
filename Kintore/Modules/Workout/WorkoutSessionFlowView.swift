@@ -134,8 +134,9 @@ struct WorkoutSessionFlowView: View {
                 viewModel: vm,
                 exerciseIndex: idx,
                 onNextExercise: {
-                    if idx < vm.draft.exercises.count - 1 {
-                        currentExerciseIndex = idx + 1
+                    let i = min(currentExerciseIndex, vm.draft.exercises.count - 1)
+                    if i < vm.draft.exercises.count - 1 {
+                        currentExerciseIndex = i + 1
                     } else {
                         showExercisePicker = true
                     }
@@ -143,10 +144,12 @@ struct WorkoutSessionFlowView: View {
                 onFinish: { showEndConfirm = true },
                 onAddExercise: { showExercisePicker = true },
                 onTimerTap: {
-                    vm.startManualRestForExercise(exerciseIndex: idx)
+                    let i = min(currentExerciseIndex, vm.draft.exercises.count - 1)
+                    vm.startManualRestForExercise(exerciseIndex: i)
                     showFullScreenRest = true
                 }
             )
+            .id(idx)
         }
     }
 

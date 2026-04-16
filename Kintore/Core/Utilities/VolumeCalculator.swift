@@ -1,5 +1,6 @@
 // File: Core/Utilities/VolumeCalculator.swift
 // 1 セットあたりの volume（総挙上 = weight × reps）の唯一の計算元。PR・集計・表示はすべてここを参照する。
+// 簡易記録は reps=1 固定のため volume=重量となり、PR 比較は「そのセットの総挙上」として一貫する。
 
 import Foundation
 

@@ -6,7 +6,7 @@
 2. **App Store Connect:** **Support URL** を上記のサポートページ URL に変更  
 3. **App Store Connect:** IAP を審査提出し **アプリバージョンに関連付け** → **Xcode** で新ビルドをアップロード → **審査に再提出**
 
-ワークフロー定義: [`.github/workflows/deploy-pages.yml`](../.github/workflows/deploy-pages.yml)。全体の提出手順: [AppStore_提出完全手順書_Kintore.md](./AppStore_提出完全手順書_Kintore.md)。
+ワークフロー定義: [`.github/workflows/deploy-pages.yml`](../.github/workflows/deploy-pages.yml)。全体の提出手順: [AppStore_提出完全手順書_らくらく筋トレ記録.md](./AppStore_提出完全手順書_らくらく筋トレ記録.md)。
 
 ---
 
@@ -41,7 +41,7 @@ App Store Connect 上の作業が中心です。リポジトリのアプリコ�
 Non-Consumable IAP com.shunsukesaito.kintore.premium has been submitted for review with the required App Review screenshot and linked to this app version.
 ```
 
-関連: [AppStore_提出完全手順書_Kintore.md](./AppStore_提出完全手順書_Kintore.md) §6
+関連: [AppStore_提出完全手順書_らくらく筋トレ記録.md](./AppStore_提出完全手順書_らくらく筋トレ記録.md) §6
 
 ---
 

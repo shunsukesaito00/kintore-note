@@ -291,12 +291,12 @@ struct ExercisePickerView: View {
                     .padding(.vertical, AppTheme.spacingSM)
                     .contentShape(Rectangle())
                 }
-                .listRowInsets(EdgeInsets(top: AppTheme.spacingSM, leading: AppTheme.spacingLG, bottom: AppTheme.spacingSM, trailing: AppTheme.spacingLG))
+                .listRowInsets(EdgeInsets(top: AppTheme.spacingSM, leading: AppTheme.screenHorizontalPaddingCompact, bottom: AppTheme.spacingSM, trailing: AppTheme.screenHorizontalPaddingCompact))
             }
             if !equipTags.isEmpty {
                 Section {
                     equipmentFilterChipsRow(tags: equipTags)
-                        .listRowInsets(EdgeInsets(top: 4, leading: AppTheme.spacingLG, bottom: 4, trailing: AppTheme.spacingLG))
+                        .listRowInsets(EdgeInsets(top: 4, leading: AppTheme.screenHorizontalPaddingCompact, bottom: 4, trailing: AppTheme.screenHorizontalPaddingCompact))
                         .listRowBackground(Color.clear)
                 }
             }

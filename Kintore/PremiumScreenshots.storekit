@@ -1,0 +1,37 @@
+{
+  "identifier" : "A1F2E3D4-C5B6-7890-ABCD-EF1234567890",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "¥300",
+      "familyShareable" : false,
+      "internalID" : "B2C3D4E5-F6A7-8901-BCDE-F123456789012",
+      "localizations" : [
+        {
+          "description" : "買い切りでアプリ内の広告を非表示にします。",
+          "displayName" : "プレミアム（買い切り）",
+          "locale" : "ja"
+        }
+      ],
+      "productID" : "com.shunsukesaito.kintore.premium",
+      "referenceName" : "らくらく筋トレ プレミアム",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_storeKitErrors" : [
+
+    ],
+    "_storeKitErrorsEnabled" : false
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

@@ -28,7 +28,8 @@ enum AppBootstrapper {
             defaultRestSeconds: 90,
             weightUnit: "kg",
             theme: "system",
-            weeklyWorkoutGoalSessions: 0
+            weeklyWorkoutGoalSessions: 0,
+            monthlyWorkoutGoalSessions: 0
         )
         modelContext.insert(pref)
         try? modelContext.save()

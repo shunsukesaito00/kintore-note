@@ -12,11 +12,17 @@ final class StatisticsViewModel {
     var workoutCountMonth: Int = 0
     /// 設定の「週のトレーニング目標」（0＝未設定）
     var weeklyWorkoutGoalSessions: Int = 0
+    /// 今月のトレーニング目標セッション数（0＝未設定）
+    var monthlyWorkoutGoalSessions: Int = 0
     var totalVolume: Double = 0
     var currentStreakWeeks: Int = 0
     var weeklySessionCounts: [(weekStart: Date, count: Int)] = []
     var monthlyVolumes: [(monthStart: Date, volume: Double)] = []
+    /// 月別完了セッション数（棒グラフ用）
+    var monthlySessionCounts: [(monthStart: Date, count: Int)] = []
     var weeklyTotalVolumes: [(weekStart: Date, volume: Double)] = []
+    /// 週別「種目最大重量の合計」kg（挙上量の代わりに使う重量系列）
+    var weeklyTotalMaxWeightKg: [(weekStart: Date, totalKg: Double)] = []
     var bodyPartCounts: [(bodyPart: String, count: Int)] = []
     var recentPRs: [(PersonalRecord, String)] = []
     var allExercises: [Exercise] = []
@@ -37,6 +43,8 @@ final class StatisticsViewModel {
     // MARK: - Delta comparison (Phase B)
     var previousWeekSessionCount: Int = 0
     var weekSessionDelta: Int = 0
+    var previousMonthSessionCount: Int = 0
+    var monthSessionDelta: Int = 0
     var previousMonthVolume: Double = 0
     var monthVolumeDelta: Double = 0
     var weekVolume: Double = 0
@@ -44,6 +52,20 @@ final class StatisticsViewModel {
     var weekVolumeDelta: Double = 0
 
     var monthVolume: Double = 0
+    /// 今週の種目最大重量合計（kg）
+    var weekMaxWeightKg: Double = 0
+    var previousWeekMaxWeightKg: Double = 0
+    var weekMaxWeightDelta: Double = 0
+    var monthMaxWeightKg: Double = 0
+    var previousMonthMaxWeightKg: Double = 0
+    var monthMaxWeightDelta: Double = 0
+
+    /// 記録タブ: 今月の部位バランス
+    var currentMonthVolumeByBodyPart: [(bodyPart: String, volume: Double)] = []
+    /// 記録タブ: 部位別 月平均回数（1日あたりレップ）
+    var currentMonthAvgRepsPerDayByBodyPart: [(bodyPart: String, average: Double)] = []
+    /// 記録タブ: 種目別 月平均回数
+    var currentMonthAvgRepsPerDayByExercise: [(exerciseId: UUID, name: String, average: Double)] = []
     /// 期間内に達成日がある PR 件数（種目ベストがその期間に更新された数）
     var prAchievedWeek: Int = 0
     var prAchievedMonth: Int = 0
@@ -80,6 +102,7 @@ final class StatisticsViewModel {
 
             let settingsRepo = SettingsRepository(modelContext: modelContext)
             weeklyWorkoutGoalSessions = (try? settingsRepo.fetchUserPreference())?.weeklyWorkoutGoalSessions ?? 0
+            monthlyWorkoutGoalSessions = (try? settingsRepo.fetchUserPreference())?.monthlyWorkoutGoalSessions ?? 0
 
             workoutCountAll = try stats.workoutCount(from: nil, to: nil)
             workoutCountWeek = try stats.workoutCount(from: weekStart, to: now)
@@ -105,7 +128,13 @@ final class StatisticsViewModel {
 
             weeklyVolumeByPart = try stats.weeklyVolumeByBodyPart(weekCount: chartWeekCount)
             monthlyVolumes = try stats.monthlyVolumes(monthCount: chartMonthCount)
+            monthlySessionCounts = try stats.monthlySessionCounts(monthCount: chartMonthCount)
             weeklyTotalVolumes = try stats.weeklyTotalVolumes(weekCount: chartWeekCount)
+            weeklyTotalMaxWeightKg = try stats.weeklyTotalMaxWeightKg(weekCount: chartWeekCount)
+
+            currentMonthVolumeByBodyPart = try stats.currentMonthVolumeByBodyPart()
+            currentMonthAvgRepsPerDayByBodyPart = try stats.currentMonthAverageRepsPerDayByBodyPart()
+            currentMonthAvgRepsPerDayByExercise = try stats.currentMonthAverageRepsPerDayByExercise()
 
             weeklySessionCounts = try stats.weeklySessionCounts(weekCount: chartWeekCount)
             currentStreakWeeks = try stats.currentStreakWeeks()
@@ -130,6 +159,19 @@ final class StatisticsViewModel {
             let currentMonthVolume = try stats.totalVolume(from: monthStart, to: monthEnd)
             monthVolume = currentMonthVolume
             monthVolumeDelta = currentMonthVolume - previousMonthVolume
+
+            previousMonthSessionCount = try stats.workoutCount(from: prevMonthStart, to: monthStart)
+            monthSessionDelta = workoutCountMonth - previousMonthSessionCount
+
+            weekMaxWeightKg = try stats.totalMaxWeightKgInRange(from: weekStart, to: now)
+            previousWeekMaxWeightKg = try stats.totalMaxWeightKgInRange(from: prevWeekStart, to: weekStart)
+            weekMaxWeightDelta = weekMaxWeightKg - previousWeekMaxWeightKg
+
+            let currentMonthMaxW = try stats.totalMaxWeightKgInRange(from: monthStart, to: monthEnd)
+            let prevMonthMaxW = try stats.totalMaxWeightKgInRange(from: prevMonthStart, to: monthStart)
+            monthMaxWeightKg = currentMonthMaxW
+            previousMonthMaxWeightKg = prevMonthMaxW
+            monthMaxWeightDelta = currentMonthMaxW - prevMonthMaxW
 
             prAchievedWeek = try prService.countAchievedBetween(start: weekStart, end: now)
             prAchievedMonth = try prService.countAchievedBetween(start: monthStart, end: monthEnd)
@@ -162,8 +204,8 @@ final class StatisticsViewModel {
             return
         }
 
-        if weekVolumeDelta > 0, previousWeekVolume > 0 {
-            let pct = Int((weekVolumeDelta / previousWeekVolume) * 100)
+        if weekMaxWeightDelta > 0, previousWeekMaxWeightKg > 0 {
+            let pct = Int((weekMaxWeightDelta / previousWeekMaxWeightKg) * 100)
             if pct >= 5 {
                 insightMessage = String(format: String(localized: "insight_volume_up"), pct)
                 insightIcon = "chart.line.uptrend.xyaxis"
@@ -197,11 +239,14 @@ final class StatisticsViewModel {
         workoutCountWeek = 0
         workoutCountMonth = 0
         weeklyWorkoutGoalSessions = 0
+        monthlyWorkoutGoalSessions = 0
         totalVolume = 0
         currentStreakWeeks = 0
         weeklySessionCounts = []
         monthlyVolumes = []
+        monthlySessionCounts = []
         weeklyTotalVolumes = []
+        weeklyTotalMaxWeightKg = []
         bodyPartCounts = []
         recentPRs = []
         allExercises = []
@@ -221,6 +266,8 @@ final class StatisticsViewModel {
         chartMonthCount = 6
         previousWeekSessionCount = 0
         weekSessionDelta = 0
+        previousMonthSessionCount = 0
+        monthSessionDelta = 0
         previousMonthVolume = 0
         monthVolumeDelta = 0
         weekVolume = 0
@@ -228,6 +275,15 @@ final class StatisticsViewModel {
         weekVolumeDelta = 0
 
         monthVolume = 0
+        weekMaxWeightKg = 0
+        previousWeekMaxWeightKg = 0
+        weekMaxWeightDelta = 0
+        monthMaxWeightKg = 0
+        previousMonthMaxWeightKg = 0
+        monthMaxWeightDelta = 0
+        currentMonthVolumeByBodyPart = []
+        currentMonthAvgRepsPerDayByBodyPart = []
+        currentMonthAvgRepsPerDayByExercise = []
         prAchievedWeek = 0
         prAchievedMonth = 0
         prRecordCountAll = 0

@@ -45,18 +45,31 @@ final class HomeViewModel {
     var frequencyGoalInsightMessage: String?
     /// 設定の週あたり目標セッション数（0＝未設定）。成長記録と共通。
     var weeklyWorkoutGoalSessions: Int = 0
+    /// 今月のトレーニング目標（完了セッション数、0＝未設定）
+    var monthlyWorkoutGoalSessions: Int = 0
+    /// 今月（1日〜今日）の完了セッション数
+    var monthSessionCount: Int = 0
     /// 今週達成したPR一覧 (PR, 種目名)
     var weeklyPRs: [(PersonalRecord, String)] = []
     var isLoading = false
     var errorMessage: String?
 
     private let workoutRepository: WorkoutRepositoryProtocol
+    private let exerciseRepository: ExerciseRepository
     private let statsService: WorkoutStatsService
     private let settingsRepository: SettingsRepository
     private let modelContext: ModelContext
 
+    /// ユーザー追加メニュー（ホームの一覧用）
+    var userMenuExercises: [Exercise] = []
+    /// 今日記録する種目（簡易記録用）
+    var selectedTodayExerciseIds: Set<UUID> = []
+    /// ホーム上で入力中の MAX（表示単位の文字列）。日付キーで UserDefaults に永続化。
+    var weightDraftByExerciseId: [UUID: String] = [:]
+
     init(workoutRepository: WorkoutRepositoryProtocol, statsService: WorkoutStatsService, modelContext: ModelContext) {
         self.workoutRepository = workoutRepository
+        self.exerciseRepository = ExerciseRepository(modelContext: modelContext)
         self.statsService = statsService
         self.settingsRepository = SettingsRepository(modelContext: modelContext)
         self.modelContext = modelContext
@@ -65,6 +78,7 @@ final class HomeViewModel {
     @available(*, deprecated, message: "Use init without templateRepository")
     init(workoutRepository: WorkoutRepositoryProtocol, templateRepository: TemplateRepositoryProtocol, statsService: WorkoutStatsService, modelContext: ModelContext) {
         self.workoutRepository = workoutRepository
+        self.exerciseRepository = ExerciseRepository(modelContext: modelContext)
         self.statsService = statsService
         self.settingsRepository = SettingsRepository(modelContext: modelContext)
         self.modelContext = modelContext
@@ -83,6 +97,7 @@ final class HomeViewModel {
             loadSessionsForSelectedDate()
             loadTodaySessions()
             loadWeeklyPRs()
+            loadUserMenusAndTodaySelection()
             updateFrequencyGoalInsight()
         } catch {
             errorMessage = error.localizedDescription
@@ -100,6 +115,11 @@ final class HomeViewModel {
             weeklyPRs = []
             frequencyGoalInsightMessage = nil
             weeklyWorkoutGoalSessions = 0
+            monthlyWorkoutGoalSessions = 0
+            monthSessionCount = 0
+            userMenuExercises = []
+            selectedTodayExerciseIds = []
+            weightDraftByExerciseId = [:]
         }
         isLoading = false
     }
@@ -146,7 +166,16 @@ final class HomeViewModel {
     }
 
     private func loadMemoDashboardStats() {
-        weeklyWorkoutGoalSessions = (try? settingsRepository.fetchUserPreference())?.weeklyWorkoutGoalSessions ?? 0
+        let pref = try? settingsRepository.fetchUserPreference()
+        weeklyWorkoutGoalSessions = pref?.weeklyWorkoutGoalSessions ?? 0
+        monthlyWorkoutGoalSessions = pref?.monthlyWorkoutGoalSessions ?? 0
+        let cal = Calendar.current
+        let now = Date()
+        if let monthStart = cal.date(from: cal.dateComponents([.year, .month], from: now)) {
+            monthSessionCount = (try? statsService.workoutCount(from: monthStart, to: now)) ?? 0
+        } else {
+            monthSessionCount = 0
+        }
         if let last = try? workoutRepository.fetchRecentSessions(limit: 1, before: nil).first {
             lastCompletedSessionDateText = AppFormatters.formatDateWithWeekday(last.startedAt)
         } else {
@@ -251,6 +280,102 @@ final class HomeViewModel {
                 remaining
             )
             AnalyticsEventService.log(.retentionInsightShown(kind: "frequency_goal_short", source: "home"))
+        }
+    }
+
+    private static let todaySelectionKeyPrefix = "kintore.simpleTodaySelection."
+    private static let weightDraftKeyPrefix = "kintore.simpleTodayWeightDraft."
+
+    private static func calendarDayKey(_ date: Date) -> String {
+        let f = DateFormatter()
+        f.calendar = Calendar.current
+        f.locale = Locale(identifier: "en_US_POSIX")
+        f.dateFormat = "yyyy-MM-dd"
+        return f.string(from: date)
+    }
+
+    private func loadUserMenusAndTodaySelection() {
+        userMenuExercises = (try? exerciseRepository.fetchUserCreatedExercises()) ?? []
+        let day = Self.calendarDayKey(Date())
+        let key = Self.todaySelectionKeyPrefix + day
+        if let data = UserDefaults.standard.data(forKey: key),
+           let uuids = try? JSONDecoder().decode([UUID].self, from: data) {
+            selectedTodayExerciseIds = Set(uuids)
+        } else {
+            selectedTodayExerciseIds = []
+        }
+        loadWeightDrafts(dayKey: day)
+    }
+
+    private func loadWeightDrafts(dayKey: String) {
+        let wKey = Self.weightDraftKeyPrefix + dayKey
+        if let dict = UserDefaults.standard.dictionary(forKey: wKey) as? [String: String] {
+            weightDraftByExerciseId = Dictionary(uniqueKeysWithValues: dict.compactMap { key, value in
+                guard let u = UUID(uuidString: key) else { return nil }
+                return (u, value)
+            })
+        } else {
+            weightDraftByExerciseId = [:]
+        }
+    }
+
+    private func persistWeightDrafts() {
+        let wKey = Self.weightDraftKeyPrefix + Self.calendarDayKey(Date())
+        if weightDraftByExerciseId.isEmpty {
+            UserDefaults.standard.removeObject(forKey: wKey)
+            return
+        }
+        let dict = Dictionary(uniqueKeysWithValues: weightDraftByExerciseId.map { ($0.key.uuidString, $0.value) })
+        UserDefaults.standard.set(dict, forKey: wKey)
+    }
+
+    func setWeightDraft(exerciseId: UUID, text: String) {
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmed.isEmpty {
+            weightDraftByExerciseId.removeValue(forKey: exerciseId)
+        } else {
+            weightDraftByExerciseId[exerciseId] = text
+        }
+        persistWeightDrafts()
+    }
+
+    /// 表示単位の文字列が数値として解釈できるか（カンマ小数可）。
+    func hasValidWeightDraft(for exerciseId: UUID) -> Bool {
+        let raw = (weightDraftByExerciseId[exerciseId] ?? "")
+            .replacingOccurrences(of: ",", with: ".")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !raw.isEmpty else { return false }
+        return Double(raw) != nil
+    }
+
+    /// 今日の簡易記録の保存対象（選択済みかつ MAX 入力あり）。
+    func exercisesReadyForSimpleCommit() -> [Exercise] {
+        userMenuExercises.filter { ex in
+            selectedTodayExerciseIds.contains(ex.id) && hasValidWeightDraft(for: ex.id)
+        }
+    }
+
+    /// 簡易記録保存成功後に、当日の選択と MAX 下書きをクリアする。
+    func clearTodaySelectionAndWeightDrafts() {
+        selectedTodayExerciseIds.removeAll()
+        weightDraftByExerciseId.removeAll()
+        let day = Self.calendarDayKey(Date())
+        UserDefaults.standard.removeObject(forKey: Self.todaySelectionKeyPrefix + day)
+        UserDefaults.standard.removeObject(forKey: Self.weightDraftKeyPrefix + day)
+    }
+
+    func setTodayExerciseSelected(_ id: UUID, selected: Bool) {
+        if selected {
+            selectedTodayExerciseIds.insert(id)
+        } else {
+            selectedTodayExerciseIds.remove(id)
+            weightDraftByExerciseId.removeValue(forKey: id)
+            persistWeightDrafts()
+        }
+        let key = Self.todaySelectionKeyPrefix + Self.calendarDayKey(Date())
+        let arr = Array(selectedTodayExerciseIds)
+        if let data = try? JSONEncoder().encode(arr) {
+            UserDefaults.standard.set(data, forKey: key)
         }
     }
 }

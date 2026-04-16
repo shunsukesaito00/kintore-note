@@ -27,16 +27,24 @@ struct CalendarView: View {
     var onDaySelected: ((Date) -> Void)?
     var selectedBodyPart: String?
     var selectedDate: Date?
+    /// 履歴など高密度画面では `screenHorizontalPaddingCompact` を渡す
+    var horizontalInset: CGFloat = AppTheme.screenHorizontalPadding
     @State private var displayedMonth: Date = Date()
     @State private var viewModel = CalendarReviewViewModel()
 
     private let calendar = Calendar.current
     private let weekdays = ["日", "月", "火", "水", "木", "金", "土"]
 
-    init(onDaySelected: ((Date) -> Void)? = nil, selectedBodyPart: String? = nil, selectedDate: Date? = nil) {
+    init(
+        onDaySelected: ((Date) -> Void)? = nil,
+        selectedBodyPart: String? = nil,
+        selectedDate: Date? = nil,
+        horizontalInset: CGFloat = AppTheme.screenHorizontalPadding
+    ) {
         self.onDaySelected = onDaySelected
         self.selectedBodyPart = selectedBodyPart
         self.selectedDate = selectedDate
+        self.horizontalInset = horizontalInset
     }
 
     var body: some View {
@@ -51,7 +59,6 @@ struct CalendarView: View {
                 Button { nextMonth() } label: { Image(systemName: "chevron.right") }
                     .accessibilityLabel("次の月")
             }
-            .padding(.horizontal)
 
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: AppTheme.spacingSM) {
                 ForEach(weekdays, id: \.self) { d in
@@ -77,9 +84,9 @@ struct CalendarView: View {
                     .font(AppTheme.captionTypographyFont)
                     .foregroundStyle(AppTheme.primaryText)
             }
-            .padding(.horizontal)
         }
-        .padding()
+        .padding(.vertical, AppTheme.spacingSM)
+        .padding(.horizontal, horizontalInset)
         .onAppear { loadSessions() }
         .onChange(of: displayedMonth) { _, _ in loadSessions() }
         .onChange(of: selectedBodyPart) { _, _ in loadSessions() }

@@ -13,6 +13,12 @@ private struct CompletedSessionItem: Identifiable {
     let id: UUID
 }
 
+private struct MaxWeightSheetPayload: Identifiable {
+    var id: UUID { exerciseId }
+    let exerciseId: UUID
+    let exerciseName: String
+}
+
 struct HomeView: View {
     @AppStorage(AppTheme.weightUnitStorageKey) private var weightUnit: String = "kg"
     @Environment(\.modelContext) private var modelContext
@@ -20,11 +26,16 @@ struct HomeView: View {
     @Binding var openWorkoutAfterOnboarding: Bool
     @State private var viewModel: HomeViewModel?
     @State private var sessionFlowRequest: SessionFlowRequest?
-    @State private var showWorkoutStart = false
     @State private var completedSession: CompletedSessionItem?
     @State private var showWeeklyGoalSheet = false
+    @State private var showMonthlyGoalSheet = false
+    @State private var maxWeightSheet: MaxWeightSheetPayload?
+    @State private var maxWeightSheetField = ""
+    @State private var simpleSaveError: String?
+    @State private var calendarExpanded = false
+    @State private var showExercisePicker = false
 
-    private var horizontalPadding: CGFloat { AppTheme.sessionContentHorizontalPadding }
+    private var horizontalPadding: CGFloat { AppTheme.screenHorizontalPadding }
 
     var body: some View {
         Group {
@@ -73,23 +84,6 @@ struct HomeView: View {
             )
             .environment(\.modelContext, modelContext)
         }
-        .fullScreenCover(isPresented: $showWorkoutStart) {
-            WorkoutStartView(
-                initialTemplate: nil,
-                onDismiss: {
-                    showWorkoutStart = false
-                    viewModel?.loadRecentSessions()
-                    WidgetDataStore.updateFrom(modelContext: modelContext)
-                },
-                onSessionCompleted: { savedId in
-                    showWorkoutStart = false
-                    viewModel?.loadRecentSessions()
-                    WidgetDataStore.updateFrom(modelContext: modelContext)
-                    completedSession = CompletedSessionItem(id: savedId)
-                }
-            )
-            .environment(\.modelContext, modelContext)
-        }
         .sheet(item: $completedSession) { item in
             WorkoutCompleteSummaryView(sessionId: item.id) {
                 completedSession = nil
@@ -104,6 +98,35 @@ struct HomeView: View {
             .environment(\.modelContext, modelContext)
             .standardSheetChrome()
         }
+        .sheet(isPresented: $showMonthlyGoalSheet) {
+            MonthlyGoalEditorSheet(initialGoal: viewModel?.monthlyWorkoutGoalSessions ?? 0) {
+                viewModel?.loadRecentSessions()
+            }
+            .environment(\.modelContext, modelContext)
+            .standardSheetChrome()
+        }
+        .sheet(isPresented: $showExercisePicker) {
+            ExercisePickerView(
+                onSelect: { _ in
+                    showExercisePicker = false
+                    viewModel?.loadRecentSessions()
+                },
+                memoSessionStyle: true
+            )
+            .environment(\.modelContext, modelContext)
+            .standardSheetChrome()
+        }
+        .sheet(item: $maxWeightSheet) { payload in
+            HomeMaxWeightInputSheet(
+                exerciseName: payload.exerciseName,
+                weightText: $maxWeightSheetField,
+                onSave: {
+                    viewModel?.setWeightDraft(exerciseId: payload.exerciseId, text: maxWeightSheetField)
+                }
+            )
+            .presentationDetents([.medium])
+            .standardSheetChrome()
+        }
         .onAppear {
             createViewModelAndLoadIfNeeded()
             WidgetDataStore.updateFrom(modelContext: modelContext)
@@ -113,7 +136,7 @@ struct HomeView: View {
     @ViewBuilder
     private func mainContent(vm: HomeViewModel) -> some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: AppTheme.memoSectionGap) {
+            VStack(alignment: .leading, spacing: AppTheme.sectionBlockSpacing) {
                 if let error = vm.errorMessage {
                     HStack(spacing: AppTheme.spacingSM) {
                         Image(systemName: "exclamationmark.triangle.fill")
@@ -133,25 +156,27 @@ struct HomeView: View {
                     .clipShape(RoundedRectangle(cornerRadius: AppTheme.chipCornerRadius, style: .continuous))
                     .padding(.horizontal, horizontalPadding)
                 }
-                // 1. 今週のハイライト
-                HomeWeeklySummaryCard(viewModel: vm, weightUnit: weightUnit)
-                    .padding(.horizontal, horizontalPadding)
+                HomeMonthlyGoalCard(
+                    monthGoal: vm.monthlyWorkoutGoalSessions,
+                    monthCount: vm.monthSessionCount,
+                    onEdit: { showMonthlyGoalSheet = true }
+                )
+                .padding(.horizontal, horizontalPadding)
 
-                // 2. 週のトレーニング目標を設定
-                if vm.weeklyWorkoutGoalSessions == 0 {
+                if vm.monthlyWorkoutGoalSessions == 0 {
                     Button {
-                        showWeeklyGoalSheet = true
+                        showMonthlyGoalSheet = true
                     } label: {
                         HStack(spacing: AppTheme.spacingSM) {
-                            Image(systemName: "target")
+                            Image(systemName: "calendar")
                                 .font(.body.weight(.semibold))
                                 .foregroundStyle(AppTheme.accent)
                             VStack(alignment: .leading, spacing: 2) {
-                                Text(String(localized: "home_weekly_goal_prompt_title"))
+                                Text(String(localized: "home_monthly_goal_prompt_title"))
                                     .font(AppTheme.bodyTypographyFont.weight(.semibold))
                                     .foregroundStyle(AppTheme.primaryText)
                                     .multilineTextAlignment(.leading)
-                                Text(String(localized: "home_weekly_goal_prompt_subtitle"))
+                                Text(String(localized: "home_monthly_goal_prompt_subtitle"))
                                     .font(AppTheme.captionTypographyFont)
                                     .foregroundStyle(AppTheme.secondaryText)
                                     .multilineTextAlignment(.leading)
@@ -169,41 +194,51 @@ struct HomeView: View {
                             RoundedRectangle(cornerRadius: AppTheme.cardCornerRadius, style: .continuous)
                                 .stroke(AppTheme.cardBorder, lineWidth: AppTheme.cardStrokeWidth)
                         )
-                        .shadow(
-                            color: .black.opacity(AppTheme.cardShadowOpacity * 0.45),
-                            radius: AppTheme.cardShadowRadius * 0.5,
-                            x: 0,
-                            y: AppTheme.cardShadowY * 0.5
-                        )
                     }
                     .buttonStyle(.plain)
                     .padding(.horizontal, horizontalPadding)
                 }
 
-                // 3. カレンダー
-                HomeMemoBlueHeader(viewModel: vm, onGoalTap: {
-                    showWeeklyGoalSheet = true
+                HomeUserMenuListSection(viewModel: vm, onAddExercise: {
+                    showExercisePicker = true
+                }, onTapMaxRecord: { ex in
+                    maxWeightSheetField = vm.weightDraftByExerciseId[ex.id] ?? ""
+                    maxWeightSheet = MaxWeightSheetPayload(exerciseId: ex.id, exerciseName: ex.name)
                 })
+                .padding(.horizontal, horizontalPadding)
 
-                // 4. トレーニング開始 / 続きから再開
                 VStack(alignment: .leading, spacing: AppTheme.spacingSM) {
+                    if let simpleSaveError {
+                        Text(simpleSaveError)
+                            .font(AppTheme.captionTypographyFont)
+                            .foregroundStyle(AppTheme.destructive)
+                    }
+                    PrimaryButton(title: String(localized: "home_simple_record_cta")) {
+                        Task { await commitTodaySimpleRecord() }
+                    }
+                    .disabled(vm.exercisesReadyForSimpleCommit().isEmpty)
+
                     if vm.incompleteSession != nil {
                         PrimaryButton(title: String(localized: "home_continue_session")) {
                             sessionFlowRequest = SessionFlowRequest(draft: draftForSessionFlow())
                         }
                         .accessibilityHint(String(localized: "home_continue_session_a11y_hint"))
-                    } else {
-                        PrimaryButton(
-                            title: String(localized: "home_cta_add_today_workout")
-                        ) {
-                            showWorkoutStart = true
-                        }
                     }
                 }
                 .padding(.horizontal, horizontalPadding)
 
-                // 5. 本日のログ + 直近の実績
-                VStack(alignment: .leading, spacing: AppTheme.memoSectionGap) {
+                DisclosureGroup(isExpanded: $calendarExpanded) {
+                    HomeMemoBlueHeader(viewModel: vm, onGoalTap: {
+                        showMonthlyGoalSheet = true
+                    })
+                } label: {
+                    Text(String(localized: "home_calendar_section_title"))
+                        .font(AppTheme.bodyTypographyFont.weight(.semibold))
+                        .padding(.horizontal, horizontalPadding)
+                }
+
+                // 本日のログ + 直近の実績
+                VStack(alignment: .leading, spacing: AppTheme.cardStackSpacing) {
                     HomeMemoDayLogSection(
                         sessions: vm.todaySessions,
                         weightUnit: weightUnit,
@@ -245,8 +280,8 @@ struct HomeView: View {
                         .padding(.top, AppTheme.spacingSM)
                 }
             }
-            .padding(.top, AppTheme.spacingMD)
-            .padding(.bottom, AppTheme.spacingXL)
+            .padding(.top, AppTheme.screenEdgeTopPadding)
+            .padding(.bottom, AppTheme.screenEdgeBottomPadding)
         }
     }
 
@@ -276,6 +311,30 @@ struct HomeView: View {
             return try repo.resolveDraftForStartingWorkoutToday(base: base)
         } catch {
             return base
+        }
+    }
+
+    @MainActor
+    private func commitTodaySimpleRecord() async {
+        guard let vm = viewModel else { return }
+        let list = vm.exercisesReadyForSimpleCommit()
+        guard !list.isEmpty else { return }
+        simpleSaveError = nil
+        do {
+            let session = try SimpleWorkoutSave.commit(
+                exercises: list,
+                weightTextById: vm.weightDraftByExerciseId,
+                displayWeightUnit: weightUnit,
+                modelContext: modelContext
+            )
+            vm.clearTodaySelectionAndWeightDrafts()
+            vm.loadRecentSessions()
+            WidgetDataStore.updateFrom(modelContext: modelContext)
+            completedSession = CompletedSessionItem(id: session.id)
+            HapticHelper.success()
+        } catch {
+            simpleSaveError = error.localizedDescription
+            HapticHelper.light()
         }
     }
 

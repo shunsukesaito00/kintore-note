@@ -10,11 +10,11 @@ struct EmptyStateView: View {
     var action: (() -> Void)? = nil
 
     var body: some View {
-        VStack(spacing: AppTheme.spacingLG) {
+        VStack(spacing: AppTheme.emptyStateContentSpacing) {
             Image(systemName: icon)
-                .font(.system(size: 44))
+                .font(.system(size: AppTheme.emptyStateIconGlyphSize))
                 .foregroundStyle(AppTheme.accent)
-                .frame(width: 88, height: 88)
+                .frame(width: AppTheme.emptyStateIconPlateSize, height: AppTheme.emptyStateIconPlateSize)
                 .background(AppTheme.accentTintBackground)
                 .clipShape(RoundedRectangle(cornerRadius: AppTheme.emptyStateIconCornerRadius, style: .continuous))
                 .overlay(
@@ -31,6 +31,7 @@ struct EmptyStateView: View {
                 .font(AppTheme.bodySecondaryFont)
                 .foregroundStyle(AppTheme.secondaryText)
                 .multilineTextAlignment(.center)
+                .frame(maxWidth: 520)
             if let title = actionTitle, let action {
                 Button(action: action) {
                     Text(title)
@@ -41,8 +42,8 @@ struct EmptyStateView: View {
             }
         }
         .frame(maxWidth: .infinity)
-        .padding(.vertical, AppTheme.spacingXXL)
-        .padding(.horizontal, AppTheme.spacingLG)
+        .padding(.vertical, AppTheme.emptyStateVerticalPadding)
+        .padding(.horizontal, AppTheme.screenHorizontalPadding)
     }
 }
 

@@ -1,6 +1,11 @@
 import SwiftUI
 import SwiftData
 
+struct ExerciseNavLinkTarget: Hashable {
+    let id: UUID
+    let name: String
+}
+
 enum GrowthTab: String, CaseIterable {
     case overview
     case exercise
@@ -101,7 +106,7 @@ struct GrowthDashboardView: View {
                 Button {
                     selectedTab = tab
                 } label: {
-                    VStack(spacing: 6) {
+                    VStack(spacing: AppTheme.spacingXS) {
                         Text(tab.displayName)
                             .font(AppTheme.bodySemiboldFont)
                             .foregroundStyle(selectedTab == tab ? AppTheme.accent : AppTheme.secondaryText)
@@ -117,9 +122,9 @@ struct GrowthDashboardView: View {
                 .accessibilityAddTraits(selectedTab == tab ? .isSelected : [])
             }
         }
-        .padding(.horizontal, AppTheme.spacingLG)
-        .padding(.top, AppTheme.spacingSM)
-        .padding(.bottom, AppTheme.spacingSM)
+        .padding(.horizontal, AppTheme.screenHorizontalPaddingCompact)
+        .padding(.top, AppTheme.spacingXS)
+        .padding(.bottom, AppTheme.spacingXS)
         .background(AppTheme.cardBackground)
         .overlay(alignment: .bottom) {
             Rectangle()

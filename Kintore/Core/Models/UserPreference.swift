@@ -12,6 +12,8 @@ final class UserPreference {
     var theme: String
     /// 週あたりのトレーニング目標（完了セッション数）。0 は未設定。
     var weeklyWorkoutGoalSessions: Int
+    /// 月あたりのトレーニング目標（完了セッション数）。0 は未設定。
+    var monthlyWorkoutGoalSessions: Int
     var createdAt: Date
     var updatedAt: Date
 
@@ -21,6 +23,7 @@ final class UserPreference {
         weightUnit: String = "kg",
         theme: String = "system",
         weeklyWorkoutGoalSessions: Int = 0,
+        monthlyWorkoutGoalSessions: Int = 0,
         createdAt: Date = Date(),
         updatedAt: Date = Date()
     ) {
@@ -29,6 +32,7 @@ final class UserPreference {
         self.weightUnit = weightUnit
         self.theme = theme
         self.weeklyWorkoutGoalSessions = weeklyWorkoutGoalSessions
+        self.monthlyWorkoutGoalSessions = monthlyWorkoutGoalSessions
         self.createdAt = createdAt
         self.updatedAt = updatedAt
     }

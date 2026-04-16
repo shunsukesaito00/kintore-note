@@ -1,5 +1,8 @@
 // File: Core/Services/AdMobConfiguration.swift
 // AdMob のユニット ID。DEBUG では公式テスト ID を使い、誤クリックや計測異常を避ける。
+//
+// app-ads.txt（販売者開示）: ストアに載せたサイトのルートに公開する（本リポジトリは GitHub Pages で
+// `docs/` がサイトルートのためマスターは docs/app-ads.txt → 例: …/kintore-note/app-ads.txt）。
 
 import Foundation
 

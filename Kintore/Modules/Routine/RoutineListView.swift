@@ -43,7 +43,7 @@ struct RoutineListView: View {
                             .multilineTextAlignment(.center)
                     }
                     .frame(maxWidth: .infinity)
-                    .padding(.vertical, AppTheme.spacingXL)
+                    .padding(.vertical, AppTheme.spacingLG)
                 }
             } else {
                 Section {

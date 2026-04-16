@@ -17,7 +17,7 @@ private struct ShareCardSnapshotView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
-        .padding(AppTheme.spacingLG)
+        .padding(AppTheme.cardContentPadding)
         .frame(width: 340, alignment: .leading)
         .background(AppTheme.memoInputCellFill)
         .clipShape(RoundedRectangle(cornerRadius: AppTheme.cardCornerRadius))

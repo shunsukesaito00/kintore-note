@@ -8,6 +8,15 @@
 https://shunsukesaito00.github.io/kintore-note/support/
 ```
 
+### AdMob 用 app-ads.txt
+
+マーケティング URL を空欄にしていても、**サポート URL**（上記と同じ `github.io` サイト）を参照してクロールされることがあります。  
+リポジトリ直下ではなく **`docs/app-ads.txt`** を編集し、GitHub Pages デプロイ後に次が **生の1行**で返ることを確認してください。
+
+```
+https://shunsukesaito00.github.io/kintore-note/app-ads.txt
+```
+
 ## GitHub で Pages を有効化（初回のみ）
 
 このリポジトリでは **GitHub Actions** から `docs/` 全体をデプロイします（[`.github/workflows/deploy-pages.yml`](../../.github/workflows/deploy-pages.yml)）。

@@ -390,6 +390,24 @@ final class WorkoutStatsService {
         return days
     }
 
+    /// 種目あたりの最大重量（kg）。筋力・加重自体重のみ。
+    func maxWeightKg(for workoutExercise: WorkoutExercise) -> Double {
+        let kind = ExerciseKind(stored: workoutExercise.exercise?.exerciseKind)
+        guard kind.usesLoadVolume else { return 0 }
+        return workoutExercise.sets.compactMap(\.weight).max() ?? 0
+    }
+
+    /// セッション内の「種目別最大重量」の合計（kg）。概要の「重量」系グラフ用。
+    func totalMaxWeightKg(for session: WorkoutSession) -> Double {
+        session.workoutExercises.reduce(0) { $0 + maxWeightKg(for: $1) }
+    }
+
+    /// 期間内の全セッションについて `totalMaxWeightKg` を合算。
+    func totalMaxWeightKgInRange(from start: Date, to end: Date) throws -> Double {
+        let sessions = try WorkoutRepository(modelContext: modelContext).fetchSessions(from: start, to: end)
+        return sessions.reduce(0) { $0 + totalMaxWeightKg(for: $1) }
+    }
+
     /// 1セッションの総セット数（保存順）。
     func sessionTotalSetCount(session: WorkoutSession) -> Int {
         session.workoutExercises.reduce(0) { $0 + $1.sets.count }
@@ -459,6 +477,106 @@ final class WorkoutStatsService {
         guard !sessions.isEmpty else { return 0 }
         let totalExercises = sessions.reduce(0) { $0 + sessionExerciseCount(session: $1) }
         return Double(totalExercises) / Double(sessions.count)
+    }
+
+    /// 月ごとの完了セッション数（直近 monthCount ヶ月）。
+    func monthlySessionCounts(monthCount: Int = 6) throws -> [(monthStart: Date, count: Int)] {
+        let cal = Calendar.current
+        let now = Date()
+        guard let thisMonthStart = cal.date(from: cal.dateComponents([.year, .month], from: now)) else { return [] }
+        var result: [(Date, Int)] = []
+        for monthOffset in 0..<monthCount {
+            guard let monthStart = cal.date(byAdding: .month, value: -monthOffset, to: thisMonthStart),
+                  let monthEnd = cal.date(byAdding: .month, value: 1, to: monthStart) else { continue }
+            let c = try workoutCount(from: monthStart, to: monthEnd)
+            result.append((monthStart, c))
+        }
+        return result.sorted { $0.0 < $1.0 }
+    }
+
+    /// 週ごとの「種目別最大重量」の週合計（kg）。概要の重量推移用。
+    func weeklyTotalMaxWeightKg(weekCount: Int = 12) throws -> [(weekStart: Date, totalKg: Double)] {
+        let cal = Calendar.current
+        guard let thisWeekStart = cal.date(from: cal.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date())) else {
+            return []
+        }
+        guard let rangeStart = cal.date(byAdding: .weekOfYear, value: -(weekCount + 1), to: thisWeekStart) else {
+            return []
+        }
+        let rangeStartBound = rangeStart
+        var descriptor = FetchDescriptor<WorkoutSession>(
+            predicate: #Predicate<WorkoutSession> { session in
+                session.endedAt != nil && session.startedAt >= rangeStartBound
+            },
+            sortBy: [SortDescriptor(\.startedAt, order: .reverse)]
+        )
+        let sessions = try modelContext.fetch(descriptor)
+        var result: [(Date, Double)] = []
+        for weekOffset in 0..<weekCount {
+            guard let weekStart = cal.date(byAdding: .weekOfYear, value: -weekOffset, to: thisWeekStart),
+                  let weekEnd = cal.date(byAdding: .day, value: 7, to: weekStart) else { continue }
+            var sum: Double = 0
+            for session in sessions {
+                guard session.startedAt >= weekStart, session.startedAt < weekEnd else { continue }
+                sum += totalMaxWeightKg(for: session)
+            }
+            result.append((weekStart, sum))
+        }
+        return result.sorted { $0.0 < $1.0 }
+    }
+
+    /// 今月の部位別総負荷（比率表示用）。当月1日〜月末までの範囲。
+    func currentMonthVolumeByBodyPart() throws -> [(bodyPart: String, volume: Double)] {
+        let cal = Calendar.current
+        let now = Date()
+        guard let monthStart = cal.date(from: cal.dateComponents([.year, .month], from: now)),
+              let nextMonth = cal.date(byAdding: .month, value: 1, to: monthStart) else { return [] }
+        let sessions = try WorkoutRepository(modelContext: modelContext).fetchSessions(from: monthStart, to: nextMonth)
+        var map: [String: Double] = [:]
+        for session in sessions {
+            for we in session.workoutExercises {
+                let part = we.exercise?.bodyPartTag.isEmpty == false ? we.exercise!.bodyPartTag : "その他"
+                map[part, default: 0] += totalVolume(for: we)
+            }
+        }
+        return map.map { ($0.key, $0.value) }.sorted { $0.1 > $1.1 }
+    }
+
+    /// 今月の部位別レップ合計を「暦日数」で割った月平均（1日あたり回数）。
+    func currentMonthAverageRepsPerDayByBodyPart() throws -> [(bodyPart: String, average: Double)] {
+        let cal = Calendar.current
+        let now = Date()
+        guard let monthStart = cal.date(from: cal.dateComponents([.year, .month], from: now)),
+              let nextMonth = cal.date(byAdding: .month, value: 1, to: monthStart) else { return [] }
+        let daysInMonth = cal.dateComponents([.day], from: monthStart, to: nextMonth).day ?? 30
+        guard daysInMonth > 0 else { return [] }
+        let agg = try bodyPartAggregates(in: (start: monthStart, end: nextMonth))
+        return agg.repCounts.map { (bodyPart: $0.bodyPart, average: Double($0.reps) / Double(daysInMonth)) }
+            .sorted { $0.average > $1.average }
+    }
+
+    /// 今月の種目別レップ合計を暦日数で割った月平均（1日あたり回数）。
+    func currentMonthAverageRepsPerDayByExercise() throws -> [(exerciseId: UUID, name: String, average: Double)] {
+        let cal = Calendar.current
+        guard let monthStart = cal.date(from: cal.dateComponents([.year, .month], from: Date())),
+              let nextMonth = cal.date(byAdding: .month, value: 1, to: monthStart) else { return [] }
+        let daysInMonth = cal.dateComponents([.day], from: monthStart, to: nextMonth).day ?? 30
+        guard daysInMonth > 0 else { return [] }
+        let sessions = try WorkoutRepository(modelContext: modelContext).fetchSessions(from: monthStart, to: nextMonth)
+        var repByExercise: [UUID: (name: String, reps: Int)] = [:]
+        for session in sessions {
+            for we in session.workoutExercises {
+                guard let ex = we.exercise else { continue }
+                let kind = ExerciseKind(stored: ex.exerciseKind)
+                guard kind == .strength || kind == .weightedBodyweight else { continue }
+                let reps = we.sets.reduce(0) { $0 + max(0, $1.reps ?? 0) }
+                let cur = repByExercise[ex.id, default: (ex.name, 0)]
+                repByExercise[ex.id] = (cur.name, cur.reps + reps)
+            }
+        }
+        return repByExercise.map { id, pair in
+            (exerciseId: id, name: pair.name, average: Double(pair.reps) / Double(daysInMonth))
+        }.sorted { $0.average > $1.average }
     }
 
     /// 月ごとの総挙上（直近 monthCount ヶ月）。月間ボリューム比較グラフ用。

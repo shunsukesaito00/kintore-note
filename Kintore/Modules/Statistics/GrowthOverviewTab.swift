@@ -5,20 +5,20 @@ import Charts
 // MARK: - Primary Chart Selector
 
 private enum OverviewChartKind: String, CaseIterable {
-    case volume
+    case maxWeight
     case sessions
 
     var label: String {
         switch self {
-        case .volume:   return String(localized: "overview_chart_volume")
-        case .sessions: return String(localized: "overview_chart_sessions")
+        case .maxWeight: return String(localized: "overview_chart_max_weight_sum")
+        case .sessions:  return String(localized: "overview_chart_sessions")
         }
     }
 
     var icon: String {
         switch self {
-        case .volume:   return "scalemass.fill"
-        case .sessions: return "figure.strengthtraining.traditional"
+        case .maxWeight: return "scalemass.fill"
+        case .sessions:  return "figure.strengthtraining.traditional"
         }
     }
 }
@@ -29,11 +29,11 @@ struct GrowthOverviewTab: View {
 
     @Environment(\.modelContext) private var modelContext
     @State private var showWeeklyGoalSheet = false
-    @State private var selectedChart: OverviewChartKind = .volume
+    @State private var selectedChart: OverviewChartKind = .maxWeight
 
     var body: some View {
         ScrollView {
-            VStack(spacing: AppTheme.memoSectionGap) {
+            VStack(spacing: AppTheme.sectionBlockSpacing) {
                 snapshotCard
                 if let insight = viewModel.insightMessage {
                     insightBanner(message: insight, icon: viewModel.insightIcon)
@@ -43,13 +43,14 @@ struct GrowthOverviewTab: View {
                 if !viewModel.trainingDaysLast12Weeks.isEmpty {
                     heatmapCard
                 }
-                if !viewModel.monthlyVolumes.isEmpty {
-                    monthlyVolumeCard
+                if !viewModel.monthlySessionCounts.isEmpty {
+                    monthlySessionCard
                 }
                 recentStatsCard
             }
-            .padding(.horizontal, AppTheme.spacingLG)
-            .padding(.vertical, AppTheme.spacingMD)
+            .padding(.horizontal, AppTheme.screenHorizontalPaddingCompact)
+            .padding(.top, AppTheme.screenEdgeTopPadding)
+            .padding(.bottom, AppTheme.screenEdgeBottomPadding)
         }
         .background(AppTheme.appBackground)
         .sheet(isPresented: $showWeeklyGoalSheet) {
@@ -67,16 +68,22 @@ struct GrowthOverviewTab: View {
         SectionCard {
             VStack(spacing: AppTheme.spacingMD) {
                 HStack(spacing: 0) {
-                    weekSessionColumn
-                    snapshotDivider
-                    volumeColumn(
-                        label: String(localized: "growth_volume_week_label"),
-                        value: viewModel.weekVolume
+                    snapshotStatColumn(
+                        title: String(localized: "growth_snapshot_training_days"),
+                        value: "\(viewModel.recent30DaysTrainingCount)",
+                        footnote: String(localized: "growth_snapshot_training_days_hint")
                     )
                     snapshotDivider
-                    volumeColumn(
-                        label: String(localized: "growth_volume_month_label"),
-                        value: viewModel.monthVolume
+                    snapshotStatColumn(
+                        title: String(localized: "growth_snapshot_weight_week"),
+                        value: AppFormatters.formatWeightNumber(viewModel.weekMaxWeightKg),
+                        footnote: weightUnit
+                    )
+                    snapshotDivider
+                    snapshotStatColumn(
+                        title: String(localized: "growth_snapshot_sessions_month"),
+                        value: "\(viewModel.workoutCountMonth)",
+                        footnote: String(localized: "growth_month_short")
                     )
                 }
 
@@ -96,59 +103,17 @@ struct GrowthOverviewTab: View {
         }
     }
 
-    private var weekSessionColumn: some View {
+    private func snapshotStatColumn(title: String, value: String, footnote: String) -> some View {
         VStack(spacing: 4) {
-            ZStack {
-                Circle()
-                    .stroke(AppTheme.accentSoft, lineWidth: 5)
-                if viewModel.weeklyWorkoutGoalSessions > 0 {
-                    Circle()
-                        .trim(from: 0, to: min(1.0, CGFloat(viewModel.workoutCountWeek) / CGFloat(viewModel.weeklyWorkoutGoalSessions)))
-                        .stroke(AppTheme.accent, style: StrokeStyle(lineWidth: 5, lineCap: .round))
-                        .rotationEffect(.degrees(-90))
-                }
-                Text("\(viewModel.workoutCountWeek)")
-                    .font(.system(.title2, design: .rounded).weight(.bold))
-                    .foregroundStyle(AppTheme.accent)
-            }
-            .frame(width: 54, height: 54)
-
-            Text(String(localized: "growth_hero_week"))
-                .font(AppTheme.captionTypographyFont)
-                .foregroundStyle(AppTheme.secondaryText)
-
-            if viewModel.weeklyWorkoutGoalSessions > 0 {
-                Text("\(viewModel.workoutCountWeek)/\(viewModel.weeklyWorkoutGoalSessions)")
-                    .font(.caption2.weight(.medium))
-                    .foregroundStyle(
-                        viewModel.workoutCountWeek >= viewModel.weeklyWorkoutGoalSessions
-                            ? AppTheme.accent : AppTheme.tertiaryText
-                    )
-            } else {
-                Button {
-                    showWeeklyGoalSheet = true
-                } label: {
-                    Text(String(localized: "overview_set_goal"))
-                        .font(.caption2.weight(.medium))
-                        .foregroundStyle(AppTheme.accent)
-                }
-                .buttonStyle(.plain)
-            }
-        }
-        .frame(maxWidth: .infinity)
-    }
-
-    private func volumeColumn(label: String, value: Double) -> some View {
-        VStack(spacing: 4) {
-            Text(AppFormatters.formatWeightNumber(value))
+            Text(value)
                 .font(.system(.title3, design: .rounded).weight(.bold))
                 .foregroundStyle(AppTheme.accent)
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
-            Text(weightUnit)
+            Text(footnote)
                 .font(.caption2.weight(.medium))
                 .foregroundStyle(AppTheme.tertiaryText)
-            Text(label)
+            Text(title)
                 .font(AppTheme.captionTypographyFont)
                 .foregroundStyle(AppTheme.secondaryText)
                 .multilineTextAlignment(.center)
@@ -230,8 +195,8 @@ struct GrowthOverviewTab: View {
                 chartKindPicker
 
                 switch selectedChart {
-                case .volume:
-                    volumeTrendChart
+                case .maxWeight:
+                    maxWeightTrendChart
                 case .sessions:
                     sessionBarChart
                 }
@@ -270,25 +235,25 @@ struct GrowthOverviewTab: View {
     }
 
     @ViewBuilder
-    private var volumeTrendChart: some View {
-        if !viewModel.weeklyTotalVolumes.isEmpty {
+    private var maxWeightTrendChart: some View {
+        if !viewModel.weeklyTotalMaxWeightKg.isEmpty {
             Chart {
-                ForEach(viewModel.weeklyTotalVolumes, id: \.weekStart) { item in
-                    AreaMark(x: .value("Week", item.weekStart), y: .value("Vol", item.volume))
+                ForEach(viewModel.weeklyTotalMaxWeightKg, id: \.weekStart) { item in
+                    AreaMark(x: .value("Week", item.weekStart), y: .value("Kg", item.totalKg))
                         .interpolationMethod(.catmullRom)
                         .foregroundStyle(ModernChartStyle.lineAreaGradient(for: AppTheme.accent))
-                    LineMark(x: .value("Week", item.weekStart), y: .value("Vol", item.volume))
+                    LineMark(x: .value("Week", item.weekStart), y: .value("Kg", item.totalKg))
                         .interpolationMethod(.catmullRom)
                         .foregroundStyle(AppTheme.accent)
                         .lineStyle(ModernChartStyle.lineStroke())
-                    PointMark(x: .value("Week", item.weekStart), y: .value("Vol", item.volume))
+                    PointMark(x: .value("Week", item.weekStart), y: .value("Kg", item.totalKg))
                         .foregroundStyle(AppTheme.accent)
                         .symbolSize(18)
                 }
             }
             .chartYAxisLabel(weightUnit)
             .modernChartWeekDateAxes(yAxisDesiredCount: 4)
-            .frame(height: 180)
+            .frame(height: AppTheme.statisticsChartHeightStandard)
         } else {
             chartEmptyState
         }
@@ -305,7 +270,7 @@ struct GrowthOverviewTab: View {
                 }
             }
             .modernChartWeekDateAxes(dateDesiredCount: 6, yAxisDesiredCount: 3)
-            .frame(height: 180)
+            .frame(height: AppTheme.statisticsChartHeightStandard)
         } else {
             chartEmptyState
         }
@@ -322,7 +287,7 @@ struct GrowthOverviewTab: View {
                     .font(AppTheme.captionTypographyFont)
                     .foregroundStyle(AppTheme.secondaryText)
             }
-            .padding(.vertical, AppTheme.spacingXL)
+            .padding(.vertical, AppTheme.spacingLG)
             Spacer()
         }
     }
@@ -338,14 +303,14 @@ struct GrowthOverviewTab: View {
                     formatted: "\(viewModel.weekSessionDelta > 0 ? "+" : "")\(viewModel.weekSessionDelta)"
                 )
                 overviewDeltaChip(
-                    label: String(localized: "growth_delta_volume_week"),
-                    isPositive: viewModel.weekVolumeDelta >= 0,
-                    formatted: "\(viewModel.weekVolumeDelta >= 0 ? "+" : "")\(AppFormatters.formatWeightNumber(viewModel.weekVolumeDelta))\(weightUnit)"
+                    label: String(localized: "growth_delta_weight_week"),
+                    isPositive: viewModel.weekMaxWeightDelta >= 0,
+                    formatted: "\(viewModel.weekMaxWeightDelta >= 0 ? "+" : "")\(AppFormatters.formatWeightNumber(viewModel.weekMaxWeightDelta))\(weightUnit)"
                 )
                 overviewDeltaChip(
-                    label: String(localized: "growth_delta_volume_month"),
-                    isPositive: viewModel.monthVolumeDelta >= 0,
-                    formatted: "\(viewModel.monthVolumeDelta >= 0 ? "+" : "")\(AppFormatters.formatWeightNumber(viewModel.monthVolumeDelta))\(weightUnit)"
+                    label: String(localized: "growth_delta_sessions_month"),
+                    isPositive: viewModel.monthSessionDelta >= 0,
+                    formatted: "\(viewModel.monthSessionDelta >= 0 ? "+" : "")\(viewModel.monthSessionDelta)"
                 )
             }
         }
@@ -378,21 +343,21 @@ struct GrowthOverviewTab: View {
 
     // MARK: - 5. Monthly Volume
 
-    private var monthlyVolumeCard: some View {
+    private var monthlySessionCard: some View {
         SectionCard {
             VStack(alignment: .leading, spacing: AppTheme.spacingSM) {
-                SectionHeaderView(title: String(localized: "growth_overview_monthly_volume"))
-                Chart(viewModel.monthlyVolumes, id: \.monthStart) { item in
+                SectionHeaderView(title: String(localized: "growth_overview_monthly_sessions"))
+                Chart(viewModel.monthlySessionCounts, id: \.monthStart) { item in
                     BarMark(
                         x: .value("月", item.monthStart, unit: .month),
-                        y: .value("挙上量", item.volume)
+                        y: .value("Sessions", item.count)
                     )
                     .foregroundStyle(AppTheme.accentGradient)
                     .cornerRadius(5)
                 }
-                .chartYAxisLabel(weightUnit)
+                .chartYAxisLabel(String(localized: "growth_chart_axis_sessions"))
                 .modernChartMonthBarAxes()
-                .frame(height: 160)
+                .frame(height: AppTheme.statisticsChartHeightStandard)
             }
         }
     }
@@ -416,18 +381,6 @@ struct GrowthOverviewTab: View {
                         value: AppFormatters.formatDuration(seconds: Int(viewModel.averageDuration)),
                         unit: "",
                         label: String(localized: "growth_overview_avg_duration")
-                    )
-                    compactStat(
-                        icon: "list.bullet",
-                        value: String(format: "%.1f", viewModel.averageSets),
-                        unit: String(localized: "unit_sets"),
-                        label: String(localized: "growth_overview_avg_sets")
-                    )
-                    compactStat(
-                        icon: "dumbbell",
-                        value: String(format: "%.1f", viewModel.averageExercises),
-                        unit: String(localized: "unit_exercises"),
-                        label: String(localized: "growth_overview_avg_exercises")
                     )
                 }
             }

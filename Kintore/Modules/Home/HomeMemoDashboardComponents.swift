@@ -9,7 +9,7 @@ struct HomeMemoBlueHeader: View {
     @Bindable var viewModel: HomeViewModel
     var onGoalTap: (() -> Void)?
 
-    private var pad: CGFloat { AppTheme.sessionContentHorizontalPadding }
+    private var pad: CGFloat { AppTheme.screenHorizontalPadding }
 
     var body: some View {
         VStack(spacing: 10) {
@@ -25,7 +25,7 @@ struct HomeMemoBlueHeader: View {
                 )
             }
         }
-        .padding(14)
+        .padding(AppTheme.cardContentPadding)
         .background(AppTheme.cardBackground)
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .overlay(
@@ -606,6 +606,156 @@ struct HomeMemoDayLogSection: View {
         .padding(.horizontal, 6)
         .background(hasData ? AppTheme.accentSoft.opacity(0.3) : Color(uiColor: .systemGray6))
         .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+    }
+}
+
+// MARK: - Simple home (monthly goal & user menus)
+
+struct HomeMonthlyGoalCard: View {
+    let monthGoal: Int
+    let monthCount: Int
+    let onEdit: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: AppTheme.spacingSM) {
+            HStack {
+                Text(String(localized: "home_monthly_goal_title"))
+                    .font(AppTheme.bodyTypographyFont.weight(.semibold))
+                Spacer()
+                Button(action: onEdit) {
+                    Text(String(localized: "home_monthly_goal_edit"))
+                        .font(AppTheme.captionTypographyFont.weight(.semibold))
+                }
+                .buttonStyle(.plain)
+            }
+            if monthGoal > 0 {
+                ProgressView(value: Double(min(monthCount, monthGoal)), total: Double(max(monthGoal, 1))) {
+                    Text(String(format: String(localized: "home_monthly_goal_progress_format"), monthCount, monthGoal))
+                        .font(AppTheme.captionTypographyFont)
+                        .foregroundStyle(AppTheme.secondaryText)
+                }
+                .tint(AppTheme.accent)
+            } else {
+                Text(String(localized: "home_monthly_goal_not_set"))
+                    .font(AppTheme.captionTypographyFont)
+                    .foregroundStyle(AppTheme.secondaryText)
+            }
+        }
+        .padding(AppTheme.spacingMD)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(AppTheme.cardBackground)
+        .clipShape(RoundedRectangle(cornerRadius: AppTheme.cardCornerRadius, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: AppTheme.cardCornerRadius, style: .continuous)
+                .stroke(AppTheme.cardBorder, lineWidth: AppTheme.cardStrokeWidth)
+        )
+    }
+}
+
+struct HomeUserMenuListSection: View {
+    @Bindable var viewModel: HomeViewModel
+    @AppStorage(AppTheme.weightUnitStorageKey) private var weightUnit: String = "kg"
+    var onAddExercise: () -> Void
+    var onTapMaxRecord: (Exercise) -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: AppTheme.spacingMD) {
+            HStack(alignment: .firstTextBaseline) {
+                Text(String(localized: "home_user_menu_section_title"))
+                    .font(AppTheme.bodyTypographyFont.weight(.semibold))
+                Spacer(minLength: 8)
+                Button {
+                    onAddExercise()
+                } label: {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.body.weight(.semibold))
+                        .foregroundStyle(AppTheme.accent)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(String(localized: "home_user_menu_add_a11y"))
+            }
+
+            if viewModel.userMenuExercises.isEmpty {
+                Button {
+                    onAddExercise()
+                } label: {
+                    Text(String(localized: "home_user_menu_empty"))
+                        .font(AppTheme.captionTypographyFont)
+                        .foregroundStyle(AppTheme.accent)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .buttonStyle(.plain)
+            } else {
+                VStack(spacing: 0) {
+                    ForEach(Array(viewModel.userMenuExercises.enumerated()), id: \.element.id) { index, ex in
+                        if index > 0 {
+                            Divider().opacity(0.35)
+                        }
+                        homeMenuRow(exercise: ex)
+                    }
+                }
+            }
+        }
+        .padding(AppTheme.spacingMD)
+        .background(AppTheme.cardBackground)
+        .clipShape(RoundedRectangle(cornerRadius: AppTheme.cardCornerRadius, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: AppTheme.cardCornerRadius, style: .continuous)
+                .stroke(AppTheme.cardBorder, lineWidth: AppTheme.cardStrokeWidth)
+        )
+    }
+
+    @ViewBuilder
+    private func homeMenuRow(exercise ex: Exercise) -> some View {
+        let hasMax = viewModel.hasValidWeightDraft(for: ex.id)
+        HStack(alignment: .center, spacing: AppTheme.spacingSM) {
+            Toggle(isOn: Binding(
+                get: { viewModel.selectedTodayExerciseIds.contains(ex.id) },
+                set: { viewModel.setTodayExerciseSelected(ex.id, selected: $0) }
+            )) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(ex.name)
+                        .font(AppTheme.bodyTypographyFont)
+                        .foregroundStyle(AppTheme.primaryText)
+                    Text(ex.bodyPartTag)
+                        .font(AppTheme.captionTypographyFont)
+                        .foregroundStyle(AppTheme.secondaryText)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .tint(AppTheme.accent)
+            .accessibilityHint(String(localized: "home_user_menu_toggle_a11y_hint"))
+
+            if hasMax {
+                Text(maxDraftLabel(exerciseId: ex.id))
+                    .font(AppTheme.captionTypographyFont.weight(.medium))
+                    .foregroundStyle(AppTheme.accent)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+            }
+
+            Button {
+                onTapMaxRecord(ex)
+            } label: {
+                Text(String(localized: "home_max_record_button"))
+                    .font(AppTheme.captionTypographyFont.weight(.semibold))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.75)
+            }
+            .buttonStyle(.bordered)
+            .controlSize(.small)
+            .disabled(!viewModel.selectedTodayExerciseIds.contains(ex.id))
+            .accessibilityLabel(String(localized: "home_max_record_button"))
+        }
+        .padding(.vertical, AppTheme.spacingXS)
+    }
+
+    private func maxDraftLabel(exerciseId: UUID) -> String {
+        let raw = (viewModel.weightDraftByExerciseId[exerciseId] ?? "")
+            .replacingOccurrences(of: ",", with: ".")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let v = Double(raw) else { return "—" }
+        return "\(AppFormatters.formatWeightNumber(v))\(weightUnit)"
     }
 }
 

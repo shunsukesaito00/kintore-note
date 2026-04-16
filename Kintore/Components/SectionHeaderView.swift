@@ -17,8 +17,7 @@ struct SectionHeaderView: View {
                 .lineLimit(4)
                 .fixedSize(horizontal: false, vertical: true)
         }
-        .padding(.top, AppTheme.spacingSM)
-        .padding(.bottom, AppTheme.spacingXS)
+        .padding(.bottom, AppTheme.sectionHeaderBottomSpacing)
         .accessibilityAddTraits(.isHeader)
     }
 }

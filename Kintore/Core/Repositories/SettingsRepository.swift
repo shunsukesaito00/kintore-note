@@ -10,6 +10,7 @@ protocol SettingsRepositoryProtocol {
     func updateTheme(_ theme: String) throws
     func updateDefaultRestSeconds(_ seconds: Int) throws
     func updateWeeklyWorkoutGoalSessions(_ count: Int) throws
+    func updateMonthlyWorkoutGoalSessions(_ count: Int) throws
 }
 
 final class SettingsRepository: SettingsRepositoryProtocol {
@@ -28,7 +29,13 @@ final class SettingsRepository: SettingsRepositoryProtocol {
 
     func createDefaultIfNeeded() throws {
         if try fetchUserPreference() != nil { return }
-        let pref = UserPreference(defaultRestSeconds: 90, weightUnit: "kg", theme: "system", weeklyWorkoutGoalSessions: 0)
+        let pref = UserPreference(
+            defaultRestSeconds: 90,
+            weightUnit: "kg",
+            theme: "system",
+            weeklyWorkoutGoalSessions: 0,
+            monthlyWorkoutGoalSessions: 0
+        )
         modelContext.insert(pref)
         try modelContext.save()
     }
@@ -57,6 +64,13 @@ final class SettingsRepository: SettingsRepositoryProtocol {
     func updateWeeklyWorkoutGoalSessions(_ count: Int) throws {
         guard let pref = try fetchUserPreference() else { return }
         pref.weeklyWorkoutGoalSessions = max(0, min(7, count))
+        pref.updatedAt = Date()
+        try modelContext.save()
+    }
+
+    func updateMonthlyWorkoutGoalSessions(_ count: Int) throws {
+        guard let pref = try fetchUserPreference() else { return }
+        pref.monthlyWorkoutGoalSessions = max(0, min(31, count))
         pref.updatedAt = Date()
         try modelContext.save()
     }

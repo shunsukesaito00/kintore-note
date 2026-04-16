@@ -381,13 +381,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kintore Note"
+            "value" : "Easy Strength Log"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kintore Note"
+            "value" : "らくらく筋トレ記録"
           }
         }
       }
@@ -398,13 +398,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "#KintoreNote"
+            "value" : "#RakurakuKinore"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "#KintoreNote"
+            "value" : "#らくらく筋トレ記録"
           }
         }
       }
@@ -1135,7 +1135,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "お疲れさまでした！"
+            "value" : "頑張ったね！"
           }
         }
       }
@@ -1254,7 +1254,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ワークアウト完了"
+            "value" : "記録完了"
           }
         }
       }
@@ -2772,6 +2772,23 @@
         }
       }
     },
+    "growth_chart_axis_sessions" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sessions"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "回"
+          }
+        }
+      }
+    },
     "growth_col_part" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -2840,6 +2857,23 @@
         }
       }
     },
+    "growth_delta_sessions_month" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sessions vs last month"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "筋トレ回数 先月比"
+          }
+        }
+      }
+    },
     "growth_delta_sessions_week" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -2887,6 +2921,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ボリューム先週比"
+          }
+        }
+      }
+    },
+    "growth_delta_weight_week" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weight vs last week"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重量 先週比"
           }
         }
       }
@@ -3095,6 +3146,23 @@
         }
       }
     },
+    "growth_month_short" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This month"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今月"
+          }
+        }
+      }
+    },
     "growth_overview_avg_duration" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -3261,6 +3329,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "直近%lld週"
+          }
+        }
+      }
+    },
+    "growth_overview_monthly_sessions" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monthly sessions"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "月別の筋トレ回数"
           }
         }
       }
@@ -3571,6 +3656,57 @@
         }
       }
     },
+    "growth_records_month_avg_reps_exercise" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avg reps per day by exercise"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "各メニューの月平均回数（1日あたり）"
+          }
+        }
+      }
+    },
+    "growth_records_month_avg_reps_part" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avg reps per day by body part"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "各部位の月平均回数（1日あたり）"
+          }
+        }
+      }
+    },
+    "growth_records_month_part_balance" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This month: body part balance"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今月の部位バランス"
+          }
+        }
+      }
+    },
     "growth_records_monthly_volume_part" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -3652,6 +3788,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "自己ベスト更新タイムライン"
+          }
+        }
+      }
+    },
+    "growth_records_reps_per_day_unit" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "reps/day"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "回/日"
           }
         }
       }
@@ -3945,6 +4098,74 @@
         }
       }
     },
+    "growth_snapshot_sessions_month" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sessions this month"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今月の筋トレ回数"
+          }
+        }
+      }
+    },
+    "growth_snapshot_training_days" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Training days (30d)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "トレーニング日数"
+          }
+        }
+      }
+    },
+    "growth_snapshot_training_days_hint" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last 30 days"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "直近30日"
+          }
+        }
+      }
+    },
+    "growth_snapshot_weight_week" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weight this week"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今週の重量"
+          }
+        }
+      }
+    },
     "growth_stats_free_period_footnote" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -3958,6 +4179,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "無料版では長期グラフの表示期間が短めです。プレミアムでさらに遡って比較できます。"
+          }
+        }
+      }
+    },
+    "growth_stock_max_weight" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Max"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最大"
           }
         }
       }
@@ -4251,6 +4489,23 @@
         }
       }
     },
+    "home_calendar_section_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calendar"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カレンダー"
+          }
+        }
+      }
+    },
     "home_continue_session" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -4349,6 +4604,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "選択日のログ"
+          }
+        }
+      }
+    },
+    "home_detailed_record_cta" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Full session logging"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "従来どおり詳細に記録"
           }
         }
       }
@@ -4506,6 +4778,108 @@
         }
       }
     },
+    "home_monthly_goal_edit" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "編集"
+          }
+        }
+      }
+    },
+    "home_monthly_goal_not_set" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No monthly goal set"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "月の目標が未設定です"
+          }
+        }
+      }
+    },
+    "home_monthly_goal_progress_format" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld / %lld sessions"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld / %lld 回"
+          }
+        }
+      }
+    },
+    "home_monthly_goal_prompt_subtitle" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Track how many sessions you want this month"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今月の完了回数の目安を決めましょう"
+          }
+        }
+      }
+    },
+    "home_monthly_goal_prompt_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set a monthly training goal"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今月のトレーニング目標を設定"
+          }
+        }
+      }
+    },
+    "home_monthly_goal_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This month’s goal"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今月のトレーニング目標"
+          }
+        }
+      }
+    },
     "home_open_full_history" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -4536,6 +4910,176 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "直近の実績"
+          }
+        }
+      }
+    },
+    "home_simple_record_cta" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finish today's log"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日の記録を完了"
+          }
+        }
+      }
+    },
+    "home_max_record_button" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log max"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MAXを記録"
+          }
+        }
+      }
+    },
+    "home_max_weight_sheet_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Max weight"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最大重量"
+          }
+        }
+      }
+    },
+    "home_max_weight_sheet_hint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter today’s best weight for this exercise."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日のベスト重量を入力してください。"
+          }
+        }
+      }
+    },
+    "home_user_menu_add_a11y" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add exercise to menu"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メニューに種目を追加"
+          }
+        }
+      }
+    },
+    "home_user_menu_toggle_a11y_hint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn on if you trained this exercise today."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日この種目をトレーニングした場合はオンにします。"
+          }
+        }
+      }
+    },
+    "settings_section_optional_logging" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Optional"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "オプション"
+          }
+        }
+      }
+    },
+    "settings_detailed_workout_entry" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log sets & reps (advanced)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セット・回数で詳細に記録"
+          }
+        }
+      }
+    },
+    "settings_detailed_workout_footer" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Optional. Use when you want per-set logging instead of max weight on Home."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "任意です。ホームの最大重量だけでなく、セットごとに記録したいときに使います。"
+          }
+        }
+      }
+    },
+    "settings_detailed_workout_a11y_hint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens full workout logging."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "従来のワークアウト記録画面を開きます。"
           }
         }
       }
@@ -4655,6 +5199,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "TOTAL %lld 日"
+          }
+        }
+      }
+    },
+    "home_user_menu_empty" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add an exercise"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "種目を追加する"
+          }
+        }
+      }
+    },
+    "home_user_menu_section_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My exercises"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "マイメニュー（追加した種目）"
           }
         }
       }
@@ -5005,13 +5583,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kintore Note"
+            "value" : "Easy Strength Log"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kintore Note"
+            "value" : "らくらく筋トレ記録"
           }
         }
       }
@@ -5339,6 +5917,57 @@
         }
       }
     },
+    "model_store_sandbox_fallback_message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Workouts could not be opened from the shared App Group store. The app switched to on-device storage only. Past data in the group container may be unavailable until the original issue is fixed (try Settings → delete local store after backup, or reinstall). Check Settings → About for the technical summary."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有ストレージ（App Group）上のデータベースを開けなかったため、この端末のアプリ専用の保存先で起動しています。共有側の過去データは読めないことがあります（設定のエラー要約の確認・バックアップ後の保存データ削除・再インストールなど）。設定のアプリ情報にも技術的な詳細が出ます。"
+          }
+        }
+      }
+    },
+    "model_store_sandbox_fallback_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Using on-device database"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "端末内のみのデータベースで起動しています"
+          }
+        }
+      }
+    },
+    "model_store_sandbox_recovery_note_format" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not open shared store (%1$@). Switched to app-local storage. Details: %2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有コンテナ内のデータベースを開けませんでした（%1$@）。この端末のアプリ専用領域に切り替えました。詳細: %2$@"
+          }
+        }
+      }
+    },
     "model_store_inmemory_title" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -5352,6 +5981,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "保存データを読み込めませんでした"
+          }
+        }
+      }
+    },
+    "monthly_goal_sheet_instruction" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap a number to save and close."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "回数をタップすると保存して閉じます。"
+          }
+        }
+      }
+    },
+    "monthly_goal_sheet_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monthly training goal"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今月のトレーニング目標"
           }
         }
       }
@@ -5430,13 +6093,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kintore Note"
+            "value" : "Easy Strength Log"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kintore Note"
+            "value" : "らくらく筋トレ記録"
           }
         }
       }
@@ -5549,13 +6212,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kintore Note"
+            "value" : "Easy Strength Log"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kintore Note"
+            "value" : "らくらく筋トレ記録"
           }
         }
       }
@@ -5777,6 +6440,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "今すぐ記録"
+          }
+        }
+      }
+    },
+    "overview_chart_max_weight_sum" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weight (sum of bests)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重量（種目別最大の合計）"
           }
         }
       }
@@ -8314,6 +8994,227 @@
         }
       }
     },
+    "settings_model_store_last_error_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last database open error (support)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "直近のデータベースを開けなかった記録（サポート用）"
+          }
+        }
+      }
+    },
+    "settings_model_store_last_error_footer" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shown only after a failed open. It clears when the app opens the on-device store successfully again."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "起動時に端末の保存先を開けなかった場合にのみ表示されます。正常に開けるようになると消えます。"
+          }
+        }
+      }
+    },
+    "settings_model_store_copy_error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy error text"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エラー文をコピー"
+          }
+        }
+      }
+    },
+    "settings_model_store_erase_button" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete local database on next launch…"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次回起動時にローカルDBを削除…"
+          }
+        }
+      }
+    },
+    "settings_model_store_erase_confirm_destructive" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schedule deletion"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "削除を予約"
+          }
+        }
+      }
+    },
+    "settings_model_store_erase_confirm_message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Workouts and related data stored on this device may be removed. Export a backup first if you need a copy. The app will delete SwiftData files on the next cold start, then try opening a fresh store."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この端末に保存されたトレーニング記録などが消える場合があります。必要なら先にCSVエクスポート等でバックアップしてください。次回アプリを完全に終了してから起動したときに SwiftData のファイルを削除し、新しい保存先を開き直します。"
+          }
+        }
+      }
+    },
+    "settings_model_store_erase_confirm_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete local database?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ローカルデータベースを削除しますか？"
+          }
+        }
+      }
+    },
+    "settings_model_store_erase_scheduled_message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deletion is scheduled. Fully quit the app (swipe away from the app switcher), then launch again."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "削除を予約しました。アプリを完全終了（アプリスイッチャーから上にスワイプ）してから、もう一度起動してください。"
+          }
+        }
+      }
+    },
+    "settings_model_store_erase_scheduled_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scheduled"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "予約しました"
+          }
+        }
+      }
+    },
+    "settings_model_store_migration_hint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This message may indicate a schema migration issue. If it persists after an update, use “Delete local database on next launch” after exporting a backup, or reinstall the app."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スキーマやマイグレーションに関する失敗の可能性があります。アップデート後も続く場合は、バックアップを取ったうえで「次回起動時にローカルDBを削除」を試すか、アプリの再インストールを検討してください。"
+          }
+        }
+      }
+    },
+    "settings_model_store_sandbox_active_body" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The shared App Group store could not be opened, so new data is saved only inside this app’s sandbox. Data in the group container is not used in this session."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有コンテナ（App Group）のデータベースを開けなかったため、このセッションではアプリ専用領域にのみ保存しています。共有側のデータは参照していません。"
+          }
+        }
+      }
+    },
+    "settings_model_store_sandbox_active_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On-device-only store (fallback)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "端末内のみの保存（フォールバック）"
+          }
+        }
+      }
+    },
+    "settings_model_store_pending_erase_banner" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Local database deletion is scheduled for the next launch. Fully quit the app, then reopen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次回起動時にローカルデータベースを削除する予定です。アプリを完全終了してから再度起動してください。"
+          }
+        }
+      }
+    },
     "settings_appearance" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -9198,6 +10099,57 @@
         }
       }
     },
+    "settings_monthly_workout_goal" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monthly training goal"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今月のトレーニング目標"
+          }
+        }
+      }
+    },
+    "settings_monthly_workout_goal_edit" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit monthly goal"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "月の目標を編集"
+          }
+        }
+      }
+    },
+    "settings_monthly_workout_goal_times_format" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d sessions per month"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "月%d回"
+          }
+        }
+      }
+    },
     "settings_notification_auth_status_authorized" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -10054,13 +11006,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Install Kintore Note on your Apple Watch from the Watch app on iPhone."
+            "value" : "Install Easy Strength Log on your Apple Watch from the Watch app on iPhone."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "iPhone の Watch アプリから Kintore Note を Apple Watch にインストールしてください。"
+            "value" : "iPhone の Watch アプリから らくらく筋トレ記録 を Apple Watch にインストールしてください。"
           }
         }
       }
@@ -10503,6 +11455,108 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ワークアウト: %lld回"
+          }
+        }
+      }
+    },
+    "simple_record_done" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完了"
+          }
+        }
+      }
+    },
+    "simple_record_empty_message" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select exercises on the home screen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ホームで種目を選んでください。"
+          }
+        }
+      }
+    },
+    "simple_record_empty_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No exercises"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "種目がありません"
+          }
+        }
+      }
+    },
+    "simple_record_error_no_weight" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter at least one weight."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "どれか1つ以上、重量を入力してください。"
+          }
+        }
+      }
+    },
+    "simple_record_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today’s log"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日の記録"
+          }
+        }
+      }
+    },
+    "simple_record_weight_placeholder" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Max"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最大"
           }
         }
       }

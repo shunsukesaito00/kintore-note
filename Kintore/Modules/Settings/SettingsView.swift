@@ -21,6 +21,9 @@ struct SettingsView: View {
     @State private var weightUnit: String = "kg"
     @State private var themeRaw: String = "system"
     @State private var weeklyWorkoutGoalSessions: Int = 0
+    @State private var monthlyWorkoutGoalSessions: Int = 0
+    @State private var showMonthlyGoalSheet = false
+    @State private var showDetailedWorkout = false
     @State private var loaded = false
     @State private var sessionCount: Int = 0
     @State private var setCount: Int = 0
@@ -35,50 +38,54 @@ struct SettingsView: View {
     @State private var weeklySummaryOn = RetentionNotificationService.isWeeklySummaryEnabled
     @State private var notificationAuthStatus: UNAuthorizationStatus = .notDetermined
     @State private var suppressNotificationToggleHandlers = false
+    @State private var showEraseStoreConfirm = false
+    @State private var showEraseScheduledAlert = false
 
     var body: some View {
         Form {
-            Section {
-                if premium.isPremium {
-                    Label(String(localized: "settings_premium_active"), systemImage: "checkmark.circle.fill")
-                        .foregroundStyle(AppTheme.accent)
-                } else {
-                    if let product = premium.product {
-                        Text(product.displayPrice)
-                            .font(AppTheme.title3Font)
-                        Button {
-                            Task {
-                                await premium.purchase()
-                                if premium.isPremium,
-                                   !UserDefaults.standard.bool(forKey: requestedReviewAfterPremiumKey) {
-                                    UserDefaults.standard.set(true, forKey: requestedReviewAfterPremiumKey)
-                                    requestReview()
+            if PremiumService.isPremiumPurchaseOffered || premium.isPremium {
+                Section {
+                    if premium.isPremium {
+                        Label(String(localized: "settings_premium_active"), systemImage: "checkmark.circle.fill")
+                            .foregroundStyle(AppTheme.accent)
+                    } else {
+                        if let product = premium.product {
+                            Text(product.displayPrice)
+                                .font(AppTheme.title3Font)
+                            Button {
+                                Task {
+                                    await premium.purchase()
+                                    if premium.isPremium,
+                                       !UserDefaults.standard.bool(forKey: requestedReviewAfterPremiumKey) {
+                                        UserDefaults.standard.set(true, forKey: requestedReviewAfterPremiumKey)
+                                        requestReview()
+                                    }
+                                }
+                            } label: {
+                                if premium.isPurchasing {
+                                    ProgressView()
+                                } else {
+                                    Text(String(localized: "settings_purchase_premium"))
                                 }
                             }
-                        } label: {
-                            if premium.isPurchasing {
-                                ProgressView()
-                            } else {
-                                Text(String(localized: "settings_purchase_premium"))
-                            }
+                            .disabled(premium.isPurchasing)
                         }
-                        .disabled(premium.isPurchasing)
+                        Button(String(localized: "settings_restore_purchase")) {
+                            Task { await premium.restore() }
+                        }
                     }
-                    Button(String(localized: "settings_restore_purchase")) {
-                        Task { await premium.restore() }
+                    if PremiumService.isPremiumPurchaseOffered, let msg = premium.errorMessage {
+                        Text(msg)
+                            .font(AppTheme.captionTypographyFont)
+                            .foregroundStyle(AppTheme.destructive)
                     }
-                }
-                if let msg = premium.errorMessage {
-                    Text(msg)
+                } header: {
+                    Text(String(localized: "settings_section_premium"))
+                } footer: {
+                    Text(String(localized: "settings_premium_footer_ads_only"))
                         .font(AppTheme.captionTypographyFont)
-                        .foregroundStyle(AppTheme.destructive)
+                        .foregroundStyle(AppTheme.secondaryText)
                 }
-            } header: {
-                Text(String(localized: "settings_section_premium"))
-            } footer: {
-                Text(String(localized: "settings_premium_footer_ads_only"))
-                    .font(AppTheme.captionTypographyFont)
-                    .foregroundStyle(AppTheme.secondaryText)
             }
 
             Section {
@@ -107,6 +114,32 @@ struct SettingsView: View {
                         }
                     )
                 )
+                Toggle(
+                    String(localized: "settings_monthly_workout_goal"),
+                    isOn: Binding(
+                        get: { monthlyWorkoutGoalSessions > 0 },
+                        set: { enabled in
+                            let newValue = enabled ? max(monthlyWorkoutGoalSessions, 12) : 0
+                            monthlyWorkoutGoalSessions = newValue
+                            saveMonthlyWorkoutGoal(newValue)
+                        }
+                    )
+                )
+                if monthlyWorkoutGoalSessions > 0 {
+                    Button {
+                        showMonthlyGoalSheet = true
+                    } label: {
+                        HStack {
+                            Text(String(localized: "settings_monthly_workout_goal_edit"))
+                            Spacer()
+                            Text("\(monthlyWorkoutGoalSessions)")
+                                .foregroundStyle(AppTheme.secondaryText)
+                            Image(systemName: "chevron.right")
+                                .font(.caption.weight(.semibold))
+                                .foregroundStyle(AppTheme.tertiaryText)
+                        }
+                    }
+                }
                 NavigationLink(destination: PlateCalculatorView()) {
                     Label(String(localized: "settings_plate_calculator"), systemImage: "scalemass")
                 }
@@ -216,6 +249,19 @@ struct SettingsView: View {
             }
 
             Section {
+                Button {
+                    showDetailedWorkout = true
+                } label: {
+                    Label(String(localized: "settings_detailed_workout_entry"), systemImage: "list.clipboard")
+                }
+                .accessibilityHint(String(localized: "settings_detailed_workout_a11y_hint"))
+            } header: {
+                Text(String(localized: "settings_section_optional_logging"))
+            } footer: {
+                Text(String(localized: "settings_detailed_workout_footer"))
+            }
+
+            Section {
                 Label(String(localized: "settings_icloud_backup"), systemImage: "icloud.fill")
                     .foregroundStyle(AppTheme.accent)
                     .accessibilityLabel(String(localized: "settings_icloud_backup"))
@@ -254,8 +300,59 @@ struct SettingsView: View {
                     Text(appVersion)
                         .foregroundStyle(.secondary)
                 }
+                if ModelContainerFactory.isUsingSandboxFallback {
+                    VStack(alignment: .leading, spacing: AppTheme.spacingXS) {
+                        Text(String(localized: "settings_model_store_sandbox_active_title"))
+                            .font(AppTheme.captionTypographyFont.weight(.semibold))
+                            .foregroundStyle(AppTheme.secondaryText)
+                        Text(String(localized: "settings_model_store_sandbox_active_body"))
+                            .font(AppTheme.captionTypographyFont)
+                            .foregroundStyle(AppTheme.secondaryText)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                if ModelContainerFactory.isPendingPersistentStoreErase {
+                    Text(String(localized: "settings_model_store_pending_erase_banner"))
+                        .font(AppTheme.captionTypographyFont)
+                        .foregroundStyle(.orange)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                if let err = ModelContainerFactory.lastOpenFailureSummary, !err.isEmpty {
+                    VStack(alignment: .leading, spacing: AppTheme.spacingXS) {
+                        Text(String(localized: "settings_model_store_last_error_title"))
+                            .font(AppTheme.captionTypographyFont)
+                            .foregroundStyle(AppTheme.secondaryText)
+                        Text(err)
+                            .font(.system(.caption2, design: .monospaced))
+                            .foregroundStyle(AppTheme.destructive)
+                            .textSelection(.enabled)
+                        if ModelContainerFactory.lastOpenFailureLooksLikeMigrationIssue {
+                            Text(String(localized: "settings_model_store_migration_hint"))
+                                .font(AppTheme.captionTypographyFont)
+                                .foregroundStyle(AppTheme.secondaryText)
+                        }
+                        Button {
+                            UIPasteboard.general.string = err
+                        } label: {
+                            Label(String(localized: "settings_model_store_copy_error"), systemImage: "doc.on.doc")
+                        }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                Button(role: .destructive) {
+                    showEraseStoreConfirm = true
+                } label: {
+                    Label(String(localized: "settings_model_store_erase_button"), systemImage: "trash")
+                }
+                .disabled(ModelContainerFactory.isPendingPersistentStoreErase)
             } header: {
                 Text(String(localized: "settings_about_section_title"))
+            } footer: {
+                if let err = ModelContainerFactory.lastOpenFailureSummary, !err.isEmpty {
+                    Text(String(localized: "settings_model_store_last_error_footer"))
+                        .font(AppTheme.captionTypographyFont)
+                        .foregroundStyle(AppTheme.secondaryText)
+                }
             }
         }
         .scrollContentBackground(.hidden)
@@ -273,7 +370,9 @@ struct SettingsView: View {
             syncNotificationToggleStatesFromService()
             Task {
                 await refreshNotificationAuthorizationStatus()
-                await premium.loadProduct()
+                if PremiumService.isPremiumPurchaseOffered {
+                    await premium.loadProduct()
+                }
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
@@ -292,6 +391,45 @@ struct SettingsView: View {
             }
             .environment(\.modelContext, modelContext)
             .standardSheetChrome()
+        }
+        .sheet(isPresented: $showMonthlyGoalSheet) {
+            MonthlyGoalEditorSheet(initialGoal: monthlyWorkoutGoalSessions) {
+                loadPreference()
+            }
+            .environment(\.modelContext, modelContext)
+            .standardSheetChrome()
+        }
+        .confirmationDialog(
+            String(localized: "settings_model_store_erase_confirm_title"),
+            isPresented: $showEraseStoreConfirm,
+            titleVisibility: .visible
+        ) {
+            Button(String(localized: "settings_model_store_erase_confirm_destructive"), role: .destructive) {
+                ModelContainerFactory.requestPersistentStoreEraseOnNextLaunch()
+                showEraseScheduledAlert = true
+            }
+            Button(String(localized: "common_cancel"), role: .cancel) {}
+        } message: {
+            Text(String(localized: "settings_model_store_erase_confirm_message"))
+        }
+        .alert(String(localized: "settings_model_store_erase_scheduled_title"), isPresented: $showEraseScheduledAlert) {
+            Button(String(localized: "common_ok"), role: .cancel) {}
+        } message: {
+            Text(String(localized: "settings_model_store_erase_scheduled_message"))
+        }
+        .fullScreenCover(isPresented: $showDetailedWorkout) {
+            WorkoutStartView(
+                initialTemplate: nil,
+                onDismiss: {
+                    showDetailedWorkout = false
+                    refreshDataCount()
+                },
+                onSessionCompleted: { _ in
+                    showDetailedWorkout = false
+                    refreshDataCount()
+                }
+            )
+            .environment(\.modelContext, modelContext)
         }
     }
 
@@ -453,6 +591,7 @@ struct SettingsView: View {
         weightUnit = pref.weightUnit
         themeRaw = pref.theme
         weeklyWorkoutGoalSessions = pref.weeklyWorkoutGoalSessions
+        monthlyWorkoutGoalSessions = pref.monthlyWorkoutGoalSessions
         if appTheme != pref.theme {
             appTheme = pref.theme
         }
@@ -489,6 +628,10 @@ struct SettingsView: View {
 
     private func saveWeeklyWorkoutGoal(_ count: Int) {
         try? SettingsRepository(modelContext: modelContext).updateWeeklyWorkoutGoalSessions(count)
+    }
+
+    private func saveMonthlyWorkoutGoal(_ count: Int) {
+        try? SettingsRepository(modelContext: modelContext).updateMonthlyWorkoutGoalSessions(count)
     }
 }
 

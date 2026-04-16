@@ -1,4 +1,4 @@
-# サポート（Kintore Note）
+# サポート（らくらく筋トレ記録）
 
 ## App Store Connect 用（推奨 URL）
 

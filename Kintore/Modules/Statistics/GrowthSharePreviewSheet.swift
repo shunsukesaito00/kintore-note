@@ -26,9 +26,9 @@ struct GrowthSharePreviewSheet: View {
                     }
                     tagFooter
                 }
-                .padding(.horizontal, AppTheme.spacingLG)
-                .padding(.vertical, AppTheme.spacingMD)
-                .padding(.bottom, AppTheme.spacingXL)
+                .padding(.horizontal, AppTheme.screenHorizontalPadding)
+                .padding(.vertical, AppTheme.spacingSM)
+                .padding(.bottom, AppTheme.spacingLG)
             }
             .background(AppTheme.appBackground)
             .navigationTitle(String(localized: "growth_share_preview_title"))
@@ -52,9 +52,9 @@ struct GrowthSharePreviewSheet: View {
                         sharePayload = GrowthShareTextPayload(text: text)
                     }
                 }
-                .padding(.horizontal, AppTheme.spacingLG)
-                .padding(.top, AppTheme.spacingMD)
-                .padding(.bottom, AppTheme.spacingLG)
+                .padding(.horizontal, AppTheme.screenHorizontalPadding)
+                .padding(.top, AppTheme.spacingSM)
+                .padding(.bottom, AppTheme.spacingMD)
                 .background(AppTheme.appBackground.shadow(color: .black.opacity(0.06), radius: 12, y: -4))
             }
             .sheet(item: $sharePayload) { payload in

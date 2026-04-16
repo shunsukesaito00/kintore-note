@@ -15,7 +15,11 @@ struct AppRootView: View {
     @AppStorage(openWorkoutAfterOnboardingKey) private var openWorkoutAfterOnboarding: Bool = false
     @AppStorage("kintore.needsRestartForCloudSync") private var needsCloudRestartNotice = false
     @State private var showModelStoreInMemoryAlert = false
+    @State private var showSandboxFallbackAlert = false
     @State private var showCloudKitLocalFallbackAlert = false
+    /// 同一プロセス内でインメモリアラートを繰り返さない（onAppear が複数回でも1回のみ）
+    @State private var didPresentModelStoreInMemoryThisSession = false
+    @State private var didPresentSandboxFallbackThisSession = false
 
     var body: some View {
         Group {
@@ -42,8 +46,14 @@ struct AppRootView: View {
             if PremiumService.isCloudSyncRestartPending {
                 needsCloudRestartNotice = true
             }
-            if AppModelBootstrap.usedInMemoryStoreDueToLoadFailure {
+            if AppModelBootstrap.usedInMemoryStoreDueToLoadFailure,
+               !didPresentModelStoreInMemoryThisSession {
                 showModelStoreInMemoryAlert = true
+                didPresentModelStoreInMemoryThisSession = true
+            } else if ModelContainerFactory.isUsingSandboxFallback,
+                      !didPresentSandboxFallbackThisSession {
+                showSandboxFallbackAlert = true
+                didPresentSandboxFallbackThisSession = true
             } else if ModelContainerFactory.didFallbackFromCloudKitToLocal {
                 showCloudKitLocalFallbackAlert = true
             }
@@ -52,6 +62,11 @@ struct AppRootView: View {
             Button(String(localized: "common_ok"), role: .cancel) {}
         } message: {
             Text(String(localized: "model_store_inmemory_message"))
+        }
+        .alert(String(localized: "model_store_sandbox_fallback_title"), isPresented: $showSandboxFallbackAlert) {
+            Button(String(localized: "common_ok"), role: .cancel) {}
+        } message: {
+            Text(String(localized: "model_store_sandbox_fallback_message"))
         }
         .alert(String(localized: "model_store_cloud_fallback_title"), isPresented: $showCloudKitLocalFallbackAlert) {
             Button(String(localized: "common_ok"), role: .cancel) {}

@@ -12,6 +12,10 @@ private let needsRestartForCloudSyncKey = "kintore.needsRestartForCloudSync"
 @MainActor
 @Observable
 final class PremiumService {
+    /// App Store で IAP をバージョンに紐付けないリリース（初回審査など）では `false`。購入 UI・`Product.products` を使わない。
+    /// 課金を再開するときは `true` に変更する。
+    static let isPremiumPurchaseOffered = false
+
     enum Feature: String, CaseIterable {
         case basicLogging
         case historyView
@@ -52,6 +56,10 @@ final class PremiumService {
 
     /// 商品一覧を取得（設定画面表示前に呼ぶ）
     func loadProduct() async {
+        guard Self.isPremiumPurchaseOffered else {
+            await MainActor.run { product = nil }
+            return
+        }
         do {
             let products = try await Product.products(for: [premiumProductId])
             await MainActor.run {
@@ -66,6 +74,7 @@ final class PremiumService {
 
     /// 購入実行
     func purchase() async {
+        guard Self.isPremiumPurchaseOffered else { return }
         guard let product = product else {
             await MainActor.run { errorMessage = "商品を読み込み中です" }
             return
@@ -104,6 +113,7 @@ final class PremiumService {
 
     /// 復元
     func restore() async {
+        guard Self.isPremiumPurchaseOffered else { return }
         let wasPremium = await MainActor.run { self.isPremium }
         await MainActor.run { errorMessage = nil }
         await refresh()

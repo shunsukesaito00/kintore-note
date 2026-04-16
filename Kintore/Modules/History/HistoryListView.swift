@@ -38,12 +38,12 @@ struct HistoryListView: View {
     @ViewBuilder
     private func historyContent(vm: HistoryListViewModel) -> some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: AppTheme.spacingLG) {
+            VStack(alignment: .leading, spacing: AppTheme.sectionBlockSpacing) {
                 bodyPartFilterRow(vm: vm)
-                    .padding(.horizontal)
+                    .padding(.horizontal, AppTheme.screenHorizontalPaddingCompact)
 
                 streakBanner(vm: vm)
-                    .padding(.horizontal)
+                    .padding(.horizontal, AppTheme.screenHorizontalPaddingCompact)
 
                 CalendarView(
                     onDaySelected: {
@@ -51,16 +51,18 @@ struct HistoryListView: View {
                         refreshSelectedDay(vm: vm)
                     },
                     selectedBodyPart: selectedBodyPart,
-                    selectedDate: selectedDate
+                    selectedDate: selectedDate,
+                    horizontalInset: AppTheme.screenHorizontalPaddingCompact
                 )
 
                 selectedDaySection(vm: vm)
-                    .padding(.horizontal)
+                    .padding(.horizontal, AppTheme.screenHorizontalPaddingCompact)
 
                 historyTimelineSection(vm: vm)
-                    .padding(.horizontal)
+                    .padding(.horizontal, AppTheme.screenHorizontalPaddingCompact)
             }
-            .padding(.vertical, AppTheme.spacingMD)
+            .padding(.top, AppTheme.screenEdgeTopPadding)
+            .padding(.bottom, AppTheme.screenEdgeBottomPadding)
         }
     }
 
@@ -172,7 +174,7 @@ struct HistoryListView: View {
                             .font(AppTheme.bodySecondaryFont)
                             .foregroundStyle(AppTheme.secondaryText)
                     }
-                    .padding(.vertical, AppTheme.spacingXL)
+                    .padding(.vertical, AppTheme.spacingLG)
                     Spacer()
                 }
             } else {

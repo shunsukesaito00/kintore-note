@@ -1,4 +1,4 @@
-# Kintore Note — App Store 提出手順（参考）
+# らくらく筋トレ記録 — App Store 提出手順（参考）
 
 **Bundle ID:** `com.shunsukesaito.kintore`  
 審査基準・画面は変更される。[App Store レビューガイドライン](https://developer.apple.com/jp/app-store/review/guidelines/)、[App Store Connect ヘルプ](https://developer.apple.com/help/app-store-connect/) を参照。
@@ -35,7 +35,7 @@
 
 ### 画面のたどり方（目安）
 
-1. **マイ App** → アプリ **Kintore Note** を選択  
+1. **マイ App** → アプリ **らくらく筋トレ記録** を選択  
 2. 左サイドバー **「一般」**（General）→ **「アプリ情報」**（App Information）  
 3. 左サイドバー **「App Store」** → **対象の iOS バージョン**（例: 1.0.0）→ 中央の **「App Store」** タブ（ストア掲載文言の編集画面）
 
@@ -43,7 +43,7 @@
 
 ### URL を入れる欄と中身
 
-| App Store Connect 上の見出し・欄名（目安） | 何を入れるか | Kintore Note での例 |
+| App Store Connect 上の見出し・欄名（目安） | 何を入れるか | らくらく筋トレ記録 での例 |
 |------------------------------------------|-------------|----------------|
 | **プライバシーポリシー** / **Privacy Policy URL**（アプリ情報側） | プライバシーポリシー全文が載った **HTTPS のページ URL** | リポジトリ同梱の Markdown をそのまま使う例: `https://github.com/shunsukesaito00/kintore-note/blob/main/docs/legal/privacy-policy_ja.md`（英語は `privacy-policy_en.md`）。詳細は [`docs/legal/README.md`](../legal/README.md) |
 | **サポート URL** / **Support URL**（ストア用メタデータ側） | 問い合わせ・FAQ・Issue 一覧など **ユーザーが到達できるサポート先** | `https://shunsukesaito00.github.io/kintore-note/support/`（[公開手順](support/README.md)） |
@@ -53,7 +53,7 @@
 
 | 欄 | 入れるもの |
 |----|-----------|
-| **名前** / **Name** | アプリ名テキスト（例: `Kintore Note`）。URL ではない |
+| **名前** / **Name** | アプリ名テキスト（例: `らくらく筋トレ記録`）。URL ではない |
 | **サブタイトル** | 短文。URL ではない |
 | **説明** / **Description** | 紹介文章。URL ではない（文中にリンクを書くことは可能だが、必須のポリシー URL は上記「プライバシーポリシー」欄が正） |
 | **キーワード** | カンマ区切りの単語。URL ではない |
@@ -73,7 +73,7 @@
 
 | 項目 | 内容 |
 |------|------|
-| 表示名 | Kintore Note |
+| 表示名 | らくらく筋トレ記録 |
 | Bundle ID | com.shunsukesaito.kintore |
 | 対応 OS | iOS 17.0 以降 |
 | デバイス | iPhone |
@@ -124,7 +124,7 @@ Watch / Widget は同一アーカイブに含まれる。
 | フィールド | 例 |
 |------------|-----|
 | プラットフォーム | iOS |
-| 名前 | Kintore Note |
+| 名前 | らくらく筋トレ記録 |
 | 主要言語 | 日本語 |
 | Bundle ID | com.shunsukesaito.kintore |
 | SKU | （内部用一意） |
@@ -163,7 +163,7 @@ kintore-ios-1
 ### 説明文ドラフト
 
 ```text
-Kintore Note は、筋トレ・ワークアウトの記録を続けやすくするためのiPhoneアプリです。セットごとの重量・回数などを入力し、セッションとして保存できます。
+らくらく筋トレ記録は、筋トレ・ワークアウトの記録を続けやすくするためのiPhoneアプリです。セットごとの重量・回数などを入力し、セッションとして保存できます。
 
 【主な機能】
 ・ワークアウト記録（セット入力・セッション保存）

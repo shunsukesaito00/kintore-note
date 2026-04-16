@@ -8,7 +8,7 @@ struct RecentSessionCardView: View {
 
     var body: some View {
         NavigationLink(value: item.sessionId) {
-            SectionCard(useElevatedSurface: true) {
+            SectionCard(useElevatedSurface: true, density: .compact) {
                 VStack(alignment: .leading, spacing: AppTheme.memoTitleSubtitleGap + 6) {
                     Text(item.dateText)
                         .font(AppTheme.bodySemiboldFont)

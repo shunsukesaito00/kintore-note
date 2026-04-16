@@ -19,10 +19,11 @@
 // | spacingXS  | 4   |
 // | spacingSM  | 8   |
 // | spacingMD  | 12  |
-// | spacingLG  | 16  |
-// | spacingXL  | 24  |
-// | spacingXXL | 32  |
+// | spacingLG  | 12  |
+// | spacingXL  | 16  |
+// | spacingXXL | 20  |
 // セマンティック: `xs` … `xl` が同じ値の別名。
+// カード内側は `cardContentPadding` / `cardContentPaddingCompact`（`SectionCard`・`appCardStyle`）で個別に調整。
 //
 // --- Elevation 0〜2（影の設計と実装トークン）---
 // | レベル | 見え方 | 参照 |
@@ -125,15 +126,45 @@ enum AppTheme {
     static let spacingXS: CGFloat = 4
     static let spacingSM: CGFloat = 8
     static let spacingMD: CGFloat = 12
-    static let spacingLG: CGFloat = 16
-    static let spacingXL: CGFloat = 24
-    static let spacingXXL: CGFloat = 32
+    static let spacingLG: CGFloat = 12
+    static let spacingXL: CGFloat = 16
+    static let spacingXXL: CGFloat = 20
+
+    /// `SectionCard` / `appCardStyle()` の標準内側余白（画面端 `spacingLG` とは別系統で調整可）
+    static let cardContentPadding: CGFloat = 12
+    /// 一覧・統計など情報密度が高い画面向けカード内側余白
+    static let cardContentPaddingCompact: CGFloat = 10
+    /// 種目詳細・記録タブ等、最大密度の `SectionCard` 向け内側余白
+    static let cardContentPaddingDense: CGFloat = 8
+
+    // MARK: - 画面レイアウト（スクロール・端・セクション役割）
+    /// ルート ScrollView 先頭の追加トップ余白（ナビ直下の詰め。原則 0）
+    static let screenEdgeTopPadding: CGFloat = 0
+    /// ルート ScrollView 末尾（タブバー上の余裕）
+    static let screenEdgeBottomPadding: CGFloat = 12
+    /// 通常画面のコンテンツ左右インセット
+    static let screenHorizontalPadding: CGFloat = 12
+    /// 履歴・成長・種目詳細・セッション詳細など高密度一覧・統計向け左右インセット
+    static let screenHorizontalPaddingCompact: CGFloat = 10
+    /// セクション塊（見出し〜次の塊まで）同士の縦間隔
+    static let sectionBlockSpacing: CGFloat = 8
+    /// 同一セクション内でカードを縦に積むときの間隔
+    static let cardStackSpacing: CGFloat = 8
+    /// `SectionHeaderView` 直下の本文まで（見出しの「下」だけ）
+    static let sectionHeaderBottomSpacing: CGFloat = 6
+
+    /// 成長概要・種目詳細チャートの標準高さ（高密度）
+    static let statisticsChartHeightStandard: CGFloat = 156
+    /// 補助チャート・狭いエリア向け
+    static let statisticsChartHeightCompact: CGFloat = 132
+    /// メイン1枚のチャート（やや高め）
+    static let statisticsChartHeightHero: CGFloat = 172
 
     // MARK: - MEMO 参照アプリ寄せ（可読性・情報密度）
-    /// ブロック間（ホーム縦並び・記録エディタ内セクション間）。参照は 12pt 前後が多い。
-    static let memoSectionGap: CGFloat = 12
-    /// カード内の標準パディング（16 の代わりに詰める）
-    static let memoCardPadding: CGFloat = 12
+    /// ブロック間（ホーム縦並び・記録エディタ内セクション間）
+    static let memoSectionGap: CGFloat = 8
+    /// カード内の標準パディング（MEMO 風ブロック）
+    static let memoCardPadding: CGFloat = 10
     /// リスト行の縦パディング（種目名行など）
     static let memoListRowPaddingV: CGFloat = 10
     /// セット表 1 行の縦余白
@@ -143,7 +174,7 @@ enum AppTheme {
     /// セット数値ブロック直下〜セットメモ行までの間隔
     static let memoSetBlockToMemoSpacing: CGFloat = 2
     /// 記録画面・種目カード同士の縦間隔（やや詰める）
-    static let recordExerciseBlockSpacing: CGFloat = 10
+    static let recordExerciseBlockSpacing: CGFloat = 8
     /// 種目ピッカー・部位カード内の種目行の縦パディング（参照の「行が高い」）
     static let memoPickerExerciseRowPaddingV: CGFloat = 14
     static let memoSetRowPaddingH: CGFloat = 6
@@ -601,10 +632,10 @@ enum AppTheme {
     static var subtlePanelShadowRadius: CGFloat { cardShadowRadius * 0.45 }
     static var subtlePanelShadowY: CGFloat { cardShadowY * 0.45 }
 
-    /// セッション詳細カードの横余白（ScrollView 内）
-    static let sessionContentHorizontalPadding: CGFloat = 16
-    /// カード内パディング（SectionCard と揃える）
-    static let sessionCardInnerPadding: CGFloat = 16
+    /// セッション詳細スクロール横インセット（`screenHorizontalPadding` と同値・後方互換）
+    static var sessionContentHorizontalPadding: CGFloat { screenHorizontalPadding }
+    /// 詳細ブロック内側（`cardContentPadding` と揃える・後方互換）
+    static var sessionCardInnerPadding: CGFloat { cardContentPadding }
 
     // MARK: - Elevation / シャドウ（E1=弱 / E2=標準カード・主CTA — 設計表はファイル先頭）
     /// 標準カード（SectionCard 等）— **E2**
@@ -630,6 +661,14 @@ enum AppTheme {
 
     /// 空状態アイコン台紙の角丸（CTA 角丸と揃える）
     static var emptyStateIconCornerRadius: CGFloat { buttonCornerRadius }
+    /// 空状態：SF Symbol のフォントサイズ
+    static let emptyStateIconGlyphSize: CGFloat = 32
+    /// 空状態：アイコン台紙の一辺（正方形）
+    static let emptyStateIconPlateSize: CGFloat = 64
+    /// 空状態：アイコン〜本文の縦間隔
+    static let emptyStateContentSpacing: CGFloat = 10
+    /// 空状態：ブロック全体の上下パディング（中央寄せ時の間延び抑制）
+    static let emptyStateVerticalPadding: CGFloat = 12
 
     /// タブバー下地（シェル — 記録面 L2 と同系の白／ダーク面）
     static var tabBarChromeBackground: Color { memoRecordSurface }
@@ -692,8 +731,24 @@ extension View {
             .toolbarBackground(.visible, for: .navigationBar)
     }
 
+    /// 標準カード（内側 `cardContentPadding`）。未使用箇所でも API 互換のため維持。
     func appCardStyle() -> some View {
-        padding(AppTheme.spacingLG)
+        appCardStyleInternal(pad: AppTheme.cardContentPadding)
+    }
+
+    /// 一覧・統計など、情報量が多いブロック向けのやや詰めたカード
+    func appCardStyleCompact() -> some View {
+        appCardStyleInternal(pad: AppTheme.cardContentPaddingCompact)
+    }
+
+    /// 最大密度（チャート・表が多いブロック向け）
+    func appCardStyleDense() -> some View {
+        appCardStyleInternal(pad: AppTheme.cardContentPaddingDense)
+    }
+
+    private func appCardStyleInternal(pad: CGFloat) -> some View {
+        self
+            .padding(pad)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(AppTheme.cardBackground)
             .clipShape(RoundedRectangle(cornerRadius: AppTheme.cardCornerRadius))

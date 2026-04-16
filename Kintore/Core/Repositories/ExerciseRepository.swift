@@ -5,6 +5,8 @@ import SwiftData
 
 protocol ExerciseRepositoryProtocol {
     func fetchAllExercises() throws -> [Exercise]
+    /// ユーザーが追加した種目（プリセット以外）
+    func fetchUserCreatedExercises() throws -> [Exercise]
     func fetchFavoriteExercises() throws -> [Exercise]
     func searchExercises(keyword: String) throws -> [Exercise]
     func fetchExercise(by id: UUID) throws -> Exercise?
@@ -23,6 +25,12 @@ final class ExerciseRepository: ExerciseRepositoryProtocol {
 
     func fetchAllExercises() throws -> [Exercise] {
         let descriptor = FetchDescriptor<Exercise>(sortBy: [SortDescriptor(\.sortOrder), SortDescriptor(\.name)])
+        return try modelContext.fetch(descriptor)
+    }
+
+    func fetchUserCreatedExercises() throws -> [Exercise] {
+        var descriptor = FetchDescriptor<Exercise>(predicate: #Predicate<Exercise> { !$0.isPreset })
+        descriptor.sortBy = [SortDescriptor(\.sortOrder), SortDescriptor(\.name)]
         return try modelContext.fetch(descriptor)
     }
 

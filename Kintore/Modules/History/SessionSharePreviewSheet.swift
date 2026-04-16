@@ -28,9 +28,9 @@ struct SessionSharePreviewSheet: View {
                     mainPreviewCard
                     tagFooter
                 }
-                .padding(.horizontal, AppTheme.spacingLG)
-                .padding(.vertical, AppTheme.spacingMD)
-                .padding(.bottom, AppTheme.spacingXL)
+                .padding(.horizontal, AppTheme.screenHorizontalPadding)
+                .padding(.vertical, AppTheme.spacingSM)
+                .padding(.bottom, AppTheme.spacingLG)
             }
             .background(AppTheme.appBackground)
             .navigationTitle(String(localized: "session_share_nav_title"))
@@ -61,9 +61,9 @@ struct SessionSharePreviewSheet: View {
                         sharePayload = SessionShareTextPayload(text: shareText)
                     }
                 }
-                .padding(.horizontal, AppTheme.spacingLG)
-                .padding(.top, AppTheme.spacingMD)
-                .padding(.bottom, AppTheme.spacingLG)
+                .padding(.horizontal, AppTheme.screenHorizontalPadding)
+                .padding(.top, AppTheme.spacingSM)
+                .padding(.bottom, AppTheme.spacingMD)
                 .background(AppTheme.appBackground.shadow(color: .black.opacity(0.06), radius: 12, y: -4))
             }
             .sheet(item: $sharePayload) { payload in

@@ -61,8 +61,8 @@ struct MemoJournalView: View {
         .padding(AppTheme.spacingSM)
         .background(AppTheme.memoInputCellFill)
         .clipShape(RoundedRectangle(cornerRadius: AppTheme.inputCornerRadius))
-        .padding(.horizontal, AppTheme.spacingLG)
-        .padding(.vertical, AppTheme.spacingMD)
+        .padding(.horizontal, AppTheme.screenHorizontalPaddingCompact)
+        .padding(.vertical, AppTheme.spacingSM)
     }
 
     private func memoJournalRow(entry: MemoJournalEntry) -> some View {
@@ -99,7 +99,7 @@ struct MemoJournalView: View {
                 .font(AppTheme.bodySecondaryFont)
                 .foregroundStyle(AppTheme.secondaryText)
                 .multilineTextAlignment(.center)
-                .padding(.horizontal)
+                .padding(.horizontal, AppTheme.screenHorizontalPaddingCompact)
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -112,7 +112,7 @@ struct MemoJournalView: View {
                 .font(AppTheme.bodySecondaryFont)
                 .foregroundStyle(AppTheme.secondaryText)
                 .multilineTextAlignment(.center)
-                .padding(.horizontal)
+                .padding(.horizontal, AppTheme.screenHorizontalPaddingCompact)
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
